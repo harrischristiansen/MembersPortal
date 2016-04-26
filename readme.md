@@ -14,10 +14,10 @@ Students become a member of Purdue Hackers after attending any Purdue Hackers ev
 - [X] Login With Any Associated Email Address
 - [X] Registration Functionality
 - [ ] Password Reset Functionality
-- [ ] Member List
+- [X] Members List
 - [ ] Member Profile Page
 - [ ] Member - Edit Profile
-- [ ] Event List
+- [ ] Events List
 - [ ] Event Profile Page
 - [ ] Event - Manage Event
 - [ ] Event Checkin Page

@@ -132,6 +132,23 @@ class PHController extends Controller {
 	
 	/////////////////////////////// Viewing Members ///////////////////////////////
 	
+	public function getMembers() {
+		$members = Member::all();
+		
+		return view('pages.members',compact("members"));
+	}
+	
+	public function getMember(Request $request, $memberID) {
+		$member = Member::find($memberID);
+		
+		if(is_null($member)) {
+			$request->session()->flash('msg', 'Error: Member Not Found.');
+			return $this->getMembers();
+		}
+		
+		return $member->name;
+	}
+	
 	/////////////////////////////// Editing Members ///////////////////////////////
 	
 	/////////////////////////////// Viewing Events ///////////////////////////////

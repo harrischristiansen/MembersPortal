@@ -47,6 +47,7 @@
 				</div>
 				<div id="navbar" class="collapse navbar-collapse">
 					<ul class="nav navbar-nav">
+						<li><a href="/members">Members</a></li>
 						@if(session()->get('authenticated_member') == "true")
 							<li><a href="#">Leaderboard</a></li>
 							@if(session()->get('authenticated_admin') == "true")

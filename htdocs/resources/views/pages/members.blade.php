@@ -1,0 +1,29 @@
+@extends("app")
+
+@section("content")
+<div class="container">
+	<h1>Members | Purdue Hackers</h1>
+	<div class="panel panel-default">
+		<table class="table table-bordered table-hover table-clickable panel-body" >
+		<thead>
+			<tr>
+				<th>Name</th>
+				<th>Year</th>
+				<th>Joined</th>
+				<th>Events Attended</th>
+			</tr>
+		</thead>
+		<tbody>
+		@foreach ($members as $member)
+		    <tr onclick="location.href='{{ URL::to('/member', $member->id) }}';">
+		    	<td>{{ $member->name }}</td>
+				<td>{{ $member->graduation_year }}</td>
+		    	<td>{{ $member->created_at }}</td>
+		    	<td>0</td>
+		    </tr>
+		@endforeach
+		</tbody>
+		</table>
+	</div>
+</div>
+@stop
