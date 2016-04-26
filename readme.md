@@ -9,16 +9,32 @@ Students become a member of Purdue Hackers after attending any Purdue Hackers ev
 ## Installation  
 
 - [ ] Download and Install MAMP  
-- [ ] Set MAMP Directory to Site/backend/Public  
+- [ ] Set MAMP Directory to site/Public  
 - [ ] Create MySQL Database (named PHMembers) (use a GUI tool such as Sequel Pro)  
-- [ ] Copy Site/backend/.env.example to Site/backend/.env  
-- [ ] Fill in database information in .env (adding DB_PORT if necessary)  
+- [ ] Copy site/.env.example to site/.env  
+- [ ] Fill in database information in .env
 - [ ] Download and Install Composer  
-- [ ] Run `composer install` in the Site/backend directory (you might have to run `php composer.phar install` depending on how you installed composer)  
-- [ ] Run `php artisan migrate` in the Site/backend directory  
-- [ ] Run `php artisan key:generate` in the Site/backend directory  
-- [ ] Run `mkdir -p Site/backend/storage/framework/sessions` and `mkdir -p Site/backend/storage/framework/views`  
+- [ ] Run `composer install` in the site directory (you might have to run `php composer.phar install` depending on how you installed composer)  
+- [ ] Run `php artisan migrate` in the site directory  
+- [ ] Run `php artisan key:generate` in the site directory  
+- [ ] Run `mkdir -p site/storage/framework/sessions` and `mkdir -p site/storage/framework/views`  
 - [ ] Run `chmod -R 777 Site/backend/storage`  
+
+## Timeline
+- [X] Setup Initial Project
+- [ ] Setup Deployment for Bluemix
+- [ ] Setup Deployment for MT
+- [ ] Login Functionality
+- [ ] Registration Functionality
+- [ ] Member List
+- [ ] Member Profile Page
+- [ ] Member - Edit Profile
+- [ ] Event List
+- [ ] Event Profile Page
+- [ ] Event - Manage Event
+- [ ] Event Checkin Page
+- [ ] Event - Attended Members List
+- [ ] Member - Attended Events List
 
 ## Starting Servers
 
@@ -30,10 +46,9 @@ Students become a member of Purdue Hackers after attending any Purdue Hackers ev
 
 ## Contributors
 
-@harrischristiansen (http://www.harrischristiansen.com)
+@harrischristiansen (http://www.harrischristiansen.com)  
 
 ## License
 
 Copyright 2016 Harris Christiansen and Purdue Hackers - All Rights Reserved  
-
 
