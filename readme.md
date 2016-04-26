@@ -8,8 +8,8 @@ Students become a member of Purdue Hackers after attending any Purdue Hackers ev
 
 ## Timeline
 - [X] Setup Initial Project
-- [ ] Setup Deployment for Bluemix
-- [ ] Setup Deployment for MT
+- [X] Setup Deployment for Bluemix
+- [X] Setup Deployment for MT
 - [ ] Login Functionality
 - [ ] Registration Functionality
 - [ ] Member List
@@ -36,13 +36,21 @@ Students become a member of Purdue Hackers after attending any Purdue Hackers ev
 - [ ] Run `mkdir -p storage/framework/sessions` and `mkdir -p storage/framework/views`  
 - [ ] Run `chmod -R 777 storage`  
 
-## Starting Servers
+## Starting Local Servers
 
 - [ ] Start MAMP Servers  
 
+## Deploying to Bluemix
+
+- [ ] `bluemix api https://api.ng.bluemix.net`
+- [ ] `bluemix login -u harrischristiansen@mac.com -o harrischristiansen@mac.com -s dev`
+- [ ] `cf push Purdue-Hackers-Members-Portal`
+
 ## Accessing Portal
 
-- [ ] Open localhost:8888/  
+- Locally: http://localhost:8888/  
+- Bluemix: http://purdue-hackers-members-portal.mybluemix.net
+- MT: http://members.purduehackers.com/
 
 ## Contributors
 
