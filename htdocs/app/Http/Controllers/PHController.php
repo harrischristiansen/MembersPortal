@@ -35,20 +35,40 @@ class PHController extends Controller {
 	public function postLogin(Request $request) {
 		$email = $request->input('email');
 		$password = $request->input('password');
+		$passwordMD5 = md5($password);
 		
 		if($email == "") {
 			if($password == env('ADMIN_PASS')) {
 				$request->session()->put('authenticated_member', 'true');
 				$request->session()->put('authenticated_admin', 'true');
 			} else {
-			$request->session()->flash('msg', 'Please enter an email!');
-			return $this->getLogin();
+				$request->session()->flash('msg', 'Please enter an email.');
+				return $this->getLogin();
 			}
 		} else {
-			$request->session()->put('authenticated_member', 'true');
+			$matchingMembers = Member::where('email',$email)->orWhere('email_public', $email)->orWhere('email_purdue', $email)->get();
+			
+			if(count($matchingMembers) == 0) {
+				$request->session()->flash('msg', 'No account was found with that email.');
+				return $this->getLogin();
+			}
+			
+			foreach($matchingMembers as $member) {
+				if($member->password == $passwordMD5) {
+					$request->session()->put('authenticated_member', 'true');
+					$request->session()->put('member_id', $member->id);
+					$request->session()->put('member_name', $member->name);
+					$request->session()->flash('msg', 'Logged In!');
+					return $this->getIndex();
+				}
+			}
+			
+			// If gets here, no account matched password
+			$request->session()->flash('msg', 'Invalid password.');
+			return $this->getLogin();
 		}
 
-		return $this->getIndex();
+		return $this->getLogin();
 	}
 
 	public function getLogout(Request $request) {
@@ -74,7 +94,7 @@ class PHController extends Controller {
 			return $this->getJoin();
 		}
 		
-		if(!filter_var($email_a, FILTER_VALIDATE_EMAIL)) {
+		if(!filter_var($email, FILTER_VALIDATE_EMAIL)) {
 			$request->session()->flash('msg', 'Invalid Email Address.');
 			return $this->getJoin();
 		}

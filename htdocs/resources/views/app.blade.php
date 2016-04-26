@@ -54,6 +54,7 @@
 							@endif
 							<li><a href="/logout">Logout</a></li>
 						@else
+							<li><a href="/login">Login</a></li>
 							<li><a href="/join">Join</a></li>
 						@endif
 					</ul>
@@ -63,7 +64,8 @@
 		
 		<div class="container-fluid">
 			@if(session()->has('msg'))
-				<div class="container"><div class="alert alert-success" role="alert">{{session()->get('msg')}}</div></div>
+				<br><div class="container"><div class="alert alert-success" role="alert">{{ session()->get('msg') }}</div></div>
+				<?php session()->forget('msg'); ?>
 			@endif
 			@yield('content')
 		</div>

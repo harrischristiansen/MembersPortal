@@ -10,7 +10,8 @@ Students become a member of Purdue Hackers after attending any Purdue Hackers ev
 - [X] Setup Initial Project
 - [X] Setup Deployment for Bluemix
 - [X] Setup Deployment for MT
-- [ ] Login Functionality
+- [X] Login Functionality
+- [X] Login With Any Associated Email Address
 - [X] Registration Functionality
 - [ ] Password Reset Functionality
 - [ ] Member List
