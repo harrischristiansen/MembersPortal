@@ -22,19 +22,19 @@ Students become a member of Purdue Hackers after attending any Purdue Hackers ev
 - [ ] Event - Attended Members List
 - [ ] Member - Attended Events List
 
-## Installation  
+## Local Installation  
 
 - [ ] Download and Install MAMP  
-- [ ] Set MAMP Directory to site/Public  
+- [ ] Set MAMP Directory to Public  
 - [ ] Create MySQL Database (named PHMembers) (use a GUI tool such as Sequel Pro)  
-- [ ] Copy site/.env.example to site/.env  
+- [ ] Copy .env.example to .env  
 - [ ] Fill in database information in .env  
 - [ ] Download and Install Composer  
-- [ ] Run `composer install` in the site directory (you might have to run `php composer.phar install` depending on how you installed composer)  
-- [ ] Run `php artisan migrate` in the site directory  
-- [ ] Run `php artisan key:generate` in the site directory  
-- [ ] Run `mkdir -p site/storage/framework/sessions` and `mkdir -p site/storage/framework/views`  
-- [ ] Run `chmod -R 777 Site/backend/storage`  
+- [ ] Run `composer install` in the root directory (you might have to run `php composer.phar install` depending on how you installed composer)  
+- [ ] Run `php artisan migrate` in the root directory  
+- [ ] Run `php artisan key:generate` in the root directory  
+- [ ] Run `mkdir -p storage/framework/sessions` and `mkdir -p storage/framework/views`  
+- [ ] Run `chmod -R 777 storage`  
 
 ## Starting Servers
 
