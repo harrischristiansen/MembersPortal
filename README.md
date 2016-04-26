@@ -54,7 +54,7 @@ Students become a member of Purdue Hackers after attending any Purdue Hackers ev
 
 ## Contributors
 
-@harrischristiansen (http://www.harrischristiansen.com)  
+@harrischristiansen (http://www.harrischristiansen.com) (christih@purdue.edu)
 
 ## License
 
