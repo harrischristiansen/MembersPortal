@@ -13,6 +13,9 @@
 
         <link href="https://fonts.googleapis.com/css?family=Lato:400,900" rel="stylesheet" type="text/css">
         
+        <!-- BValidator -->
+        <link href="/css/bvalidator.css" rel="stylesheet" type="text/css" />
+        
         <!-- Bootstrap CSS -->
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
 		
@@ -29,8 +32,8 @@
 	    <link rel="stylesheet" href="/css/purduehackers.css">
 
     </head>
-    <body {!! session()->get('authenticated_admin') == "true" ? 'style="padding-top: 51px;"':'' !!}>
-	    @if(session()->get('authenticated_admin') == "true")
+    <body style="padding-top: 51px;">
+	    
 		<nav class="navbar navbar-inverse navbar-fixed-top">
 			<div class="container">
 				<div class="navbar-header">
@@ -44,13 +47,20 @@
 				</div>
 				<div id="navbar" class="collapse navbar-collapse">
 					<ul class="nav navbar-nav">
-						<li><a href="/anvil-wifi">Anvil Wifi</a></li>
-						<li><a href="/logout">Logout</a></li>
+						@if(session()->get('authenticated_member') == "true")
+							<li><a href="#">Leaderboard</a></li>
+							@if(session()->get('authenticated_admin') == "true")
+								<li><a href="/anvil-wifi">Anvil Wifi</a></li>
+							@endif
+							<li><a href="/logout">Logout</a></li>
+						@else
+							<li><a href="/join">Join</a></li>
+						@endif
 					</ul>
 				</div>
 			</div>
 		</nav>
-		@endif
+		
 		<div class="container-fluid">
 			@if(session()->has('msg'))
 				<div class="container"><div class="alert alert-success" role="alert">{{session()->get('msg')}}</div></div>
@@ -62,8 +72,14 @@
 		
 		<!-- jQuery -->
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+		<!-- BValidator -->
+		<script type="text/javascript" src="/js/jquery.bvalidator-yc.js"></script>
 		<!-- Bootstrap JS -->
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+		<!-- Site JS -->
+		<script type="text/javascript">
+			$('.validate').bValidator();
+		</script>
 		<!-- Page Specific JS -->
 		@yield('customJS')
     </body>

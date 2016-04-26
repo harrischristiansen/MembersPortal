@@ -11,7 +11,9 @@ class CreateMembersTable extends Migration {
 			$table->string('email')->unique();
 			$table->string('email_public');
 			$table->string('email_purdue');
-			$table->smallInteger('graduation_year')
+			$table->string('password');
+			$table->smallInteger('graduation_year');
+			$table->text("description");
 			$table->timestamps();
 		});
 	}
