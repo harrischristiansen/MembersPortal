@@ -50,6 +50,9 @@
 				</div>
 				<div id="navbar" class="collapse navbar-collapse">
 					<ul class="nav navbar-nav">
+						@if(session()->get('authenticated_member') == "true" && session()->get('authenticated_admin') != "true")
+						<li><a href="/member/{{ session()->get('member_id') }}">Profile</a></li>
+						@endif
 						<li><a href="/members">Members</a></li>
 						@if(session()->get('authenticated_member') == "true")
 							<li><a href="/events">Events</a></li>
@@ -84,10 +87,12 @@
 		<!-- Bootstrap JS -->
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
 		<!-- Site JS -->
+		@if (isset($eventID))
 		<script type="text/javascript">
-			$('.validate').bValidator();
-			$(".datepicker").datepicker();
+			var eventID = {{ $eventID }};
 		</script>
+		@endif
+		<script type="text/javascript" src="/js/purduehackers.js"></script>
 		<!-- Page Specific JS -->
 		@yield('customJS')
     </body>

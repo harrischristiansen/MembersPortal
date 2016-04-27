@@ -109,7 +109,7 @@ return [
     |
     */
 
-    'cookie' => 'battleship_session',
+    'cookie' => 'phmembers_session',
 
     /*
     |--------------------------------------------------------------------------

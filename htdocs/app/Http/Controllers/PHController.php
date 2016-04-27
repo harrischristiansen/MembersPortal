@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use DB;
 use App\Http\Requests;
 use App\Http\Requests\LoggedInRequest;
+use App\Http\Requests\EditMemberRequest;
 use App\Http\Requests\AdminRequest;
 use App\Http\Controllers\Controller;
 
@@ -149,9 +150,14 @@ class PHController extends Controller {
 		return view('pages.members',compact("members"));
 	}
 	
-	public function getMembersJson(AdminRequest $request) {
-		$members = Member::all();
-		return $members;
+	public function getMembersAutocomplete(AdminRequest $request) {
+		$requestTerm = $request->input('term');
+
+		$searchFor = "%".$requestTerm.'%';
+		$members = Member::where('name','LIKE',$searchFor)->orWhere('email','LIKE',$searchFor)->orWhere('email_public','LIKE',$searchFor)->orWhere('email_purdue','LIKE',$searchFor)->orWhere('description','LIKE',$searchFor);
+		$results = $members->select('name as value','id','email')->get();
+
+		return $results;
 	}
 	
 	public function getMember(Request $request, $memberID) {
@@ -171,35 +177,22 @@ class PHController extends Controller {
 	
 	/////////////////////////////// Editing Members ///////////////////////////////
 	
-	public function postMember(LoggedInRequest $request, $memberID) {
+	public function postMember(EditMemberRequest $request, $memberID) {
 		$member = Member::find($memberID);
 		$memberName = $request->input('memberName');
+		$password = $request->input('password');
 		$email = $request->input('email');
 		$email_public = $request->input('email_public');
 		$description = $request->input('description');
 		$gradYear = $request->input('gradYear');
-		$authenticated_id = $request->session()->get('member_id');
-		$isAdmin = $request->session()->get('authenticated_admin');
 		
 		// Verify Input
 		if(is_null($member)) {
 			$request->session()->flash('msg', 'Error: Member Not Found.');
 			return $this->getMembers();
 		}
-		if($memberName=="" || $email=="") {
-			$request->session()->flash('msg', 'A name and account email are required.');
-			return $this->getMember($request, $memberID);
-		}
-		if(!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-			$request->session()->flash('msg', 'Invalid account email address.');
-			return $this->getMember($request, $memberID);
-		}
 		if($email != $member->email && Member::where('email',$email)->first()) {
 			$request->session()->flash('msg', 'An account already exists with that email.');
-			return $this->getMember($request, $memberID);
-		}
-		if($memberID != $authenticated_id && $isAdmin != "true") {
-			$request->session()->flash('msg', 'Error: Permission Denied.');
 			return $this->getMember($request, $memberID);
 		}
 		
@@ -260,14 +253,14 @@ class PHController extends Controller {
 			return $this->getEvents();
 		}
 		
-		return view('pages.checkin',compact("event"));
+		return view('pages.checkin',compact("event","eventID"));
 	}
 	
 	public function getCheckinMember(AdminRequest $request, $eventID, $memberID) {
 		$event = Event::findOrFail($eventID);
 		$member = Member::findOrFail($memberID);
 		
-		return true;
+		return "true";
 	}
 	
 	/////////////////////////////// Managing Events ///////////////////////////////
