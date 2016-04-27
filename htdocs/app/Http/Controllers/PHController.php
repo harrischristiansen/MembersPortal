@@ -55,10 +55,7 @@ class PHController extends Controller {
 			
 			foreach($matchingMembers as $member) {
 				if($member->password == $passwordMD5) {
-					$request->session()->put('authenticated_member', 'true');
-					$request->session()->put('member_id', $member->id);
-					$request->session()->put('member_name', $member->name);
-					$request->session()->flash('msg', 'Logged In!');
+					$this->setAuthenticated($request, $member->id, $member->name);
 					return $this->getIndex();
 				}
 			}
@@ -109,6 +106,7 @@ class PHController extends Controller {
 			return $this->getJoin();
 		}
 		
+		// Create Member
 		$member = new Member;
 		$member->name = $memberName;
 		$member->email = $email;
@@ -119,9 +117,17 @@ class PHController extends Controller {
 		$member->graduation_year = $gradYear;
 		$member->save();
 		
-		$request->session()->put('authenticated_member', 'true');
+		// Authenticate Application
+		$this->setAuthenticated($request, $member->id, $member->name);
 		
 		return $this->getIndex();
+	}
+	
+	public function setAuthenticated(Request $request, $memberID, $memberName) {
+		$request->session()->put('authenticated_member', 'true');
+		$request->session()->put('member_id', $memberID);
+		$request->session()->put('member_name', $memberName);
+		$request->session()->flash('msg', 'Logged In!');
 	}
 	
 	/////////////////////////////// Resource Pages ///////////////////////////////
@@ -151,9 +157,77 @@ class PHController extends Controller {
 	
 	/////////////////////////////// Editing Members ///////////////////////////////
 	
+	public function postMember(LoggedInRequest $request, $memberID) {
+		$authenticate_id = $request->session()->get('member_id');
+		$isAdmin = $request->session()->get('authenticated_admin');
+		
+		$member = Member::find($memberID);
+		
+		if(is_null($member)) {
+			$request->session()->flash('msg', 'Error: Member Not Found.');
+			return $this->getMembers();
+		}
+		
+		if($memberID != $authenticated_id && $isAdmin != "true") {
+			$request->session()->flash('msg', 'Error: Permission Denied.');
+			return $this->getMember($request, $memberID);
+		}
+	}
+	
 	/////////////////////////////// Viewing Events ///////////////////////////////
 	
+	public function getEvents() {
+		$events = Event::all();
+		
+		return view('pages.events',compact("events"));
+	}
+	
+	public function getEvent(Request $request, $eventID) {
+		$isAdmin = $request->session()->get('authenticated_admin');
+		
+		$event = Event::find($eventID);
+		
+		if(is_null($event)) {
+			$request->session()->flash('msg', 'Error: Event Not Found.');
+			return $this->getEvents();
+		}
+		
+		return $event->name;
+	}
+	
 	/////////////////////////////// Managing Events ///////////////////////////////
+	
+	public function postEvent(AdminRequest $request, $eventID) {
+		$isAdmin = $request->session()->get('authenticated_admin');
+		
+		if($eventID >= 0) {
+			$event = Event::find($eventID);
+		} else {
+			$event = new Event;
+		}
+		
+		if(is_null($event)) {
+			$request->session()->flash('msg', 'Error: Event Not Found.');
+			return $this->getEvents();
+		}
+		
+		$event->name = $request->input("eventName");
+		$event->time = $request->input("date");
+		$event->location = $request->input("location");
+		$event->facebook = $request->input("facebook");
+		$event->save();
+		
+		if($eventID >= 0) {
+			$request->session()->flash('msg', 'Event Updated!');
+		} else {
+			$request->session()->flash('msg', 'Event Created!');
+		}
+		return $this->getEvent($request, $eventID);
+	}
+	
+	public function getEventNew() {
+		return view('pages.event_new');
+	}
 
 	/////////////////////////////// Helper Functions ///////////////////////////////
 	

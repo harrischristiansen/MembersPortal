@@ -10,6 +10,7 @@ class CreateEventsTable extends Migration {
 			$table->string('name');
 			$table->string('location');
 			$table->timestamp('time');
+			$table->text('facebook');
             $table->timestamps();
         });
     }

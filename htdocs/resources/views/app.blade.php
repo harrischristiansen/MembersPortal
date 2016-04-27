@@ -16,6 +16,9 @@
         <!-- BValidator -->
         <link href="/css/bvalidator.css" rel="stylesheet" type="text/css" />
         
+        <!-- jQuery UI -->
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+        
         <!-- Bootstrap CSS -->
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
 		
@@ -73,8 +76,9 @@
 		
                 
 		
-		<!-- jQuery -->
+		<!-- jQuery / jQuery UI -->
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+		<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
 		<!-- BValidator -->
 		<script type="text/javascript" src="/js/jquery.bvalidator-yc.js"></script>
 		<!-- Bootstrap JS -->
@@ -82,6 +86,7 @@
 		<!-- Site JS -->
 		<script type="text/javascript">
 			$('.validate').bValidator();
+			$(".datepicker").datepicker();
 		</script>
 		<!-- Page Specific JS -->
 		@yield('customJS')
