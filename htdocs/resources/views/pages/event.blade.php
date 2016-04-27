@@ -17,7 +17,23 @@
 			<input type="text" name="eventName" id="eventName" placeholder="Event Name" value="{{ $event->name }}" class="form-control" data-bvalidator="required" data-bvalidator-msg="Event requires name.">
 			<br>
 			<label for="date">Date</label>
-			<input type="text" name="date" id="date" placeholder="Date" value="{{ $event->time }}" class="form-control datepicker" data-bvalidator="required,date[mm/dd/yyyy]" data-bvalidator-msg="Event requires date/time.">
+			<input type="text" name="date" id="date" placeholder="Date" value="{{ $event->date() }}" class="form-control datepicker" data-bvalidator="required,date[yyyy-mm-dd]" data-bvalidator-msg="Event requires date/time.">
+			<br>
+			<label for="date">Time</label>
+			<div class='form-inline'>
+				<select name="hour" id="hour" class="form-control" data-bvalidator="required" data-bvalidator-msg="Event requires date/time.">
+					<option value="">Hour</option>
+					@for ($i = 0; $i < 24; $i++)
+					<option value="{{$i}}" {{ $event->hour()==$i ? "selected":""}}>{{$i}}</option>
+					@endfor
+				</select>
+				<select name="minute" id="minute" class="form-control" data-bvalidator="required" data-bvalidator-msg="Event requires date/time.">
+					<option value="">Minute</option>
+					@for ($i = 0; $i < 60; $i+=15)
+					<option value="{{$i}}" {{ $event->minute()==$i ? "selected":""}}>{{$i}}</option>
+					@endfor
+				</select>
+			</div>
 			<br>
 			<label for="location">Location</label>
 			<input type="text" name="location" id="location" placeholder="Location" value="{{ $event->location }}" class="form-control" data-bvalidator="required" data-bvalidator-msg="Event requires location.">

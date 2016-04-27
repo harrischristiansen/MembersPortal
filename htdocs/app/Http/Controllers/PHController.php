@@ -8,12 +8,14 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use DB;
 use App\Http\Requests;
 use App\Http\Requests\LoggedInRequest;
 use App\Http\Requests\EditMemberRequest;
 use App\Http\Requests\AdminRequest;
+use App\Http\Requests\EditEventRequest;
 use App\Http\Controllers\Controller;
 
 use App\Models\Member;
@@ -274,9 +276,11 @@ class PHController extends Controller {
 	
 	/////////////////////////////// Managing Events ///////////////////////////////
 	
-	public function postEvent(AdminRequest $request, $eventID) {
+	public function postEvent(EditEventRequest $request, $eventID) {
 		$eventName = $request->input("eventName");
 		$eventDate = $request->input("date");
+		$eventHour = $request->input("hour");
+		$eventMinute = $request->input("minute");
 		$eventLocation = $request->input("location");
 		$eventFB = $request->input("facebook");
 		
@@ -291,14 +295,10 @@ class PHController extends Controller {
 			$request->session()->flash('msg', 'Error: Event Not Found.');
 			return $this->getEvents();
 		}
-		if($eventName=="" || $eventDate=="" || $eventLocation=="") {
-			$request->session()->flash('msg', 'Name, Date, and Location are required.');
-			return $this->getEvents();
-		}
 		
 		// Edit Event
 		$event->name = $eventName;
-		$event->time = $eventDate;
+		$event->event_time = new Carbon($eventDate." ".$eventHour.":".$eventMinute);
 		$event->location = $eventLocation;
 		$event->facebook = $eventFB;
 		$event->save();

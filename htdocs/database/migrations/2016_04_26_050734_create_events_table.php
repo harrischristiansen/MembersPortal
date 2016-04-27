@@ -9,7 +9,7 @@ class CreateEventsTable extends Migration {
             $table->increments('id');
 			$table->string('name');
 			$table->string('location');
-			$table->timestamp('time');
+			$table->timestamp('event_time');
 			$table->text('facebook');
             $table->timestamps();
 			$table->softDeletes();

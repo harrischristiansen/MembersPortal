@@ -7,7 +7,9 @@
 
 $('.validate').bValidator();
 
-$(".datepicker").datepicker();
+$(".datepicker").datepicker({
+	dateFormat: 'yy-mm-dd',
+});
 
 var selectedName = "";
 var selectedMember = -1;
