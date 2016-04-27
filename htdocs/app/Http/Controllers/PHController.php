@@ -73,8 +73,8 @@ class PHController extends Controller {
 	}
 
 	public function getLogout(Request $request) {
-		$request->session()->delete('member_id');
-		$request->session()->delete('member_name');
+		$request->session()->put('member_id',"");
+		$request->session()->put('member_name',"");
 		$request->session()->put('authenticated_member', 'false');
 		$request->session()->put('authenticated_admin', 'false');
 
@@ -177,6 +177,7 @@ class PHController extends Controller {
 		$email = $request->input('email');
 		$email_public = $request->input('email_public');
 		$description = $request->input('description');
+		$gradYear = $request->input('gradYear');
 		$authenticated_id = $request->session()->get('member_id');
 		$isAdmin = $request->session()->get('authenticated_admin');
 		
@@ -193,7 +194,7 @@ class PHController extends Controller {
 			$request->session()->flash('msg', 'Invalid account email address.');
 			return $this->getMember($request, $memberID);
 		}
-		if(Member::where('email',$email)->first()) {
+		if($email != $member->email && Member::where('email',$email)->first()) {
 			$request->session()->flash('msg', 'An account already exists with that email.');
 			return $this->getMember($request, $memberID);
 		}
@@ -213,6 +214,7 @@ class PHController extends Controller {
 			$member->email_purdue = $email_public;
 		}
 		$member->description = $description;
+		$member->graduation_year = $gradYear;
 		$member->save();
 		
 		// Return Response

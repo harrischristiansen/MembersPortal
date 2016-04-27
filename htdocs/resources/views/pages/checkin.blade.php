@@ -7,8 +7,10 @@
 	<div class="panel panel-default">
 		<div class="panel-body">
 			<div class="input-group">
-				<input type="text" name="memberName" id="memberName" placeholder="Name" class="form-control" aria-describedby="checkinBtn">
-				<span class="input-group-addon" id="checkinBtn"><button class="btn btn-primary">Checkin</button></span>
+				<input type="text" name="memberName" id="memberName" placeholder="Name" class="form-control">
+				<span class="input-group-btn">
+					<button class="btn btn-primary" type="button">Checkin</button>
+				</span>
 			</div>
 		</div>
 	</div>

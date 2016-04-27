@@ -8,15 +8,23 @@
 		<a href="/checkin/{{ $event->id }}" class="pull-right"><button type="button" class="btn btn-primary btn-sm">Checkin</button></a>
 		@endif
 	</h1>
+	
 	<div class="panel panel-default">
+	@if (session()->get('authenticated_admin') == "true") {{-- Edit Event --}}
+	Edit Event
+	@else
 		<div class="panel-body">
 			Name: {{ $event->name }}<br>
 			Date: {{ $event->date }}<br>
 			Location: {{ $event->location }}<br>
 			Facebook: {{ $event->facebook }}<br>
 		</div>
+	@endif
 	</div>
+	
 	<hr>
+	
+	@if(session()->get('authenticated_admin') == "true")
 	<h1>Attended Members</h1>
 	<div class="panel panel-default">
 		@if(session()->get('authenticated_admin') == "true")
@@ -49,6 +57,8 @@
 		</tbody>
 		</table>
 	</div>
+	@endif
+	
 	@if(session()->get('authenticated_admin') == "true")
 	<a href="/event-delete/{{ $event->id }}" class="pull-right"><button type="button" class="btn btn-danger btn-sm">Delete Event</button></a>
 	@endif
