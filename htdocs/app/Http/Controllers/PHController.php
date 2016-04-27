@@ -41,6 +41,8 @@ class PHController extends Controller {
 			if($password == env('ADMIN_PASS')) {
 				$request->session()->put('authenticated_member', 'true');
 				$request->session()->put('authenticated_admin', 'true');
+				$request->session()->flash('msg', 'Logged In: Admin!');
+				return $this->getIndex();
 			} else {
 				$request->session()->flash('msg', 'Please enter an email.');
 				return $this->getLogin();
@@ -140,8 +142,12 @@ class PHController extends Controller {
 	
 	public function getMembers() {
 		$members = Member::all();
-		
 		return view('pages.members',compact("members"));
+	}
+	
+	public function getMembersJson(AdminRequest $request) {
+		$members = Member::all();
+		return $members;
 	}
 	
 	public function getMember(Request $request, $memberID) {
@@ -158,27 +164,58 @@ class PHController extends Controller {
 	/////////////////////////////// Editing Members ///////////////////////////////
 	
 	public function postMember(LoggedInRequest $request, $memberID) {
+		$member = Member::find($memberID);
+		$memberName = $request->input('memberName');
+		$email = $request->input('email');
+		$email_public = $request->input('email_public');
+		$description = $request->input('description');
 		$authenticate_id = $request->session()->get('member_id');
 		$isAdmin = $request->session()->get('authenticated_admin');
 		
-		$member = Member::find($memberID);
-		
+		// Verify Input
 		if(is_null($member)) {
 			$request->session()->flash('msg', 'Error: Member Not Found.');
 			return $this->getMembers();
 		}
-		
+		if($memberName=="" || $email=="") {
+			$request->session()->flash('msg', 'A name and account email are required.');
+			return $this->getMember($request, $memberID);
+		}
+		if(!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+			$request->session()->flash('msg', 'Invalid account email address.');
+			return $this->getMember($request, $memberID);
+		}
+		if(Member::where('email',$email)->first()) {
+			$request->session()->flash('msg', 'An account already exists with that email.');
+			return $this->getMember($request, $memberID);
+		}
 		if($memberID != $authenticated_id && $isAdmin != "true") {
 			$request->session()->flash('msg', 'Error: Permission Denied.');
 			return $this->getMember($request, $memberID);
 		}
+		
+		// Edit Member
+		$member->name = $memberName;
+		$member->email = $email;
+		if(strpos($email, "@purdue.edu") !== false) {
+			$member->email_purdue = $email;
+		}
+		$member->email_public = $email_public;
+		if(strpos($email_public, "@purdue.edu") !== false) {
+			$member->email_purdue = $email_public;
+		}
+		$member->description = $description;
+		$member->save();
+		
+		// Return Response
+		$request->session()->flash('msg', 'Profile Saved!');
+		return $this->getMember($request, $memberID);
 	}
 	
 	/////////////////////////////// Viewing Events ///////////////////////////////
 	
 	public function getEvents() {
 		$events = Event::all();
-		
 		return view('pages.events',compact("events"));
 	}
 	
@@ -195,10 +232,31 @@ class PHController extends Controller {
 		return $event->name;
 	}
 	
+	/////////////////////////////// Event Checkin System ///////////////////////////////
+	
+	public function getCheckin(AdminRequest $request, $eventID) {
+		$event = Event::find($eventID);
+		
+		if(is_null($event)) {
+			$request->session()->flash('msg', 'Error: Event Not Found.');
+			return $this->getEvents();
+		}
+		
+		return "Checkin Page";
+	}
+	
+	public function postCheckin(AdminRequest $request, $eventID, $memberID) {
+		$event = Event::findOrFail($eventID);
+		$member = Member::findOrFail($memberID);
+	}
+	
 	/////////////////////////////// Managing Events ///////////////////////////////
 	
 	public function postEvent(AdminRequest $request, $eventID) {
-		$isAdmin = $request->session()->get('authenticated_admin');
+		$eventName = $request->input("eventName");
+		$eventDate = $request->input("date");
+		$eventLocation = $request->input("location");
+		$eventFB = $request->input("facebook");
 		
 		if($eventID >= 0) {
 			$event = Event::find($eventID);
@@ -206,23 +264,30 @@ class PHController extends Controller {
 			$event = new Event;
 		}
 		
+		// Verify Input
 		if(is_null($event)) {
 			$request->session()->flash('msg', 'Error: Event Not Found.');
 			return $this->getEvents();
 		}
+		if($eventName=="" || $eventDate=="" || $eventLocation=="") {
+			$request->session()->flash('msg', 'Name, Date, and Location are required.');
+			return $this->getEvents();
+		}
 		
-		$event->name = $request->input("eventName");
-		$event->time = $request->input("date");
-		$event->location = $request->input("location");
-		$event->facebook = $request->input("facebook");
+		// Edit Event
+		$event->name = $eventName;
+		$event->time = $eventDate;
+		$event->location = $eventLocation;
+		$event->facebook = $eventFB;
 		$event->save();
 		
+		// Return Response
 		if($eventID >= 0) {
 			$request->session()->flash('msg', 'Event Updated!');
-		} else {
-			$request->session()->flash('msg', 'Event Created!');
+			return $this->getEvent($request, $eventID);
+		} else { // New Event
+			return redirect()->action('PHController@getEvent', [$event->id])->with('msg', 'Event Created!');
 		}
-		return $this->getEvent($request, $eventID);
 	}
 	
 	public function getEventNew() {
