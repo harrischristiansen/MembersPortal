@@ -24,8 +24,11 @@ $(".membersautocomplete").autocomplete({
 			selectedMember = ui.item.id;
 			$("#selectedMember").val(ui.item.value);
 			$("#selectedEmail").val(ui.item.email);
-			$("#selectedNumber").val("-");
+			$("#selectedNumber").val(ui.item.attended);
 		}
+	},
+	close:  function( event, ui ) {
+		$(".membersautocomplete").val("");
 	}
 });
 

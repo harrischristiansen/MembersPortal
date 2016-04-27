@@ -25,6 +25,7 @@ Students become a member of Purdue Hackers after attending any Purdue Hackers ev
 - [X] Member - Attended Events List
 - [X] Event - Delete
 - [ ] Event - Uncheckin Member
+- [ ] Event - Checkin New Member (Create account/send email)
 
 ## Local Installation  
 

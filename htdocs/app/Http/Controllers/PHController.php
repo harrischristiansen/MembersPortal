@@ -157,7 +157,12 @@ class PHController extends Controller {
 
 		$searchFor = "%".$requestTerm.'%';
 		$members = Member::where('name','LIKE',$searchFor)->orWhere('email','LIKE',$searchFor)->orWhere('email_public','LIKE',$searchFor)->orWhere('email_purdue','LIKE',$searchFor)->orWhere('description','LIKE',$searchFor);
-		$results = $members->select('name as value','id','email')->get();
+		$results = $members->get();
+		
+		for($i=0;$i<count($results);$i++) {
+			$results[$i]['value'] = $results[$i]['name'];
+			$results[$i]['attended'] = count($results[$i]->events()->get());
+		}
 
 		return $results;
 	}
