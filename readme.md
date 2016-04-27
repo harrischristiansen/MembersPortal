@@ -2,7 +2,7 @@
 
 ## Synopsis
 
-Purdue Hackers is community of students who collaborate, learn, and build kick-ass technical projects. This Membership Portal will act as a public manifest of our members, their information, and their event attendance.  
+Purdue Hackers is a community of students who collaborate, learn, and build kick-ass technical projects. This Membership Portal will act as a public manifest of our members, their information, and their event attendance.  
 
 Students become a member of Purdue Hackers after attending any Purdue Hackers event/hackathon. Students lose their membership after 180 days of not attending an event. Students who lose their membership status on or after their senior year will be moved to alumni status.  
 
