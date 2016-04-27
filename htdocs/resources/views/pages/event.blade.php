@@ -46,7 +46,7 @@
 	@else
 		<div class="panel-body">
 			Name: {{ $event->name }}<br>
-			Date: {{ $event->date }}<br>
+			Date: {{ $event->dateFriendly() }}<br>
 			Location: {{ $event->location }}<br>
 			Facebook: {{ $event->facebook }}<br>
 		</div>
@@ -68,7 +68,7 @@
 		@forelse ($members as $member)
 		    <tr onclick="location.href='{{ URL::to('/member', $member->id) }}';">
 		    	<td>{{ $member->name }}</td>
-				<td>0</td>
+				<td>{{ count($member->events) }}</td>
 		    </tr>
 		@empty
 			<tr>

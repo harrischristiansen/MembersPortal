@@ -50,7 +50,7 @@
 		@forelse ($events as $event)
 		    <tr onclick="location.href='{{ URL::to('/event', $event->id) }}';">
 		    	<td>{{ $event->name }}</td>
-				<td>{{ $event->time }}</td>
+				<td>{{ $event->dateFriendly() }}</td>
 		    </tr>
 		@empty
 			<tr>

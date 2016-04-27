@@ -18,8 +18,8 @@
 		    <tr onclick="location.href='{{ URL::to('/member', $member->id) }}';">
 		    	<td>{{ $member->name }}</td>
 				<td>{{ $member->graduation_year }}</td>
-		    	<td>{{ $member->created_at }}</td>
-		    	<td>0</td>
+		    	<td>{{ $member->created_at->format('M j, Y') }}</td>
+		    	<td>{{ count($member->events) }}</td>
 		    </tr>
 		@endforeach
 		</tbody>

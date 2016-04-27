@@ -31,9 +31,9 @@
 		    <tr onclick="location.href='{{ URL::to('/event', $event->id) }}';">
 			@endif
 		    	<td>{{ $event->name }}</td>
-				<td>{{ $event->time }}</td>
+				<td>{{ $event->event_time->format('M j, Y') }}</td>
 		    	<td>{{ $event->location }}</td>
-		    	<td>0</td>
+		    	<td>{{ count($event->members) }}</td>
 		    </tr>
 		@endforeach
 		</tbody>

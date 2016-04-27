@@ -17,6 +17,10 @@ class Event extends Model {
 		return $this->event_time->format('Y-m-d');
 	}
 	
+	public function dateFriendly() {
+		return $this->event_time->format('D, F j, Y \a\t g:i a');
+	}
+	
 	public function hour() {
 		return $this->event_time->format('H');
 	}
