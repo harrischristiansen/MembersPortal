@@ -8,7 +8,10 @@
 		@else
 		Events | Purdue Hackers
 		@endif
+		
+		@if(session()->get('authenticated_admin') == "true")
 		<a href="/event-new" class="pull-right"><button type="button" class="btn btn-primary btn-sm">Add Event</button></a>
+		@endif
 	</h1>
 	<div class="panel panel-default">
 		<table class="table table-bordered table-hover table-clickable panel-body" >

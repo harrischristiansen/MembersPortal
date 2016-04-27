@@ -164,7 +164,7 @@ class PHController extends Controller {
 			return $this->getMembers();
 		}
 		
-		$events = [];
+		$events = $member->events()->get();
 		
 		return view('pages.member',compact("member","events"));
 	}
@@ -239,7 +239,7 @@ class PHController extends Controller {
 			return $this->getEvents();
 		}
 		
-		$members = [];
+		$members = $event->members()->get();
 		
 		return view('pages.event',compact("event","members"));
 	}

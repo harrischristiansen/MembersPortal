@@ -13,7 +13,7 @@
 			<br>
 			<input type="text" name="location" id="location" placeholder="Location" class="form-control" data-bvalidator="required">
 			<br>
-			<input type="text" name="facebook" id="facebook" placeholder="Facebook Event URL" class="form-control">
+			<input type="text" name="facebook" id="facebook" placeholder="Facebook Event URL" class="form-control" data-bvalidator="url">
 			<br>
 			<input type="submit" value="Create Event" class="btn btn-primary">
 		</form>

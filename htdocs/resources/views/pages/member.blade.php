@@ -9,14 +9,19 @@
 	@if ($member->id == session()->get('member_id') || session()->get('authenticated_admin') == "true") {{-- Edit Profile --}}
 		<form method="post" action="/member/{{ $member->id }}" class="panel-body validate">
 			{!! csrf_field() !!}
-			<input type="text" name="memberName" id="memberName" placeholder="Name" value="{{ $member->name }}" class="form-control" data-bvalidator="required" data-bvalidator-msg="Please enter your name">
+			<label for="memberName">Full Name</label>
+			<input type="text" name="memberName" id="memberName" placeholder="Full Name" value="{{ $member->name }}" class="form-control" data-bvalidator="required" data-bvalidator-msg="Please enter your name">
 			<br>
-			<input type="text" name="email" id="email" placeholder="Email" value="{{ $member->email }}" class="form-control" data-bvalidator="required,email" data-bvalidator-msg="Please enter your email">
+			<label for="email">Account Email</label>
+			<input type="text" name="email" id="email" placeholder="Email" value="{{ $member->email }}" class="form-control" data-bvalidator="required,email" data-bvalidator-msg="An email is required for your account.">
 			<br>
+			<label for="email_public">Public Email</label>
 			<input type="text" name="email_public" id="email_public" placeholder="Public Email" value="{{ $member->email_public }}" class="form-control" data-bvalidator="email" data-bvalidator-msg="Please enter a valid email address. (Optional)">
 			<br>
+			<label for="description">Public Note</label>
 			<textarea name="description" id="description" class="form-control" placeholder="Description">{{ $member->description }}</textarea>
 			<br>
+			<label for="gradYear">Year of Graduation</label>
 			<input type="number" name="gradYear" id="gradYear" placeholder="Graduation Year" value="{{ $member->graduation_year}}" class="form-control" data-bvalidator="required,number" data-bvalidator-msg="A graduation year is required">
 			<br>
 			<input type="submit" value="Update Profile" class="btn btn-primary">
@@ -32,13 +37,9 @@
 	
 	<hr>
 	
-	<h1>Attended Events</h1>
+	<h1>Events Attended</h1>
 	<div class="panel panel-default">
-		@if(session()->get('authenticated_admin') == "true")
 		<table class="table table-bordered table-hover table-clickable panel-body">
-		@else
-		<table class="table table-bordered panel-body">
-		@endif
 		<thead>
 			<tr>
 				<th>Event</th>
@@ -47,11 +48,7 @@
 		</thead>
 		<tbody>
 		@forelse ($events as $event)
-			@if(session()->get('authenticated_admin') == "true")
 		    <tr onclick="location.href='{{ URL::to('/event', $event->id) }}';">
-			@else
-			<tr>
-			@endif
 		    	<td>{{ $event->name }}</td>
 				<td>{{ $event->time }}</td>
 		    </tr>

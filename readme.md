@@ -21,8 +21,8 @@ Students become a member of Purdue Hackers after attending any Purdue Hackers ev
 - [X] Event Profile Page
 - [ ] Event - Manage Event
 - [ ] Event - Member Checkin
-- [ ] Event - Attended Members List
-- [ ] Member - Attended Events List
+- [X] Event - Attended Members List
+- [X] Member - Attended Events List
 - [X] Event - Delete
 - [ ] Event - Uncheckin Member
 

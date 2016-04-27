@@ -11,7 +11,22 @@
 	
 	<div class="panel panel-default">
 	@if (session()->get('authenticated_admin') == "true") {{-- Edit Event --}}
-	Edit Event
+		<form method="post" action="/event/{{ $event->id }}" class="panel-body validate">
+			{!! csrf_field() !!}
+			<label for="eventName">Event Name</label>
+			<input type="text" name="eventName" id="eventName" placeholder="Event Name" value="{{ $event->name }}" class="form-control" data-bvalidator="required" data-bvalidator-msg="Event requires name.">
+			<br>
+			<label for="date">Date</label>
+			<input type="text" name="date" id="date" placeholder="Date" value="{{ $event->time }}" class="form-control datepicker" data-bvalidator="required,date[mm/dd/yyyy]" data-bvalidator-msg="Event requires date/time.">
+			<br>
+			<label for="location">Location</label>
+			<input type="text" name="location" id="location" placeholder="Location" value="{{ $event->location }}" class="form-control" data-bvalidator="required" data-bvalidator-msg="Event requires location.">
+			<br>
+			<label for="facebook">Facebook Event URL</label>
+			<input type="text" name="facebook" id="facebook" placeholder="Facebook Event URL" value="{{ $event->facebook }}" class="form-control" data-bvalidator="url">
+			<br>
+			<input type="submit" value="Update Event" class="btn btn-primary">
+		</form>
 	@else
 		<div class="panel-body">
 			Name: {{ $event->name }}<br>
@@ -24,14 +39,9 @@
 	
 	<hr>
 	
-	@if(session()->get('authenticated_admin') == "true")
-	<h1>Attended Members</h1>
+	<h1>Members Checked In</h1>
 	<div class="panel panel-default">
-		@if(session()->get('authenticated_admin') == "true")
 		<table class="table table-bordered table-hover table-clickable panel-body">
-		@else
-		<table class="table table-bordered panel-body">
-		@endif
 		<thead>
 			<tr>
 				<th>Member</th>
@@ -40,11 +50,7 @@
 		</thead>
 		<tbody>
 		@forelse ($members as $member)
-			@if(session()->get('authenticated_admin') == "true")
 		    <tr onclick="location.href='{{ URL::to('/member', $member->id) }}';">
-			@else
-			<tr>
-			@endif
 		    	<td>{{ $member->name }}</td>
 				<td>0</td>
 		    </tr>
@@ -57,7 +63,6 @@
 		</tbody>
 		</table>
 	</div>
-	@endif
 	
 	@if(session()->get('authenticated_admin') == "true")
 	<a href="/event-delete/{{ $event->id }}" class="pull-right"><button type="button" class="btn btn-danger btn-sm">Delete Event</button></a>

@@ -7,7 +7,7 @@
 	<div class="panel panel-default">
 		<form method="post" action="/join" class="panel-body validate">
 			{!! csrf_field() !!}
-			<input type="text" name="memberName" id="memberName" placeholder="Name" class="form-control" data-bvalidator="required" data-bvalidator-msg="Please enter your name">
+			<input type="text" name="memberName" id="memberName" placeholder="Full Name" class="form-control" data-bvalidator="required" data-bvalidator-msg="Please enter your name">
 			<br>
 			<input type="text" name="email" id="email" placeholder="Email" class="form-control" data-bvalidator="required,email" data-bvalidator-msg="Please enter your email">
 			<br>
