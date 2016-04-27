@@ -28,7 +28,6 @@
 		</div>
 	</div>
 	<div id="checkinAlerts">
-		<div class="alert alert-success" role="alert">Alert Here</div>
 	</div>
 </div>
 

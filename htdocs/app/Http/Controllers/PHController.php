@@ -257,8 +257,17 @@ class PHController extends Controller {
 	}
 	
 	public function getCheckinMember(AdminRequest $request, $eventID, $memberID) {
-		$event = Event::findOrFail($eventID);
-		$member = Member::findOrFail($memberID);
+		$event = Event::find($eventID);
+		$member = Member::find($memberID);
+		
+		if(is_null($event) || is_null($member)) {
+			return "false";
+		}
+		
+		if($event->members()->find($member->id)) {
+			return "repeat";
+		}
+		$event->members()->attach($member->id);
 		
 		return "true";
 	}

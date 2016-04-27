@@ -9,6 +9,7 @@ $('.validate').bValidator();
 
 $(".datepicker").datepicker();
 
+var selectedName = "";
 var selectedMember = -1;
 
 $(".membersautocomplete").autocomplete({
@@ -17,6 +18,7 @@ $(".membersautocomplete").autocomplete({
 	autoFocus: true,
 	select: function( event, ui ) {
 		if(ui.item) {
+			selectedName = ui.item.value;
 			selectedMember = ui.item.id;
 			$("#selectedMember").val(ui.item.value);
 			$("#selectedEmail").val(ui.item.email);
@@ -30,7 +32,14 @@ function checkinMember() {
 		$.get(
 			"/checkin-member/"+eventID+"/"+selectedMember,
 			function(data) {
-			   console.log('Checked In: ' + data);
+				if(data=="true") {
+					alertMsg = '<div class="alert alert-success" role="alert">Checked In: '+selectedName+'</div>';
+				} else if(data=="repeat") {
+					alertMsg = '<div class="alert alert-warning" role="alert">Already Checked In: '+selectedName+'</div>';
+				} else {
+					alertMsg = '<div class="alert alert-danger" role="alert">Failed to check in '+selectedName+'.</div>';
+				}
+				$(alertMsg).hide().appendTo("#checkinAlerts").slideDown(600).delay(5000).slideUp(600);
 			}
 		);
 	}
