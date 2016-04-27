@@ -39,8 +39,10 @@ class PHController extends Controller {
 		
 		if($email == "") {
 			if($password == env('ADMIN_PASS')) {
-				$request->session()->put('authenticated_member', 'true');
 				$request->session()->put('authenticated_admin', 'true');
+				$request->session()->put('authenticated_member', 'true');
+				$request->session()->put('member_id', '-1');
+				$request->session()->put('member_name', 'Admin');
 				$request->session()->flash('msg', 'Logged In: Admin!');
 				return $this->getIndex();
 			} else {
@@ -71,6 +73,8 @@ class PHController extends Controller {
 	}
 
 	public function getLogout(Request $request) {
+		$request->session()->delete('member_id');
+		$request->session()->delete('member_name');
 		$request->session()->put('authenticated_member', 'false');
 		$request->session()->put('authenticated_admin', 'false');
 
@@ -151,6 +155,8 @@ class PHController extends Controller {
 	}
 	
 	public function getMember(Request $request, $memberID) {
+		$isAdmin = $request->session()->get('authenticated_admin');
+		$authenticated_id = $request->session()->get('member_id');
 		$member = Member::find($memberID);
 		
 		if(is_null($member)) {
@@ -158,7 +164,9 @@ class PHController extends Controller {
 			return $this->getMembers();
 		}
 		
-		return $member->name;
+		$events = [];
+		
+		return view('pages.member',compact("member","events"));
 	}
 	
 	/////////////////////////////// Editing Members ///////////////////////////////
@@ -169,7 +177,7 @@ class PHController extends Controller {
 		$email = $request->input('email');
 		$email_public = $request->input('email_public');
 		$description = $request->input('description');
-		$authenticate_id = $request->session()->get('member_id');
+		$authenticated_id = $request->session()->get('member_id');
 		$isAdmin = $request->session()->get('authenticated_admin');
 		
 		// Verify Input
@@ -216,12 +224,12 @@ class PHController extends Controller {
 	
 	public function getEvents() {
 		$events = Event::all();
-		return view('pages.events',compact("events"));
+		$checkin = false;
+		return view('pages.events',compact("events","checkin"));
 	}
 	
 	public function getEvent(Request $request, $eventID) {
 		$isAdmin = $request->session()->get('authenticated_admin');
-		
 		$event = Event::find($eventID);
 		
 		if(is_null($event)) {
@@ -229,10 +237,18 @@ class PHController extends Controller {
 			return $this->getEvents();
 		}
 		
-		return $event->name;
+		$members = [];
+		
+		return view('pages.event',compact("event","members"));
 	}
 	
 	/////////////////////////////// Event Checkin System ///////////////////////////////
+	
+	public function getCheckinEvents(AdminRequest $request) {
+		$events = Event::all();
+		$checkin = true;
+		return view('pages.events',compact("events","checkin"));
+	}
 	
 	public function getCheckin(AdminRequest $request, $eventID) {
 		$event = Event::find($eventID);
@@ -242,12 +258,14 @@ class PHController extends Controller {
 			return $this->getEvents();
 		}
 		
-		return "Checkin Page";
+		return view('pages.checkin',compact("event"));
 	}
 	
-	public function postCheckin(AdminRequest $request, $eventID, $memberID) {
+	public function getCheckinMember(AdminRequest $request, $eventID, $memberID) {
 		$event = Event::findOrFail($eventID);
 		$member = Member::findOrFail($memberID);
+		
+		return true;
 	}
 	
 	/////////////////////////////// Managing Events ///////////////////////////////
@@ -292,6 +310,11 @@ class PHController extends Controller {
 	
 	public function getEventNew() {
 		return view('pages.event_new');
+	}
+	
+	public function getEventDelete($eventID) {
+		Event::findOrFail($eventID)->delete();
+		return $this->getEvents();
 	}
 
 	/////////////////////////////// Helper Functions ///////////////////////////////

@@ -2,7 +2,12 @@
 
 @section("content")
 <div class="container">
-	<h1>Events | Purdue Hackers
+	<h1>
+		@if ($checkin == true)
+		Checkin
+		@else
+		Events | Purdue Hackers
+		@endif
 		<a href="/event-new" class="pull-right"><button type="button" class="btn btn-primary btn-sm">Add Event</button></a>
 	</h1>
 	<div class="panel panel-default">
@@ -17,7 +22,11 @@
 		</thead>
 		<tbody>
 		@foreach ($events as $event)
+			@if ($checkin == true)
+		    <tr onclick="location.href='{{ URL::to('/checkin', $event->id) }}';">
+			@else
 		    <tr onclick="location.href='{{ URL::to('/event', $event->id) }}';">
+			@endif
 		    	<td>{{ $event->name }}</td>
 				<td>{{ $event->time }}</td>
 		    	<td>{{ $event->location }}</td>

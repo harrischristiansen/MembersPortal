@@ -8,7 +8,7 @@
 		<form method="post" action="/event/-1" class="panel-body validate">
 			{!! csrf_field() !!}
 			<input type="text" name="eventName" id="eventName" placeholder="Name" class="form-control" data-bvalidator="required">
-			<Br>
+			<br>
 			<input type="text" name="date" id="date" placeholder="Date" class="form-control datepicker" data-bvalidator="required,date[mm/dd/yyyy]">
 			<br>
 			<input type="text" name="location" id="location" placeholder="Location" class="form-control" data-bvalidator="required">
