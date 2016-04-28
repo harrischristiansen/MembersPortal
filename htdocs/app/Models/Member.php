@@ -10,4 +10,8 @@ class Member extends Model {
 		return $this->belongsToMany('App\Models\Event');
 	}
 	
+	public function reset_token() {
+		return md5($this->id + env('ADMIN_PASS'));
+	}
+	
 }

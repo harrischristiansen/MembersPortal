@@ -6,15 +6,24 @@
 	<h1>{{ $member->name }}</h1>
 	
 	<div class="panel panel-default">
-	@if ($member->id == session()->get('member_id') || session()->get('authenticated_admin') == "true") {{-- Edit Profile --}}
+	@if ($member->id == session()->get('member_id') || session()->get('authenticated_admin') == "true" || isset($setPassword) ) {{-- Edit Profile --}}
 		<form method="post" action="/member/{{ $member->id }}" class="panel-body validate">
 			{!! csrf_field() !!}
 			<label for="memberName">Full Name</label>
-			<input type="text" name="memberName" id="memberName" placeholder="Full Name" value="{{ $member->name }}" class="form-control" data-bvalidator="required" data-bvalidator-msg="Please enter your name">
+			<input type="text" name="memberName" id="memberName" placeholder="Full Name" value="{{ $member->name }}" class="form-control" data-bvalidator="required" data-bvalidator-msg="Please enter your full name">
 			<br>
 			<label for="email">Account Email</label>
 			<input type="text" name="email" id="email" placeholder="Email" value="{{ $member->email }}" class="form-control" data-bvalidator="required,email" data-bvalidator-msg="An email is required for your account.">
 			<br>
+			@if (isset($setPassword))
+			<label for="password">Password</label>
+			<input type="password" name="password" id="password" placeholder="Password" class="form-control" data-bvalidator="required" data-bvalidator-msg="A password is required">
+			<input type="hidden" name="reset_token" value="{{ $reset_token }}">
+			<br>
+			<label for="confirmPassword">Confirm Password</label>
+			<input type="password" name="confirmPassword" id="confirmPassword" placeholder="Confirm Password" class="form-control" data-bvalidator="required,equalto[password]" data-bvalidator-msg="Password does not match">
+			<br>
+			@endif
 			<label for="email_public">Public Email</label>
 			<input type="text" name="email_public" id="email_public" placeholder="Public Email" value="{{ $member->email_public }}" class="form-control" data-bvalidator="email" data-bvalidator-msg="Please enter a valid email address. (Optional)">
 			<br>
@@ -25,6 +34,9 @@
 			<input type="number" name="gradYear" id="gradYear" placeholder="Graduation Year" value="{{ $member->graduation_year}}" class="form-control" data-bvalidator="required,number" data-bvalidator-msg="A graduation year is required">
 			<br>
 			<input type="submit" value="Update Profile" class="btn btn-primary">
+			@if (!isset($setPassword))
+			<a href="/reset/{{ $member->id }}/{{ $reset_token_valid }}" class="btn btn-warning pull-right">Reset Password</a>
+			@endif
 		</form>
 	@else {{-- View Profile --}}
 		<div class="panel-body">

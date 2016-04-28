@@ -168,8 +168,6 @@ class PHController extends Controller {
 	}
 	
 	public function getMember(Request $request, $memberID) {
-		$isAdmin = $request->session()->get('authenticated_admin');
-		$authenticated_id = $request->session()->get('member_id');
 		$member = Member::find($memberID);
 		
 		if(is_null($member)) {
@@ -178,8 +176,28 @@ class PHController extends Controller {
 		}
 		
 		$events = $member->events()->get();
+		$reset_token_valid = $member->reset_token();
 		
-		return view('pages.member',compact("member","events"));
+		return view('pages.member',compact("member","events","reset_token_valid"));
+	}
+	
+	public function getReset(Request $request, $memberID, $reset_token) {
+		$member = Member::find($memberID);
+		
+		if(is_null($member)) {
+			$request->session()->flash('msg', 'Error: Member Not Found.');
+			return $this->getIndex();
+		}
+		
+		if($reset_token != $member->reset_token()) {
+			$request->session()->flash('msg', 'Error: Member Not Found.');
+			return $this->getIndex();
+		}
+		
+		$events = $member->events()->get();
+		$setPassword = true;
+		
+		return view('pages.member',compact("member","events","setPassword","reset_token"));
 	}
 	
 	/////////////////////////////// Editing Members ///////////////////////////////
@@ -208,6 +226,10 @@ class PHController extends Controller {
 		$member->email = $email;
 		if(strpos($email, "@purdue.edu") !== false) {
 			$member->email_purdue = $email;
+		}
+		if(strlen($password) > 0) {
+			$member->password = md5($password);
+			$this->setAuthenticated($request,$member->id,$member->name);
 		}
 		$member->email_public = $email_public;
 		if(strpos($email_public, "@purdue.edu") !== false) {

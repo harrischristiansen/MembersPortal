@@ -13,7 +13,7 @@ Students become a member of Purdue Hackers after attending any Purdue Hackers ev
 - [X] Login Functionality
 - [X] Login With Any Associated Email Address
 - [X] Registration Functionality
-- [ ] Password Reset / Account Setup Functionality
+- [X] Password Reset / Account Setup Functionality
 - [X] Members List
 - [X] Member Profile Page
 - [X] Member - Edit Profile
@@ -27,6 +27,7 @@ Students become a member of Purdue Hackers after attending any Purdue Hackers ev
 - [ ] Event - Uncheckin Member
 - [ ] Event - Checkin New Member (Create account/send email)
 - [ ] Member - Internships
+- [ ] Member - Member/Inactive/Alumni
 
 ## Local Installation  
 
