@@ -13,7 +13,8 @@ Students become a member of Purdue Hackers after attending any Purdue Hackers ev
 - [X] Login Functionality
 - [X] Login With Any Associated Email Address
 - [X] Registration Functionality
-- [X] Password Reset / Account Setup Functionality
+- [X] Edit Password / Account Setup Functionality
+- [ ] Password Reset - Send Link To Email
 - [X] Members List
 - [X] Member Profile Page
 - [X] Member - Edit Profile
