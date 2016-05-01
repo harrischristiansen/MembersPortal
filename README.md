@@ -34,7 +34,7 @@ This Members Tracking Portal was originally developed for Purdue Hackers. Purdue
 - [ ] Set MAMP Directory to `./htdocs/Public`  
 - [ ] Create MySQL Database (use a GUI tool such as [Sequel Pro](http://www.sequelpro.com))  
 - [ ] Execute `cp .env.example .env` in the `./htdocs` directory  
-- [ ] Open `./htdocs/.env`, Fill in your database information and chosen ADMIN_PASS  
+- [ ] Open `./htdocs/.env` - Fill in your database information and ORG/ADMIN Information
 - [ ] Download and Install [Composer](https://getcomposer.org/)  
 - [ ] Execute `composer install` in the `./htdocs` directory (`php composer.phar install` if using the composer.phar file)  
 - [ ] Execute `php artisan migrate` in the `./htdocs` directory  
