@@ -6,7 +6,7 @@
 		@if ($checkin == true)
 		Checkin
 		@else
-		Events | Purdue Hackers
+		Events | {{ env('ORG_NAME') }}
 		@endif
 		
 		@if(session()->get('authenticated_admin') == "true")

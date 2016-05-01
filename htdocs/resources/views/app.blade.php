@@ -5,11 +5,11 @@
 	    <meta http-equiv="X-UA-Compatible" content="IE=edge">
 	    <meta name="viewport" content="width=device-width, initial-scale=1">
 	    
-        <title>Purdue Hackers | Membership Portal</title>
+        <title>{{ env('ORG_NAME') }} - Members Portal</title>
         
         <meta name="author" content="Harris Christiansen">
-        <meta name="description" content="Purdue Hackers - Members and Events Portal">
-        <meta name="keywords" content="college, university, purdue, hackers, member, members, membership, events, hackathon, hack-a-thon, mlh, boilermake, boilermaker, anvil, boilercamp, lafayette, lawson, LWSN, computer, science">
+        <meta name="description" content="{{ env('ORG_NAME') }} - Members and Events Portal">
+        <meta name="keywords" content="{{ env('ORG_KEYWORDS') }}">
 
         <link href="https://fonts.googleapis.com/css?family=Lato:400,900" rel="stylesheet" type="text/css">
         
@@ -31,8 +31,8 @@
 	      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 	    <![endif]-->
 	    
-	    <!-- Purdue Hackers Site CSS -->
-	    <link rel="stylesheet" href="/css/purduehackers.css">
+	    <!-- Portal Site CSS -->
+	    <link rel="stylesheet" href="/css/membersportal.css">
 
     </head>
     <body style="padding-top: 51px;">
@@ -46,7 +46,7 @@
 						<span class="icon-bar"></span>
 						<span class="icon-bar"></span>
 					</button>
-					<a class="navbar-brand" href="/">Purdue Hackers</a>
+					<a class="navbar-brand" href="/">{{ env('ORG_NAME') }}</a>
 				</div>
 				<div id="navbar" class="collapse navbar-collapse">
 					<ul class="nav navbar-nav">
@@ -92,7 +92,7 @@
 			var eventID = {{ $eventID }};
 		</script>
 		@endif
-		<script type="text/javascript" src="/js/purduehackers.js"></script>
+		<script type="text/javascript" src="/js/membersportal.js"></script>
 		<!-- Page Specific JS -->
 		@yield('customJS')
     </body>

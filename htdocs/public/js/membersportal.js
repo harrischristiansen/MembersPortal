@@ -1,7 +1,7 @@
 /*
 	@ Harris Christiansen (Harris@HarrisChristiansen.com)
 	2016-04-27
-	For: Purdue Hackers - Membership Portal
+	Project: Members Tracking Portal
 */
 
 

@@ -3,7 +3,7 @@
 @section("content")
 
 <div class="titlePage">
-	<h1 class="titlePageTitle">Purdue Hackers</h1>
+	<h1 class="titlePageTitle">{{ env('ORG_NAME') }}</h1>
 	<p class="titlePageText">Login</p>
 	
 	<form method="post" action="/login">

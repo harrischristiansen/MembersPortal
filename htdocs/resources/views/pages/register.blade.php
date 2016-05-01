@@ -3,7 +3,7 @@
 @section("content")
 
 <div class="container">
-	<h1>Join Purdue Hackers</h1>
+	<h1>Join {{ env('ORG_NAME') }}</h1>
 	<div class="panel panel-default">
 		<form method="post" action="/join" class="panel-body validate">
 			{!! csrf_field() !!}

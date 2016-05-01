@@ -3,9 +3,9 @@
 /*
 	@ Harris Christiansen (Harris@HarrisChristiansen.com)
 	2016-04-25
-	For: Purdue Hackers - Membership Portal
+	Project: Members Tracking Portal
 */
 
 Route::group(['middleware' => ['web']], function () {
-    Route::controller('/', 'PHController');
+    Route::controller('/', 'PortalController');
 });

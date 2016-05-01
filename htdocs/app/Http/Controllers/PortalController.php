@@ -3,7 +3,7 @@
 /*
 	@ Harris Christiansen (Harris@HarrisChristiansen.com)
 	2016-04-25
-	For: Purdue Hackers - Membership Portal
+	Project: Members Tracking Portal
 */
 
 namespace App\Http\Controllers;
@@ -21,7 +21,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Member;
 use App\Models\Event;
 
-class PHController extends Controller {
+class PortalController extends Controller {
 	
 	/////////////////////////////// Home ///////////////////////////////
     
@@ -53,7 +53,7 @@ class PHController extends Controller {
 				return $this->getLogin();
 			}
 		} else {
-			$matchingMembers = Member::where('email',$email)->orWhere('email_public', $email)->orWhere('email_purdue', $email)->get();
+			$matchingMembers = Member::where('email',$email)->orWhere('email_public', $email)->orWhere('email_edu', $email)->get();
 			
 			if(count($matchingMembers) == 0) {
 				$request->session()->flash('msg', 'No account was found with that email.');
@@ -120,8 +120,8 @@ class PHController extends Controller {
 		$member->name = $memberName;
 		$member->email = $email;
 		$member->password = md5($password);
-		if(strpos($email, "@purdue.edu") !== false) {
-			$member->email_purdue = $email;
+		if(strpos($email, ".edu") !== false) {
+			$member->email_edu = $email;
 		}
 		$member->graduation_year = $gradYear;
 		$member->save();
@@ -156,7 +156,7 @@ class PHController extends Controller {
 		$requestTerm = $request->input('term');
 
 		$searchFor = "%".$requestTerm.'%';
-		$members = Member::where('name','LIKE',$searchFor)->orWhere('email','LIKE',$searchFor)->orWhere('email_public','LIKE',$searchFor)->orWhere('email_purdue','LIKE',$searchFor)->orWhere('description','LIKE',$searchFor);
+		$members = Member::where('name','LIKE',$searchFor)->orWhere('email','LIKE',$searchFor)->orWhere('email_public','LIKE',$searchFor)->orWhere('email_edu','LIKE',$searchFor)->orWhere('description','LIKE',$searchFor);
 		$results = $members->get();
 		
 		for($i=0;$i<count($results);$i++) {
@@ -224,16 +224,16 @@ class PHController extends Controller {
 		// Edit Member
 		$member->name = $memberName;
 		$member->email = $email;
-		if(strpos($email, "@purdue.edu") !== false) {
-			$member->email_purdue = $email;
+		if(strpos($email, ".edu") !== false) {
+			$member->email_edu = $email;
 		}
 		if(strlen($password) > 0) {
 			$member->password = md5($password);
 			$this->setAuthenticated($request,$member->id,$member->name);
 		}
 		$member->email_public = $email_public;
-		if(strpos($email_public, "@purdue.edu") !== false) {
-			$member->email_purdue = $email_public;
+		if(strpos($email_public, ".edu") !== false) {
+			$member->email_edu = $email_public;
 		}
 		$member->description = $description;
 		$member->graduation_year = $gradYear;

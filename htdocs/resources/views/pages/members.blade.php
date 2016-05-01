@@ -2,7 +2,7 @@
 
 @section("content")
 <div class="container">
-	<h1>Members | Purdue Hackers</h1>
+	<h1>Members | {{ env('ORG_NAME') }}</h1>
 	<div class="panel panel-default">
 		<table class="table table-bordered table-hover table-clickable panel-body" >
 		<thead>

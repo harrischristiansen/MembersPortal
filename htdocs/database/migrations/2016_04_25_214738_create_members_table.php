@@ -10,7 +10,7 @@ class CreateMembersTable extends Migration {
 			$table->string('name');
 			$table->string('email')->unique();
 			$table->string('email_public');
-			$table->string('email_purdue');
+			$table->string('email_edu');
 			$table->string('password');
 			$table->enum('member_status', ['Member', 'Alumni', 'Inactive']);
 			$table->smallInteger('graduation_year');
