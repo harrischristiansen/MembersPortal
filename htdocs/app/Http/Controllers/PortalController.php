@@ -340,7 +340,7 @@ class PortalController extends Controller {
 		$locationRecord->date_end = new Carbon($date_end);
 		$locationRecord->save();
 		
-		$request->session()->flash('msg', 'Error: Location Record Created.');
+		$request->session()->flash('msg', 'Location Record Created!');
 		return $this->getMember($request, $memberID);
 	}
 	
