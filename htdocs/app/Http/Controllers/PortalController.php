@@ -20,6 +20,8 @@ use App\Http\Controllers\Controller;
 
 use App\Models\Member;
 use App\Models\Event;
+use App\Models\Location;
+use App\Models\LocationRecord;
 
 class PortalController extends Controller {
 	
@@ -244,6 +246,59 @@ class PortalController extends Controller {
 		return $this->getMember($request, $memberID);
 	}
 	
+	
+	/////////////////////////////// Viewing Locations ///////////////////////////////
+	
+	public function getLocations(Request $request) {
+		$locations = Location::all();
+		return view('pages.locations',compact("locations"));
+	}
+	
+	public function getLocationsAutocomplete(LoggedInRequest $request) {
+		$requestTerm = $request->input('term');
+
+		$searchFor = "%".$requestTerm.'%';
+		$locations = Location::where('name','LIKE',$searchFor);
+		$results = $locations->get();
+		
+		for($i=0;$i<count($results);$i++) {
+			$results[$i]['value'] = $results[$i]['name'];
+		}
+
+		return $results;
+	}
+	
+	public function getCitiesAutocomplete(LoggedInRequest $request) {
+		$requestTerm = $request->input('term');
+
+		$searchFor = "%".$requestTerm.'%';
+		$locations = Location::where('city','LIKE',$searchFor);
+		$results = $locations->get();
+		
+		for($i=0;$i<count($results);$i++) {
+			$results[$i]['value'] = $results[$i]['name'];
+		}
+
+		return $results;
+	}
+	
+	public function getLocation($locationID) {
+		$location = Location::find($locationID);
+		
+		if(is_null($location)) {
+			$request->session()->flash('msg', 'Error: Location Not Found.');
+			return $this->getLocations();
+		}
+		
+		$members = $location->members()->get();
+		
+		return view('pages.location',compact("location","members"));
+	}
+	
+	/////////////////////////////// Editing Locations ///////////////////////////////
+	
+	
+	
 	/////////////////////////////// Viewing Events ///////////////////////////////
 	
 	public function getEvents() {
@@ -335,7 +390,7 @@ class PortalController extends Controller {
 			$request->session()->flash('msg', 'Event Updated!');
 			return $this->getEvent($request, $eventID);
 		} else { // New Event
-			return redirect()->action('PHController@getEvent', [$event->id])->with('msg', 'Event Created!');
+			return redirect()->action('PortalController@getEvent', [$event->id])->with('msg', 'Event Created!');
 		}
 	}
 	

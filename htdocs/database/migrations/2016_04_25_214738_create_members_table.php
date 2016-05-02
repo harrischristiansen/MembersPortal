@@ -1,4 +1,10 @@
 <?php
+	
+/*
+	@ Harris Christiansen (Harris@HarrisChristiansen.com)
+	2016-04-25
+	Project: Members Tracking Portal
+*/
 
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
