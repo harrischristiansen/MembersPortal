@@ -48,6 +48,7 @@
 			<tr>
 				<td>No Members</td>
 				<td></td>
+				<td></td>
 			</tr>
 		@endforelse
 		</tbody>

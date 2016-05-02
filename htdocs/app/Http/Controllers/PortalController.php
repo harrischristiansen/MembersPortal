@@ -177,10 +177,11 @@ class PortalController extends Controller {
 			return $this->getMembers();
 		}
 		
+		$locations = $member->locations()->get();
 		$events = $member->events()->get();
 		$reset_token_valid = $member->reset_token();
 		
-		return view('pages.member',compact("member","events","reset_token_valid"));
+		return view('pages.member',compact("member","locations","events","reset_token_valid"));
 	}
 	
 	public function getReset(Request $request, $memberID, $reset_token) {
@@ -276,7 +277,7 @@ class PortalController extends Controller {
 		$results = $locations->get();
 		
 		for($i=0;$i<count($results);$i++) {
-			$results[$i]['value'] = $results[$i]['name'];
+			$results[$i]['value'] = $results[$i]['city'];
 		}
 
 		return $results;
@@ -297,6 +298,70 @@ class PortalController extends Controller {
 	
 	/////////////////////////////// Editing Locations ///////////////////////////////
 	
+	public function postLocation(AdminRequest $request, $locationID) {
+		$location = Location::find($locationID);
+		
+		if(is_null($location)) {
+			$request->session()->flash('msg', 'Error: Location Not Found.');
+			return $this->getLocations();
+		}
+		
+		$location->name = $request->input('locationName');
+		$location->city = $request->input('city');
+		$location->save();
+		
+		return $this->getLocation($locationID);
+	}
+	
+	public function postLocationRecordNew(LoggedInRequest $request, $memberID) {
+		$locationName = $request->input("locationName");
+		$city = $request->input("city");
+		$date_start = $request->input("date_start");
+		$date_end = $request->input("date_end");
+		
+		$member = Member::find($memberID);
+		$authenticated_id = $request->session()->get('member_id');
+		
+		if(is_null($member)) {
+			$request->session()->flash('msg', 'Error: Member Not Found.');
+			return $this->getMembers();
+		}
+		if($request->session()->get('authenticated_admin') != "true" && $memberID!=$authenticated_id) {
+			$request->session()->flash('msg', 'Error: Member Not Found.');
+			return $this->getMembers();
+		}
+		
+		$location = Location::firstOrCreate(['name'=>$locationName, 'city'=>$city]);
+		
+		$locationRecord = new LocationRecord;
+		$locationRecord->member_id = $memberID;
+		$locationRecord->location_id = $location->id;
+		$locationRecord->date_start = new Carbon($date_start);
+		$locationRecord->date_end = new Carbon($date_end);
+		$locationRecord->save();
+		
+		$request->session()->flash('msg', 'Error: Location Record Created.');
+		return $this->getMember($request, $memberID);
+	}
+	
+	public function getLocationRecordDelete(LoggedInRequest $request, $recordID) {
+		$locationRecord = LocationRecord::find($recordID);
+		$authenticated_id = $request->session()->get('member_id');
+		
+		if(is_null($locationRecord)) {
+			$request->session()->flash('msg', 'Error: Location Record not Found.');
+			return $this->getMembers();
+		}
+		if($request->session()->get('authenticated_member') != "true" && $locationRecord->member->id != $authenticated_id) {
+			$request->session()->flash('msg', 'Error: Location Record not Found.');
+			return $this->getMembers();
+		}
+		
+		$return_memberID = $locationRecord->member->id;
+		$locationRecord->delete();
+		
+		return redirect()->action('PortalController@getMember', [$return_memberID])->with('msg', 'Location Record Deleted!');
+	}
 	
 	
 	/////////////////////////////// Viewing Events ///////////////////////////////

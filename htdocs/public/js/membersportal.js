@@ -32,6 +32,21 @@ $(".membersautocomplete").autocomplete({
 	}
 });
 
+$(".locationsautocomplete").autocomplete({
+	source: "/locations-autocomplete",
+	minLength: 2,
+	select: function( event, ui ) {
+		if(ui.item) {
+			$("#city").val(ui.item.city);
+		}
+	}
+});
+
+$(".citiesautocomplete").autocomplete({
+	source: "/cities-autocomplete",
+	minLength: 2
+});
+
 function checkinMember() {
 	if(selectedMember > 0) {
 		$.get(

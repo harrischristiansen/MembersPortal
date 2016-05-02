@@ -49,6 +49,59 @@
 	
 	<hr>
 	
+	<h1>Locations</h1>
+	<div class="panel panel-default">
+		<table class="table table-bordered table-hover table-clickable panel-body">
+		<thead>
+			<tr>
+				<th>Location</th>
+				<th>City</th>
+				<th>Start Date</th>
+				<th>End Date</th>
+			</tr>
+		</thead>
+		<tbody>
+		@forelse ($locations as $location)
+		    <tr onclick="location.href='{{ URL::to('/location', $location->location->id) }}';">
+		    	<td>{{ $location->location->name }}</td>
+		    	<td>{{ $location->location->city }}</td>
+				<td>{{ $location->date_start }}</td>
+				<td>{{ $location->date_end }}
+					@if ($member->id == session()->get('member_id') || session()->get('authenticated_admin') == "true")
+					<a href="{{ URL::to('/location-record-delete', $location->id) }}" class="btn btn-sm btn-danger pull-right">Remove</a>
+					@endif
+				</td>
+		    </tr>
+		@empty
+			<tr>
+				<td>No Locations</td>
+				<td></td>
+				<td></td>
+				<td></td>
+			</tr>
+		@endforelse
+		
+		@if ($member->id == session()->get('member_id') || session()->get('authenticated_admin') == "true")
+		<form method="post" action="/location-record-new/{{ $member->id }}" class="panel-body validate">
+			{!! csrf_field() !!}
+			<tr>
+				<td><input type="text" name="locationName" id="locationName" placeholder="Location Name" class="form-control locationsautocomplete" data-bvalidator="required" data-bvalidator-msg="Location Name Required."></td>
+				<td><input type="text" name="city" id="city" placeholder="City" class="form-control citiesautocomplete" data-bvalidator="required" data-bvalidator-msg="City Required."></td>
+				<td><input type="text" name="date_start" id="date_start" placeholder="Start Date" class="form-control datepicker" data-bvalidator="required,date[yyyy-mm-dd]" data-bvalidator-msg="Start Date Required."></td>
+				<td><input type="text" name="date_end" id="date_end" placeholder="End Date" class="form-control datepicker" data-bvalidator="required,date[yyyy-mm-dd]" data-bvalidator-msg="End Date Required.">
+					<br>
+					<input type="submit" value="Add Location Record" class="btn btn-primary pull-right">
+				</td>
+			</tr>
+		</form>
+		@endif
+		
+		</tbody>
+		</table>
+	</div>
+	
+	<hr>
+	
 	<h1>Events Attended</h1>
 	<div class="panel panel-default">
 		<table class="table table-bordered table-hover table-clickable panel-body">
