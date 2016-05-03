@@ -250,9 +250,22 @@ class PortalController extends Controller {
 	
 	/////////////////////////////// Viewing Locations ///////////////////////////////
 	
-	public function getLocations(Request $request) {
+	public function getLocations() {
 		$locations = Location::all();
 		return view('pages.locations',compact("locations"));
+	}
+	
+	public function getMap() {
+		$locations = Location::all();
+		return view('pages.map',compact("locations"));
+	}
+	
+	public function getMapData() {
+		$locations = Location::all();
+		for($i=0;$i<count($locations);$i++) {
+			$locations[$i]['members'] = $locations[$i]->members()->count();
+		}
+		return $locations;
 	}
 	
 	public function getLocationsAutocomplete(LoggedInRequest $request) {

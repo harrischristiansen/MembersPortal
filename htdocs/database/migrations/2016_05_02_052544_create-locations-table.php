@@ -15,6 +15,8 @@ class CreateLocationsTable extends Migration {
             $table->increments('id');
             $table->text('name');
             $table->text('city');
+            $table->float('loc_lat');
+            $table->float('loc_lng');
             $table->timestamps();
         });
         Schema::create('location-member', function (Blueprint $table) {
