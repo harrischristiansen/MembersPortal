@@ -346,6 +346,13 @@ class PortalController extends Controller {
 		
 		$location = Location::firstOrCreate(['name'=>$locationName, 'city'=>$city]);
 		
+		if($location->loc_lat==0) {
+			// TODO: Get Correct Latitude / Longitude of Location
+			$location->loc_lat = rand(0, 90);
+			$location->loc_lng = rand(0, 360);
+			$location->save();
+		}
+		
 		$locationRecord = new LocationRecord;
 		$locationRecord->member_id = $memberID;
 		$locationRecord->location_id = $location->id;

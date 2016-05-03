@@ -35,7 +35,7 @@
 </script>
 <!-- Google Maps -->
 <script type="text/javascript" src="/js/maps_markercluster.js"></script>
-<script async defer src="https://maps.googleapis.com/maps/api/js?key={{ env('KEY_GOOGLEMAPS') }}&callback=initMap"></script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key={{ env('KEY_GOOGLEBROWSER') }}&callback=initMap"></script>
 @stop
 
 @section("content")
