@@ -54,7 +54,7 @@
 						<li><a href="/member/{{ session()->get('member_id') }}">Profile</a></li>
 						@endif
 						<li><a href="/members">Members</a></li>
-						<li><a href="/locations">Locations</a></li>
+						<li><a href="/map">Map</a></li>
 						@if(session()->get('authenticated_member') == "true")
 							<li><a href="/events">Events</a></li>
 							@if(session()->get('authenticated_admin') == "true")
