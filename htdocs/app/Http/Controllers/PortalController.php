@@ -311,6 +311,7 @@ class PortalController extends Controller {
 	
 	/////////////////////////////// Editing Locations ///////////////////////////////
 	
+/*
 	public function postLocation(AdminRequest $request, $locationID) {
 		$location = Location::find($locationID);
 		
@@ -325,6 +326,7 @@ class PortalController extends Controller {
 		
 		return $this->getLocation($locationID);
 	}
+*/
 	
 	public function postLocationRecordNew(LoggedInRequest $request, $memberID) {
 		$locationName = $request->input("locationName");
@@ -347,10 +349,7 @@ class PortalController extends Controller {
 		$location = Location::firstOrCreate(['name'=>$locationName, 'city'=>$city]);
 		
 		if($location->loc_lat==0) {
-			// TODO: Get Correct Latitude / Longitude of Location
-			$location->loc_lat = rand(0, 90);
-			$location->loc_lng = rand(0, 360);
-			$location->save();
+			$this->completeLocation($location);
 		}
 		
 		$locationRecord = new LocationRecord;
@@ -360,8 +359,24 @@ class PortalController extends Controller {
 		$locationRecord->date_end = new Carbon($date_end);
 		$locationRecord->save();
 		
-		$request->session()->flash('msg', 'Location Record Created!');
+		$request->session()->flash('msg', 'Location Record Added!');
 		return $this->getMember($request, $memberID);
+	}
+	
+	public function completeLocation($location) {
+		//$location->loc_lat = rand(0, 90);
+		//$location->loc_lng = rand(0, 360);
+		
+		// Get Correct Latitude / Longitude of Location from Google Places API
+		$requestQuery = htmlentities(urlencode($location->name." ".$location->city));
+		$requestResult = json_decode(file_get_contents('https://maps.googleapis.com/maps/api/place/textsearch/json?query='.$requestQuery.'&key='.env('KEY_GOOGLESERVER')), true);
+		
+		if (count($requestResult["results"]) > 0) {
+			$location->loc_lat = $requestResult["results"][0]["geometry"]["location"]["lat"];
+			$location->loc_lng = $requestResult["results"][0]["geometry"]["location"]["lng"];
+		}
+		
+		$location->save();
 	}
 	
 	public function getLocationRecordDelete(LoggedInRequest $request, $recordID) {
