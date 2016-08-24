@@ -9,24 +9,33 @@ This Members Tracking Portal was originally developed for Purdue Hackers. Purdue
 ## Features
 
 - [X] Member - Register/Login
+	- Register Twice - Msg  
+	- Accounts are set as standard or admin, no global sign-in  
+	- Purdue address -> .edu address  
+- [ ] Member - Apply
 - [X] Member - Modify Account Info
 - [X] Member - Change Password
 - [ ] Member - Forgot/Reset Password
 - [X] Member - Add Personal Location
 - [X] Member - Delete Personal Location
 - [ ] Member - Automatic Status Changes (Member/Inactive/Alumni)
+- [ ] Member - Profiles (Picture, About, Links, Resume)
 - [X] Members - View Members List
 - [X] Members - View Member Profile
 - [ ] Members - View Locations on Map
+	- add ability to list members at location  
+	- add location duplicate resolution?
 - [X] Events - View Events List
 - [X] Events - View Event Info
+- [X] Events - Member Register
 - [X] Admin - Members - Modify
 - [ ] Admin - Members - Create Account For (Provide only name/email, creates account and sends email to new member)
+- [ ] Admin - Members - Manage Applications
 - [X] Admin - Events - Create
 - [X] Admin - Events - Modify
 - [X] Admin - Events - Delete
 - [X] Admin - Events - Checkin Members
-- [ ] Admin - Events - Delete Checkin (incase of accidental checkin)
+- [ ] Admin - Events - Un-Checkin (incase of accidental checkin)
 
 ## Local MAMP Installation - Mac  
 
@@ -47,7 +56,7 @@ This Members Tracking Portal was originally developed for Purdue Hackers. Purdue
 
 - [ ] Modify `./manifest.yml`
 - [ ] Execute `bluemix api https://api.ng.bluemix.net`
-- [ ] Exceute `bluemix login -u {{EMAIL}} -o {{EMAIL}} -s dev`
+- [ ] Execute `bluemix login -u {{EMAIL}} -o {{EMAIL}} -s dev`
 - [ ] Execute `cf push {{NAME}}`
 
 ## Accessing Portal

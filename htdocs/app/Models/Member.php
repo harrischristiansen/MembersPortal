@@ -24,4 +24,8 @@ class Member extends Model {
 		return md5($this->id + env('ADMIN_PASS'));
 	}
 	
+	public function gender() {
+		return "Male";
+	}
+	
 }

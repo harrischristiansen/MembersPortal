@@ -11,12 +11,14 @@ namespace App\Http\Controllers;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use DB;
+use App\Http\Controllers\Controller;
+
 use App\Http\Requests;
 use App\Http\Requests\LoggedInRequest;
 use App\Http\Requests\EditMemberRequest;
 use App\Http\Requests\AdminRequest;
+use App\Http\Requests\RegisterRequest;
 use App\Http\Requests\EditEventRequest;
-use App\Http\Controllers\Controller;
 
 use App\Models\Member;
 use App\Models\Event;
@@ -90,7 +92,7 @@ class PortalController extends Controller {
 		return view('pages.register');
 	}
 	
-	public function postJoin(Request $request) { // POST Register
+	public function postJoin(RegisterRequest $request) { // POST Register
 		$memberName = $request->input('memberName');
 		$email = $request->input('email');
 		$password = $request->input('password');
@@ -132,6 +134,65 @@ class PortalController extends Controller {
 		$this->setAuthenticated($request, $member->id, $member->name);
 		
 		return $this->getIndex();
+	}
+	
+	public function getApply(Request $request, $eventID=-1) { // GET Apply
+		$eventName = "Event Name";
+		$authenticatedMember = $this->getAuthenticated($request);
+		return view('pages.apply',compact('eventName', 'authenticatedMember'));
+	}
+	
+	public function postApply(RegisterRequest $request, $eventID) { // POST Apply
+		if (!$this->isAuthenticated($request)) {
+			$registerResult = $this->postRegister($request);
+			if ($registerResult != $this->getIndex()) {
+				return $registerResult;
+			}
+		}
+		
+		// Member Details
+		$gradYear = $request->input('gradYear');
+		$gender = $request->input('gender');
+		$major = $request->input('major');
+		
+		$member = $this->getAuthenticated($request);
+		$member->graduation_year = $gradYear;
+		$member->gender = $gender;
+		$member->major = $major;
+		$member->save();
+		
+		// Application Details
+		$tshirt = $rquest->input('tshirt');
+		$interests = $rquest->input('interests');
+		$dietary = $rquest->input('dietary');
+		
+		$application = new Application();
+		$application->member_id = $this->getAuthenticatedID($request);
+		$application->event_id = $eventID;
+		$application->tshirt = $tshirt;
+		$application->interests = $interests;
+		$application->dietary = $dietary;
+		$applicaiton->save();
+		
+		return $this->getIndex();
+	}
+	
+	public function isAuthenticated($request) {
+		return $request->session()->get('authenticated_member') == "true";
+	}
+	
+	public function getAuthenticated($request) {
+		if ($this->isAuthenticated($request)) {
+			return Member::find($this->getAuthenticatedID($request));
+		}
+		return null;
+	}
+	
+	public function getAuthenticatedID($request) {
+		if ($this->isAuthenticated($request)) {
+			return $request->session()->get('member_id');
+		}
+		return null;
 	}
 	
 	public function setAuthenticated(Request $request, $memberID, $memberName) {

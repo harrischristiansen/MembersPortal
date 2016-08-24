@@ -19,9 +19,13 @@ class CreateMembersTable extends Migration {
 			$table->string('email_edu');
 			$table->string('password');
 			$table->enum('member_status', ['Member', 'Alumni', 'Inactive']);
+			$table->enum('gender', ['', 'Male', 'Female', 'Other', 'No']);
 			$table->smallInteger('graduation_year');
-			$table->text("facebook");
+			$table->text("major");
 			$table->text("description");
+			$table->text("facebook");
+			$table->text("github");
+			$table->text("website");
 			$table->timestamps();
 		});
 	}
