@@ -2,10 +2,15 @@
 
 @section("content")
 
-<div class="titlePage row">
-	<img class="titleImage" src="/images/logo_square_200.png" alt="{{ env('ORG_NAME') }}">
-	<h1 class="titlePageTitle">{{ env('ORG_NAME') }}</h1>
-	<div class="titlePageText" style="text-transform: none;">WIFI: THEANVIL<br>PASS: GoldAndBlack15</div>
+
+<div class='section'>
+	<div class='section-container'>
+		<h1>WIFI</h1>
+		<h3>
+			Join: TheAnvil<br>
+			Password: GoldAndBlack15
+		</h3>
+	</div>
 </div>
 
 @stop

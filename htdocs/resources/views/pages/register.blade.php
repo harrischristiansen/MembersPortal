@@ -2,8 +2,8 @@
 
 @section("content")
 
-<div class="container">
-	<h1>Join {{ env('ORG_NAME') }}</h1>
+<div class="section"><div class='section-container'>
+	<h3>Join {{ env('ORG_NAME') }}</h3>
 	<div class="panel panel-default">
 		<form method="post" action="/join" class="panel-body validate">
 			{!! csrf_field() !!}
@@ -25,6 +25,6 @@
 			<input type="submit" value="Join" class="btn btn-primary">
 		</form>
 	</div>
-</div>
+</div></div>
 
 @stop

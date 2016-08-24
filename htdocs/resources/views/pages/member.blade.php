@@ -2,11 +2,12 @@
 
 @section("content")
 
-<div class="container">
-	<h1>{{ $member->name }}</h1>
+<div class="section"><div class='section-container'>
+	<h3>Member - {{ $member->name }}</h3>
 	
-	<div class="panel panel-default">
+	
 	@if ($member->id == session()->get('member_id') || session()->get('authenticated_admin') == "true" || isset($setPassword) ) {{-- Edit Profile --}}
+	<div class="panel panel-default">
 		<form method="post" action="/member/{{ $member->id }}" class="panel-body validate">
 			{!! csrf_field() !!}
 			<label for="memberName">Full Name</label>
@@ -33,23 +34,25 @@
 			<label for="gradYear">Year of Graduation</label>
 			<input type="number" name="gradYear" id="gradYear" placeholder="Graduation Year" value="{{ $member->graduation_year}}" class="form-control" data-bvalidator="required,number" data-bvalidator-msg="A graduation year is required">
 			<br>
-			<input type="submit" value="Update Profile" class="btn btn-primary">
+			<input type="submit" value="Update Profile" class="btn btn-primary pull-left">
 			@if (!isset($setPassword))
 			<a href="/reset/{{ $member->id }}/{{ $reset_token_valid }}" class="btn btn-warning pull-right">Reset Password</a>
 			@endif
 		</form>
-	@else {{-- View Profile --}}
-		<div class="panel-body">
-			Name: {{ $member->name }}<br>
-			Public Email: {{ $member->email_public }}<br>
-			Description: {{ $member->description }}<br>
-		</div>
-	@endif
 	</div>
+	@else {{-- View Profile --}}
+	<div class="panel panel-default text-left">
+		<div class="panel-body">
+			<b>Name:</b> {{ $member->name }}<br>
+			<b>Email:</b> {{ $member->email_public }}<br>
+			<b>Description:</b> {{ $member->description }}<br>
+		</div>
+	</div>
+	@endif
 	
 	<hr>
 	
-	<h1>Locations</h1>
+	<h3>Locations</h3>
 	<div class="panel panel-default">
 		<table class="table table-bordered table-hover table-clickable panel-body">
 		<thead>
@@ -102,7 +105,7 @@
 	
 	<hr>
 	
-	<h1>Events Attended</h1>
+	<h3>Events Attended</h3>
 	<div class="panel panel-default">
 		<table class="table table-bordered table-hover table-clickable panel-body">
 		<thead>
@@ -126,6 +129,6 @@
 		</tbody>
 		</table>
 	</div>
-</div>
+</div></div>
 
 @stop

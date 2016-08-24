@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html>
     <head>
-	    <meta charset="utf-8">
+    	<meta charset="utf-8">
 	    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-	    <meta name="viewport" content="width=device-width, initial-scale=1">
+	    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 	    
-        <title>{{ env('ORG_NAME') }} - Members Portal</title>
+        <title>{{ env('ORG_NAME') }} {{ isset($pageName) ? " - ".$pageName : "" }}</title>
         
         <meta name="author" content="Harris Christiansen">
         <meta name="description" content="{{ env('ORG_NAME') }} - Members and Events Portal">
@@ -24,25 +24,39 @@
 		
 		<!-- Bootstrap IE8 Support -->
 	    <!--[if lt IE 9]>
-	      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-	      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+	    	<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+			<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 	    <![endif]-->
 	    
-	    <!-- Portal Site CSS -->
-	    <link rel="stylesheet" href="/css/membersportal.css">
-
-    </head>
-    <body style="padding-top: 51px;">
+	    <!-- Fonts -->
+		<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+		<link href='http://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' type='text/css'>
+		<link href='http://fonts.googleapis.com/css?family=Roboto+Slab:300' rel='stylesheet' type='text/css'>
 	    
-	    @include('navbar')
+	    <!-- Portal Site CSS -->
+	    <link rel="stylesheet" type="text/css" href="/css/purduehackers.css">
+	    
+    </head>
+    <body>
+	    
+	    @include('navbar_ph')
 		
-		<div class="container-fluid">
-			@if(session()->has('msg'))
-				<br><div class="container"><div class="alert alert-success" role="alert">{{ session()->get('msg') }}</div></div>
+		<div id="pageWrap">
+		
+		@if(session()->has('msg'))
+		<div class='section alert-section'>
+			<div class='section-container'>
+				<div class="alert alert-success" role="alert">{{ session()->get('msg') }}</div>
 				<?php session()->forget('msg'); ?>
-			@endif
-			@yield('content')
-		</div>     
+			</div>
+		</div>
+		@endif
+		
+		@yield('content')
+		
+		</div>
+		
+		@include('footer')
 		
 		<!-- jQuery / jQuery UI -->
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>

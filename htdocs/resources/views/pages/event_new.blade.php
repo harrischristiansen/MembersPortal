@@ -2,8 +2,8 @@
 
 @section("content")
 
-<div class="container">
-	<h1>Create Event</h1>
+<div class="section"><div class='section-container'>
+	<h3>Create Event</h3>
 	<div class="panel panel-default">
 		<form method="post" action="/event/-1" class="panel-body validate">
 			{!! csrf_field() !!}
@@ -38,6 +38,6 @@
 			<input type="submit" value="Create Event" class="btn btn-primary">
 		</form>
 	</div>
-</div>
+</div></div>
 
 @stop

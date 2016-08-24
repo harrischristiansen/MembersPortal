@@ -39,10 +39,10 @@
 @stop
 
 @section("content")
-<div class="container">
-	<h1>{{ env('ORG_NAME') }} Around The Globe</h1>
+<div class="section"><div class='section-container'>
+	<h3>{{ env('ORG_NAME') }} Around The Globe</h3>
 	<div class="panel panel-default">
 		<div id="map" style="height: 500px;">
 	</div>
-</div>
+</div></div>
 @stop

@@ -2,8 +2,8 @@
 
 @section("content")
 
-<div class="container">
-	<h1>{{ $location->name }}</h1>
+<div class="section"><div class='section-container'>
+	<h3>{{ $location->name }}</h3>
 	
 	<div class="panel panel-default">
 	@if (session()->get('authenticated_admin') == "true") {{-- Edit Location Information --}}
@@ -27,7 +27,7 @@
 	
 	<hr>
 	
-	<h1>Members</h1>
+	<h3>Members</h3>
 	<div class="panel panel-default">
 		<table class="table table-bordered table-hover table-clickable panel-body">
 		<thead>
@@ -54,6 +54,6 @@
 		</tbody>
 		</table>
 	</div>
-</div>
+</div></div>
 
 @stop

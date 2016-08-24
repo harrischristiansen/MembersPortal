@@ -2,18 +2,18 @@
 
 @section("content")
 
-<div class="titlePage">
-	<h1 class="titlePageTitle">{{ env('ORG_NAME') }}</h1>
-	<p class="titlePageText">Login</p>
+<div class="section"><div class='section-container'>
+	<h3>Login</h3>
 	
-	<form method="post" action="/login">
-		{!! csrf_field() !!}
-		<input type="text" name="email" id="email" placeholder="Email">
-		<input type="password" name="password" id="password" placeholder="Password">
-		<br><br>
-		<input type="submit" value="Sign In">
-	</form>
-	
-</div>
+	<div class="panel panel-default">
+		<form method="post" action="/login" class="panel-body">
+			{!! csrf_field() !!}
+			<input type="text" name="email" id="email" placeholder="Email">
+			<input type="password" name="password" id="password" placeholder="Password">
+			<br><br>
+			<input type="submit" value="Sign In">
+		</form>
+	</div>
+</div></div>
 
 @stop

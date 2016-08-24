@@ -2,8 +2,8 @@
 
 @section("content")
 
-<div class="container">
-	<h1>Apply: {{ $eventName }}</h1>
+<div class="section"><div class='section-container'>
+	<h3>Apply: {{ $eventName }}</h3>
 	<div class="panel panel-default">
 		<form method="post" action="/apply" class="panel-body validate">
 			{!! csrf_field() !!}
@@ -42,6 +42,6 @@
 			<input type="submit" value="Apply" class="btn btn-primary">
 		</form>
 	</div>
-</div>
+</div></div>
 
 @stop

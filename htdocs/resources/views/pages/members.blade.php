@@ -1,8 +1,8 @@
 @extends("app")
 
 @section("content")
-<div class="container">
-	<h1>Members | {{ env('ORG_NAME') }}</h1>
+<div class="section"><div class='section-container'>
+	<h3>Members</h3>
 	<div class="panel panel-default">
 		<table class="table table-bordered table-hover table-clickable panel-body" >
 		<thead>
@@ -25,5 +25,5 @@
 		</tbody>
 		</table>
 	</div>
-</div>
+</div></div>
 @stop

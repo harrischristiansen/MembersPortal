@@ -2,8 +2,8 @@
 
 @section("content")
 
-<div class="container">
-	<h1>Checkin - {{ $event->name }}</h1>
+<div class="section"><div class='section-container'>
+	<h3>Checkin - {{ $event->name }}</h3>
 	<div class="panel panel-default">
 		<div class="panel-body">
 			<input type="text" name="memberName" id="memberName" placeholder="Name" class="form-control membersautocomplete">
@@ -29,6 +29,6 @@
 	</div>
 	<div id="checkinAlerts">
 	</div>
-</div>
+</div></div>
 
 @stop
