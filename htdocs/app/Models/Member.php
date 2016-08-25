@@ -33,11 +33,13 @@ class Member extends Model {
 	}
 	
 	public function picturePath() {
-		return '/uploads/member_pictures/'.$this->id."_".$this->picture;
+		$fileExt = pathinfo($this->picture, PATHINFO_EXTENSION);
+		return '/uploads/member_pictures/'.$this->id."_".substr(md5($this->picture), -6).'.'.$fileExt;
 	}
 	
 	public function resumePath() {
-		return '/uploads/resumes/'.$this->id."_".$this->resume;
+		$fileExt = pathinfo($this->resume, PATHINFO_EXTENSION);
+		return '/uploads/resumes/'.$this->id."_".substr(md5($this->resume), -6).'.'.$fileExt;
 	}
 	
 }

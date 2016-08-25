@@ -295,7 +295,7 @@ class PortalController extends Controller {
 			  strtolower($picture->getClientMimeType())=="image/jpg" || strtolower($picture->getClientMimeType())=="image/png")) {
 				$fileName = $picture->getClientOriginalName();
 				$uploadPath = 'uploads/member_pictures/'; // base_path().'/public/uploads/member_pictures/
-				$fileName_disk = $member->id."_".$fileName;
+				$fileName_disk = $member->id."_".substr(md5($fileName), -6).".".$picture->getClientOriginalExtension();
 				$picture->move($uploadPath, $fileName_disk);
 				$member->picture = $fileName;
 			}
@@ -307,7 +307,7 @@ class PortalController extends Controller {
 			if ($resume->isValid() && strtolower($resume->getClientOriginalExtension())=="pdf" && strtolower($resume->getClientMimeType())=="application/pdf") {
 				$fileName = $resume->getClientOriginalName();
 				$uploadPath = 'uploads/resumes/'; // base_path().'/public/uploads/resumes/
-				$fileName_disk = $member->id."_".$fileName;
+				$fileName_disk = $member->id."_".substr(md5($fileName), -6).".".$resume->getClientOriginalExtension();
 				$resume->move($uploadPath, $fileName_disk);
 				$member->resume = $fileName;
 			}
