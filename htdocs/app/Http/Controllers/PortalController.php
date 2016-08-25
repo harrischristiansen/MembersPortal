@@ -169,7 +169,7 @@ class PortalController extends Controller {
 	/////////////////////////////// Viewing Members ///////////////////////////////
 	
 	public function getMembers() {
-		$members = Member::all();
+		$members = Member::orderBy('name')->get();
 		return view('pages.members',compact("members"));
 	}
 	
