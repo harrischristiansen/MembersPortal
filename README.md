@@ -17,7 +17,7 @@ This Members Tracking Portal was originally developed for Purdue Hackers. Purdue
 - [X] Member - Add Personal Location
 - [X] Member - Delete Personal Location
 - [ ] Member - Automatic Status Changes (Member/Inactive/Alumni)
-- [ ] Member - Profiles (Picture, About, Links, Resume)
+- [X] Member - Profiles (Picture, About, Links, Resume)
 - [X] Members - View Members List
 - [X] Members - View Member Profile
 - [X] Members - View Locations on Map

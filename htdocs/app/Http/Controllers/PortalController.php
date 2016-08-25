@@ -286,6 +286,34 @@ class PortalController extends Controller {
 		$member->linkedin = $linkedin;
 		$member->devpost = $devpost;
 		$member->website = $website;
+		
+		// Picture
+		if ($request->hasFile('picture')) {
+			$picture = $request->file('picture');
+			if ($picture->isValid() && (strtolower($picture->getClientOriginalExtension())=="jpg" ||
+			  strtolower($picture->getClientOriginalExtension())=="png") && (strtolower($picture->getClientMimeType())=="image/jpeg" ||
+			  strtolower($picture->getClientMimeType())=="image/jpg" || strtolower($picture->getClientMimeType())=="image/png")) {
+				$fileName = $picture->getClientOriginalName();
+				$uploadPath = 'uploads/member_pictures/'; // base_path().'/public/uploads/member_pictures/
+				$fileName_disk = $member->id."_".$fileName;
+				$picture->move($uploadPath, $fileName_disk);
+				$member->picture = $fileName;
+			}
+		}
+		
+		// Resume
+		if ($request->hasFile('resume')) {
+			$resume = $request->file('resume');
+			if ($resume->isValid() && strtolower($resume->getClientOriginalExtension())=="pdf" && strtolower($resume->getClientMimeType())=="application/pdf") {
+				$fileName = $resume->getClientOriginalName();
+				$uploadPath = 'uploads/resumes/'; // base_path().'/public/uploads/resumes/
+				$fileName_disk = $member->id."_".$fileName;
+				$resume->move($uploadPath, $fileName_disk);
+				$member->resume = $fileName;
+			}
+		}
+		
+		
 		$member->save();
 		
 		// Return Response

@@ -32,4 +32,12 @@ class Member extends Model {
 		return md5($this->id.$this->password.env('ADMIN_PASS'));
 	}
 	
+	public function picturePath() {
+		return '/uploads/member_pictures/'.$this->id."_".$this->picture;
+	}
+	
+	public function resumePath() {
+		return '/uploads/resumes/'.$this->id."_".$this->resume;
+	}
+	
 }

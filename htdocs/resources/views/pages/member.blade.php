@@ -8,10 +8,16 @@
 	
 	@if ($member->id == session()->get('member_id') || session()->get('authenticated_admin') == "true" || isset($setPassword) ) {{-- Edit Profile --}}
 	<div class="panel panel-default">
-		<form method="post" action="/member/{{ $member->id }}" class="panel-body validate">
+		<form method="post" action="/member/{{ $member->id }}" enctype="multipart/form-data" class="panel-body validate">
 			{!! csrf_field() !!}
 			<label for="memberName">Full Name</label>
 			<input type="text" name="memberName" id="memberName" placeholder="Full Name" value="{{ $member->name }}" class="form-control" data-bvalidator="required" data-bvalidator-msg="Please enter your full name">
+			<br>
+			<label for="picture">Profile Picture (JPG or PNG)</label>
+			@if ($member->picture)
+			<a href="{{ $member->picturePath() }}" class="form-control">{{ $member->picture }}</a>
+			@endif
+			<input type="file" name="picture" id="picture" class="form-control">
 			<br>
 			<label for="email">Account Email</label>
 			<input type="text" name="email" id="email" placeholder="Email" value="{{ $member->email }}" class="form-control" data-bvalidator="required,email" data-bvalidator-msg="An email is required for your account.">
@@ -65,6 +71,12 @@
 			<br>
 			<label for="website">Personal Website</label>
 			<input type="text" name="website" id="website" placeholder="Personal Website" value="{{ $member->website }}" class="form-control" data-bvalidator="url" data-bvalidator-msg="Please enter a valid URL to your Personal Website.">
+			<br>
+			<label for="resume">Resume (PDF)</label>
+			@if ($member->resume)
+			<a href="{{ $member->resumePath() }}" class="form-control">{{ $member->resume }}</a>
+			@endif
+			<input type="file" name="resume" id="resume" class="form-control">
 			<br>
 			@if (!isset($setPassword))
 				@if(session()->get('authenticated_admin') == "true")
