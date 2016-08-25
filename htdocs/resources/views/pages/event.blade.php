@@ -4,13 +4,25 @@
 
 <div class="section"><div class='section-container'>
 	<h3>{{ $event->name }}
-		@if(session()->get('authenticated_admin') == "true")
+		@if (session()->get('authenticated_admin') == "true")
 		<a href="/checkin/{{ $event->id }}" class="pull-right"><button type="button" class="btn btn-primary btn-sm">Checkin</button></a>
+		@elseif ($canApply)
+			@if ($hasRegistered)
+			<button type="button" class="btn btn-primary btn-sm pull-right">Application Submitted</button>
+			@else
+			<a href="/apply/{{ $event->id }}" class="pull-right"><button type="button" class="btn btn-primary btn-sm">Apply</button></a>
+			@endif
+		@elseif ($canRegister)
+			@if ($hasRegistered)
+			<button type="button" class="btn btn-primary btn-sm pull-right">Registered</button>
+			@else
+			<a href="/register/{{ $event->id }}" class="pull-right"><button type="button" class="btn btn-primary btn-sm">Register</button></a>
+			@endif
 		@endif
 	</h3>
 	
-	<div class="panel panel-default">
 	@if (session()->get('authenticated_admin') == "true") {{-- Edit Event --}}
+	<div class="panel panel-default">
 		<form method="post" action="/event/{{ $event->id }}" class="panel-body validate">
 			{!! csrf_field() !!}
 			<label for="eventName">Event Name</label>
@@ -43,19 +55,21 @@
 			<br>
 			<input type="submit" value="Update Event" class="btn btn-primary">
 		</form>
-	@else
-		<div class="panel-body">
-			Name: {{ $event->name }}<br>
-			Date: {{ $event->dateFriendly() }}<br>
-			Location: {{ $event->location }}<br>
-			Facebook: {{ $event->facebook }}<br>
-		</div>
-	@endif
 	</div>
+	@else
+	<div class="panel panel-default text-left">
+		<div class="panel-body">
+			<b>Name:</b> {{ $event->name }}<br>
+			<b>Date:</b> {{ $event->dateFriendly() }}<br>
+			<b>Location:</b> {{ $event->location }}<br>
+			<b>Facebook:</b> {{ $event->facebook }}<br>
+		</div>
+	</div>
+	@endif
 	
 	<hr>
 	
-	<h1>Members Checked In</h1>
+	<h3>Members Attended</h3>
 	<div class="panel panel-default">
 		<table class="table table-bordered table-hover table-clickable panel-body">
 		<thead>

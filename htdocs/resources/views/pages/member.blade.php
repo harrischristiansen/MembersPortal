@@ -36,7 +36,11 @@
 			<br>
 			<input type="submit" value="Update Profile" class="btn btn-primary pull-left">
 			@if (!isset($setPassword))
-			<a href="/reset/{{ $member->id }}/{{ $reset_token_valid }}" class="btn btn-warning pull-right">Reset Password</a>
+				@if(session()->get('authenticated_admin') == "true")
+				<a href="/reset/{{ $member->id }}/{{ $member->reset_token() }}" class="btn btn-warning pull-right">Reset Password</a>
+				@elseif($member->id == session()->get('member_id'))
+				<a href="/reset/{{ $member->id }}/{{ $member->reset_token() }}" class="btn btn-warning pull-right">Change Password</a>
+				@endif
 			@endif
 		</form>
 	</div>

@@ -20,10 +20,12 @@ use App\Http\Requests\AdminRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Http\Requests\EditEventRequest;
 
-use App\Models\Member;
+use App\Models\Application;
 use App\Models\Event;
 use App\Models\Location;
 use App\Models\LocationRecord;
+use App\Models\Major;
+use App\Models\Member;
 
 class PortalController extends Controller {
 	
@@ -115,8 +117,8 @@ class PortalController extends Controller {
 		}
 		
 		if(Member::where('email',$email)->first()) {
-			$request->session()->flash('msg', 'An account already exists with that email.');
-			return $this->getJoin();
+			$request->session()->flash('msg', 'An account already exists with that email. Please use your '.env('DB_ORG_NAME').' account password if you have one.');
+			return $this->getLogin();
 		}
 		
 		// Create Member
@@ -132,47 +134,6 @@ class PortalController extends Controller {
 		
 		// Authenticate Application
 		$this->setAuthenticated($request, $member->id, $member->name);
-		
-		return $this->getIndex();
-	}
-	
-	public function getApply(Request $request, $eventID=-1) { // GET Apply
-		$eventName = "Event Name";
-		$authenticatedMember = $this->getAuthenticated($request);
-		return view('pages.apply',compact('eventName', 'authenticatedMember'));
-	}
-	
-	public function postApply(RegisterRequest $request, $eventID) { // POST Apply
-		if (!$this->isAuthenticated($request)) {
-			$registerResult = $this->postRegister($request);
-			if ($registerResult != $this->getIndex()) {
-				return $registerResult;
-			}
-		}
-		
-		// Member Details
-		$gradYear = $request->input('gradYear');
-		$gender = $request->input('gender');
-		$major = $request->input('major');
-		
-		$member = $this->getAuthenticated($request);
-		$member->graduation_year = $gradYear;
-		$member->gender = $gender;
-		$member->major = $major;
-		$member->save();
-		
-		// Application Details
-		$tshirt = $rquest->input('tshirt');
-		$interests = $rquest->input('interests');
-		$dietary = $rquest->input('dietary');
-		
-		$application = new Application();
-		$application->member_id = $this->getAuthenticatedID($request);
-		$application->event_id = $eventID;
-		$application->tshirt = $tshirt;
-		$application->interests = $interests;
-		$application->dietary = $dietary;
-		$applicaiton->save();
 		
 		return $this->getIndex();
 	}
@@ -240,9 +201,8 @@ class PortalController extends Controller {
 		
 		$locations = $member->locations()->get();
 		$events = $member->events()->get();
-		$reset_token_valid = $member->reset_token();
 		
-		return view('pages.member',compact("member","locations","events","reset_token_valid"));
+		return view('pages.member',compact("member","locations","events"));
 	}
 	
 	public function getReset(Request $request, $memberID, $reset_token) {
@@ -258,10 +218,11 @@ class PortalController extends Controller {
 			return $this->getIndex();
 		}
 		
+		$locations = $member->locations()->get();
 		$events = $member->events()->get();
 		$setPassword = true;
 		
-		return view('pages.member',compact("member","events","setPassword","reset_token"));
+		return view('pages.member',compact("member","locations","events","setPassword","reset_token"));
 	}
 	
 	/////////////////////////////// Editing Members ///////////////////////////////
@@ -479,7 +440,12 @@ class PortalController extends Controller {
 		
 		$members = $event->members()->get();
 		
-		return view('pages.event',compact("event","members"));
+		$canApply = $this->isAuthenticated($request) && $event->requiresApplication;
+		$canRegister = $this->isAuthenticated($request) && $event->requiresRegistration;
+		$hasRegistered = count($this->getAuthenticated($request)->applications()->where('event_id',$eventID)->get()) > 0;
+
+		
+		return view('pages.event',compact("event","members","canApply","canRegister","hasRegistered"));
 	}
 	
 	/////////////////////////////// Event Checkin System ///////////////////////////////
@@ -562,6 +528,44 @@ class PortalController extends Controller {
 	public function getEventDelete($eventID) {
 		Event::findOrFail($eventID)->delete();
 		return $this->getEvents();
+	}
+	
+	/////////////////////////////// Applications ///////////////////////////////
+	
+	public function getApply(Request $request, $eventID=-1) { // GET Apply
+		$event = Event::findOrFail($eventID);
+		$authenticatedMember = $this->getAuthenticated($request);
+		if (!$authenticatedMember) { $authenticatedMember = new Member(); }
+		$majors = Major::orderByRaw('(id = 1) DESC, name')->get(); // Order by name, but keep first major at top
+		
+		return view('pages.apply',compact('event', 'authenticatedMember', 'majors'));
+	}
+	
+	public function postApply(LoggedInRequest $request, $eventID) { // POST Apply
+		// Member Details
+		$gender = $request->input('gender');
+		$major = $request->input('major');
+		
+		$member = $this->getAuthenticated($request);
+		$member->gender = $gender;
+		$member->major_id = $major;
+		$member->save();
+		
+		// Application Details
+		$tshirt = $request->input('tshirt');
+		$interests = $request->input('interests');
+		$dietary = $request->input('dietary');
+		
+		$application = new Application();
+		$application->member_id = $this->getAuthenticatedID($request);
+		$application->event_id = $eventID;
+		$application->tshirt = $tshirt;
+		$application->interests = $interests;
+		$application->dietary = $dietary;
+		$application->save();
+		
+		$request->session()->flash('msg', 'Success, your application has been submitted!');
+		return $this->getEvent($request, $eventID);
 	}
 
 	/////////////////////////////// Helper Functions ///////////////////////////////

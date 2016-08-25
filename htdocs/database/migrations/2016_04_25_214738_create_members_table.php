@@ -21,7 +21,7 @@ class CreateMembersTable extends Migration {
 			$table->enum('member_status', ['Member', 'Alumni', 'Inactive']);
 			$table->enum('gender', ['', 'Male', 'Female', 'Other', 'No']);
 			$table->smallInteger('graduation_year');
-			$table->text("major");
+			$table->integer('major_id')->unsigned()->nullable();
 			$table->text("description");
 			$table->text("facebook");
 			$table->text("github");

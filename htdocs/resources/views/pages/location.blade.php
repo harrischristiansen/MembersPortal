@@ -18,9 +18,9 @@
 			<input type="submit" value="Update Location" class="btn btn-primary">
 		</form>
 	@else {{-- View Location Profile --}}
-		<div class="panel-body">
-			Name: {{ $location->name }}<br>
-			City: {{ $location->city }}<br>
+		<div class="panel-body text-left">
+			<b>Location Name:</b> {{ $location->name }}<br>
+			<b>City:</b> {{ $location->city }}<br>
 		</div>
 	@endif
 	</div>

@@ -8,7 +8,7 @@
 		<form method="post" action="/join" class="panel-body validate">
 			{!! csrf_field() !!}
 			<label for="memberName">Full Name</label>
-			<input type="text" name="memberName" id="memberName" placeholder="Full Name" class="form-control" data-bvalidator="required" data-bvalidator-msg="Please enter your full name">
+			<input type="text" name="memberName" id="memberName" placeholder="Full Name" class="form-control" data-bvalidator="regex[\w+\s\w+],required" data-bvalidator-msg="Please enter your full name">
 			<br>
 			<label for="email">Email</label>
 			<input type="text" name="email" id="email" placeholder="Email" class="form-control" data-bvalidator="required,email" data-bvalidator-msg="Please enter your email">

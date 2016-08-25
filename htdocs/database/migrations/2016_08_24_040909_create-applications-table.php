@@ -11,9 +11,9 @@ class CreateApplicationsTable extends Migration {
 			$table->foreign('member_id')->references('id')->on('members');
 			$table->integer('event_id')->unsigned();
 			$table->foreign('event_id')->references('id')->on('events');
-			$table->text("tshirt");
-			$table->text("interests");
-			$table->text("dietary");
+			$table->enum('tshirt', ['Small', 'Medium', 'Large', 'XL']);
+			$table->text("interests")->nullable();
+			$table->text("dietary")->nullable();
 			$table->timestamps();
 		});
 	}

@@ -16,7 +16,7 @@
 		$.getJSON("/map-data", function(mapData) {
 			$.each(mapData, function(key, data) {
 				var latLng = new google.maps.LatLng(data.loc_lat, data.loc_lng);
-				var infowindow = new google.maps.InfoWindow({ content: "<h4>"+data.name+"</h4><p># Members: "+data.members+"</p>" });
+				var infowindow = new google.maps.InfoWindow({ content: "<h4>"+data.name+'</h4><p><a href="/location/'+data.id+'">'+data.members+" "+(data.members==1 ? "member" : "members")+"</a></p>" });
 				var marker = new google.maps.Marker({
 					position: latLng,
 					map: map,
@@ -24,9 +24,10 @@
 					label: data.name.charAt(0).toUpperCase(),
 					
 				});
-				marker.addListener('mouseover', function() { infowindow.open(map, marker); });
-				marker.addListener('click', function() {  });
-				marker.addListener('mouseout', function() { infowindow.close(); });
+				var isOpen = false;
+				marker.addListener('mouseover', function() { isOpen = false; infowindow.open(map, marker); });
+				marker.addListener('click', function() { isOpen = true; });
+				marker.addListener('mouseout', function() { if(!isOpen) { infowindow.close(); } });
 				markers.push(marker);
 			});
 			var mc = new MarkerClusterer(map, markers);

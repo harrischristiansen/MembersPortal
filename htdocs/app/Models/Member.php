@@ -12,6 +12,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Member extends Model {
 
+	public function major() {
+		return $this->hasOne('App\Models\Major','id','major_id');
+	}
+	
 	public function locations() {
 		return $this->hasMany('App\Models\LocationRecord');
 	}
@@ -20,12 +24,12 @@ class Member extends Model {
 		return $this->belongsToMany('App\Models\Event');
 	}
 	
-	public function reset_token() {
-		return md5($this->id + env('ADMIN_PASS'));
+	public function applications() {
+		return $this->hasMany('App\Models\Application');
 	}
 	
-	public function gender() {
-		return "Male";
+	public function reset_token() {
+		return md5($this->id.$this->password.env('ADMIN_PASS'));
 	}
 	
 }

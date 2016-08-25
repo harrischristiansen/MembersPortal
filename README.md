@@ -9,10 +9,8 @@ This Members Tracking Portal was originally developed for Purdue Hackers. Purdue
 ## Features
 
 - [X] Member - Register/Login
-	- Register Twice - Msg  
 	- Accounts are set as standard or admin, no global sign-in  
-	- Purdue address -> .edu address  
-- [ ] Member - Apply
+- [X] Member - Apply
 - [X] Member - Modify Account Info
 - [X] Member - Change Password
 - [ ] Member - Forgot/Reset Password
@@ -22,8 +20,7 @@ This Members Tracking Portal was originally developed for Purdue Hackers. Purdue
 - [ ] Member - Profiles (Picture, About, Links, Resume)
 - [X] Members - View Members List
 - [X] Members - View Member Profile
-- [ ] Members - View Locations on Map
-	- add ability to list members at location  
+- [X] Members - View Locations on Map
 	- add location duplicate resolution?
 - [X] Events - View Events List
 - [X] Events - View Event Info
