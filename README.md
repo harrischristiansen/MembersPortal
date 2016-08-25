@@ -8,8 +8,7 @@ This Members Tracking Portal was originally developed for Purdue Hackers. Purdue
 
 ## Features
 
-- [X] Member - Register/Login
-	- Accounts are set as standard or admin, no global sign-in  
+- [X] Member - Register/Login 
 - [X] Member - Apply
 - [X] Member - Modify Account Info
 - [X] Member - Change Password

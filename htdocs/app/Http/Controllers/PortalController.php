@@ -47,17 +47,8 @@ class PortalController extends Controller {
 		$passwordMD5 = md5($password);
 		
 		if($email == "") {
-			if($password == env('ADMIN_PASS')) {
-				$request->session()->put('authenticated_admin', 'true');
-				$request->session()->put('authenticated_member', 'true');
-				$request->session()->put('member_id', '-1');
-				$request->session()->put('member_name', 'Admin');
-				$request->session()->flash('msg', 'Logged In: Admin!');
-				return $this->getIndex();
-			} else {
-				$request->session()->flash('msg', 'Please enter an email.');
-				return $this->getLogin();
-			}
+			$request->session()->flash('msg', 'Please enter an email.');
+			return $this->getLogin();
 		} else {
 			$matchingMembers = Member::where('email',$email)->orWhere('email_public', $email)->orWhere('email_edu', $email)->get();
 			
@@ -69,6 +60,12 @@ class PortalController extends Controller {
 			foreach($matchingMembers as $member) {
 				if($member->password == $passwordMD5) {
 					$this->setAuthenticated($request, $member->id, $member->name);
+					
+					// Admin
+					if ($member->admin) {
+						$request->session()->put('authenticated_admin', 'true');
+					}
+					
 					return $this->getIndex();
 				}
 			}
@@ -160,7 +157,7 @@ class PortalController extends Controller {
 		$request->session()->put('authenticated_member', 'true');
 		$request->session()->put('member_id', $memberID);
 		$request->session()->put('member_name', $memberName);
-		$request->session()->flash('msg', 'Logged In!');
+		$request->session()->flash('msg', "Welcome Back: $memberName!");
 	}
 	
 	/////////////////////////////// Resource Pages ///////////////////////////////
@@ -482,7 +479,6 @@ class PortalController extends Controller {
 	}
 	
 	public function getEvent(Request $request, $eventID) {
-		$isAdmin = $request->session()->get('authenticated_admin');
 		$event = Event::find($eventID);
 		
 		if(is_null($event)) {

@@ -13,6 +13,7 @@ class CreateMembersTable extends Migration {
 	public function up() {
 		Schema::create('members', function (Blueprint $table) {
 			$table->increments('id');
+			$table->boolean('admin');
 			$table->string('name');
 			$table->string('email')->unique();
 			$table->string('email_public');

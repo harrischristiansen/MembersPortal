@@ -10,7 +10,7 @@
 		</div>
 		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 			<ul class="nav navbar-nav navbar-right">
-				@if(session()->get('authenticated_member') == "true" && session()->get('authenticated_admin') != "true")
+				@if (session()->get('authenticated_member') == "true")
 				<li><a href="/member/{{ session()->get('member_id') }}">Profile</a></li>
 				@endif
 				<li><a href="/members">Members</a></li>
