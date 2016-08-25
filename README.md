@@ -21,7 +21,7 @@ This Members Tracking Portal was originally developed for Purdue Hackers. Purdue
 - [X] Members - View Members List
 - [X] Members - View Member Profile
 - [X] Members - View Locations on Map
-	- add location duplicate resolution?
+	- add location duplicate resolution?  
 - [X] Events - View Events List
 - [X] Events - View Event Info
 - [X] Events - Member Register
@@ -32,7 +32,7 @@ This Members Tracking Portal was originally developed for Purdue Hackers. Purdue
 - [X] Admin - Events - Modify
 - [X] Admin - Events - Delete
 - [X] Admin - Events - Checkin Members
-- [ ] Admin - Events - Un-Checkin (incase of accidental checkin)
+	- Undo Checkin (Delete Checkin Record)
 
 ## Local MAMP Installation - Mac  
 

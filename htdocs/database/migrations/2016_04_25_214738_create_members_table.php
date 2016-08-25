@@ -22,10 +22,14 @@ class CreateMembersTable extends Migration {
 			$table->enum('gender', ['', 'Male', 'Female', 'Other', 'No']);
 			$table->smallInteger('graduation_year');
 			$table->integer('major_id')->unsigned()->nullable();
+			$table->text("picture");
 			$table->text("description");
 			$table->text("facebook");
 			$table->text("github");
+			$table->text("linkedin");
+			$table->text("devpost");
 			$table->text("website");
+			$table->text("resume");
 			$table->timestamps();
 		});
 	}

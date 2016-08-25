@@ -201,8 +201,9 @@ class PortalController extends Controller {
 		
 		$locations = $member->locations()->get();
 		$events = $member->events()->get();
+		$majors = Major::orderByRaw('(id = 1) DESC, name')->get(); // Order by name, but keep first major at top
 		
-		return view('pages.member',compact("member","locations","events"));
+		return view('pages.member',compact("member","locations","events","majors"));
 	}
 	
 	public function getReset(Request $request, $memberID, $reset_token) {
@@ -229,12 +230,20 @@ class PortalController extends Controller {
 	
 	public function postMember(EditMemberRequest $request, $memberID) {
 		$member = Member::find($memberID);
+		
 		$memberName = $request->input('memberName');
 		$password = $request->input('password');
 		$email = $request->input('email');
 		$email_public = $request->input('email_public');
-		$description = $request->input('description');
 		$gradYear = $request->input('gradYear');
+		$gender = $request->input('gender');
+		$major = $request->input('major');
+		$description = $request->input('description');
+		$facebook = $request->input('facebook');
+		$github = $request->input('github');
+		$linkedin = $request->input('linkedin');
+		$devpost = $request->input('devpost');
+		$website = $request->input('website');
 		
 		// Verify Input
 		if(is_null($member)) {
@@ -246,22 +255,37 @@ class PortalController extends Controller {
 			return $this->getMember($request, $memberID);
 		}
 		
-		// Edit Member
+		//// Edit Member ////
 		$member->name = $memberName;
-		$member->email = $email;
-		if(strpos($email, ".edu") !== false) {
-			$member->email_edu = $email;
-		}
+		
+		// Password
 		if(strlen($password) > 0) {
 			$member->password = md5($password);
 			$this->setAuthenticated($request,$member->id,$member->name);
+		}
+		
+		// Email
+		$member->email = $email;
+		if(strpos($email, ".edu") !== false) {
+			$member->email_edu = $email;
 		}
 		$member->email_public = $email_public;
 		if(strpos($email_public, ".edu") !== false) {
 			$member->email_edu = $email_public;
 		}
-		$member->description = $description;
+		
+		// Text Fields
 		$member->graduation_year = $gradYear;
+		$member->gender = $gender;
+		if ($major > 0) {
+			$member->major_id = $major;
+		}
+		$member->description = $description;
+		$member->facebook = $facebook;
+		$member->github = $github;
+		$member->linkedin = $linkedin;
+		$member->devpost = $devpost;
+		$member->website = $website;
 		$member->save();
 		
 		// Return Response
@@ -442,8 +466,10 @@ class PortalController extends Controller {
 		
 		$canApply = $this->isAuthenticated($request) && $event->requiresApplication;
 		$canRegister = $this->isAuthenticated($request) && $event->requiresRegistration;
-		$hasRegistered = count($this->getAuthenticated($request)->applications()->where('event_id',$eventID)->get()) > 0;
-
+		$authenticatedMember = $this->getAuthenticated($request);
+		if ($authenticatedMember != null) {
+			$hasRegistered = count($authenticatedMember->applications()->where('event_id',$eventID)->get()) > 0;
+		}
 		
 		return view('pages.event',compact("event","members","canApply","canRegister","hasRegistered"));
 	}

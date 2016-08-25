@@ -3,7 +3,7 @@
 @section("content")
 
 <div class="section"><div class='section-container'>
-	<h3>Sign-Up: {{ $event->name }}</h3>
+	<h3>Sign Up: {{ $event->name }}</h3>
 	<div class="panel panel-default">
 		<form method="post" action="/apply/{{ $event->id }}" class="panel-body validate">
 			{!! csrf_field() !!}
@@ -37,7 +37,7 @@
 			<input type="text" name="dietary" id="dietary" placeholder="Dietary Restrictions" class="form-control">
 			<br>
 			
-			<input type="submit" value="Apply" class="btn btn-primary">
+			<input type="submit" value="Sign Up" class="btn btn-primary">
 		</form>
 	</div>
 </div></div>

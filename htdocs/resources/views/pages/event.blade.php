@@ -8,9 +8,9 @@
 		<a href="/checkin/{{ $event->id }}" class="pull-right"><button type="button" class="btn btn-primary btn-sm">Checkin</button></a>
 		@elseif ($canApply)
 			@if ($hasRegistered)
-			<button type="button" class="btn btn-primary btn-sm pull-right">Application Submitted</button>
+			<button type="button" class="btn btn-primary btn-sm pull-right">Registered</button>
 			@else
-			<a href="/apply/{{ $event->id }}" class="pull-right"><button type="button" class="btn btn-primary btn-sm">Apply</button></a>
+			<a href="/apply/{{ $event->id }}" class="pull-right"><button type="button" class="btn btn-primary btn-sm">Sign Up</button></a>
 			@endif
 		@elseif ($canRegister)
 			@if ($hasRegistered)
@@ -59,10 +59,12 @@
 	@else
 	<div class="panel panel-default text-left">
 		<div class="panel-body">
-			<b>Name:</b> {{ $event->name }}<br>
-			<b>Date:</b> {{ $event->dateFriendly() }}<br>
+			<b>Event Name:</b> {{ $event->name }}<br>
+			<b>Event Date:</b> {{ $event->dateFriendly() }}<br>
 			<b>Location:</b> {{ $event->location }}<br>
-			<b>Facebook:</b> {{ $event->facebook }}<br>
+			@if ($event->facebook)
+			<b>Facebook Event:</b> <a href="{{ $event->facebook }}">{{ $event->facebook }}</a><br>
+			@endif
 		</div>
 	</div>
 	@endif
