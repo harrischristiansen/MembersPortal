@@ -268,7 +268,7 @@ label {
 	width: 55px;
 	height: 55px;
 	margin-left: 0.5em;
-	padding: 11px;
+	padding: 6px;
 
 	border-radius: 100%;
 	border: 2px solid #aaa;
@@ -288,6 +288,10 @@ label {
 }
 
 .footer-links .facebook {
+	margin-left: 0;
+}
+
+.footer-links .facebook a {
 	margin-left: 0;
 }
 
