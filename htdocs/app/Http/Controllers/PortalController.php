@@ -157,7 +157,7 @@ class PortalController extends Controller {
 		$request->session()->put('authenticated_member', 'true');
 		$request->session()->put('member_id', $memberID);
 		$request->session()->put('member_name', $memberName);
-		$request->session()->flash('msg', "Welcome Back: $memberName!");
+		$request->session()->flash('msg', "Welcome $memberName!");
 	}
 	
 	/////////////////////////////// Resource Pages ///////////////////////////////

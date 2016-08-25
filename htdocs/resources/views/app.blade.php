@@ -5,14 +5,12 @@
 	    <meta http-equiv="X-UA-Compatible" content="IE=edge">
 	    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 	    
-        <title>{{ env('ORG_NAME') }} {{ isset($pageName) ? " - ".$pageName : "" }}</title>
+        <title>{{ isset($pageName) ? $pageName." - " : "" }} {{ env('ORG_NAME') }}</title>
         
         <meta name="author" content="Harris Christiansen">
         <meta name="description" content="{{ env('ORG_NAME') }} - Members and Events Portal">
         <meta name="keywords" content="{{ env('ORG_KEYWORDS') }}">
 
-        <link href="https://fonts.googleapis.com/css?family=Lato:400,900" rel="stylesheet" type="text/css">
-        
         <!-- BValidator -->
         <link href="/css/bvalidator.css" rel="stylesheet" type="text/css" />
         
@@ -32,6 +30,7 @@
 		<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
 		<link href='http://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' type='text/css'>
 		<link href='http://fonts.googleapis.com/css?family=Roboto+Slab:300' rel='stylesheet' type='text/css'>
+        <link href="https://fonts.googleapis.com/css?family=Lato:400,900" rel="stylesheet" type="text/css">
 	    
 	    <!-- Portal Site CSS -->
 	    <link rel="stylesheet" type="text/css" href="/css/purduehackers.css">

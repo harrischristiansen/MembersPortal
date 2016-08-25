@@ -99,12 +99,14 @@
 	</div>
 </div>
 
+{{--
 <div class='section sponsors'>
 	<div class='section-container'>
 		<h1>Sponsors</h1><br><br>
-		<img src="images/PH/facebook.png" style="height:50px;"><br><br><br>
-		<img src="images/PH/ngc.png" style="height:50px;">
+		<img src="/images/PH/facebook.png" style="height:50px;"><br><br><br>
+		<img src="/images/PH/ngc.png" style="height:50px;">
 	</div>
 </div>
+--}}
 
 @stop
