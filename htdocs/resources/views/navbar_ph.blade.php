@@ -1,6 +1,12 @@
-<nav class="navbar navbar-fixed-top">
+<nav class="navbar navbar-default navbar-fixed-top">
 	<div class="nav-container container">
 		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                        	<span class="sr-only">Toggle navigation</span>
+                        	<span class="icon-bar"></span>
+                        	<span class="icon-bar"></span>
+                        	<span class="icon-bar"></span>
+                        </button>
 			<a id='nav-brand' class="navbar-brand" href="/">
 			<div class="nav-logo"></div>
 			@if(session()->get('authenticated_admin') != "true")
@@ -8,7 +14,7 @@
 			@endif
 			</a>
 		</div>
-		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+		<div class="collapse navbar-collapse" id="navbar">
 			<ul class="nav navbar-nav navbar-right">
 				@if (session()->get('authenticated_member') == "true")
 				<li><a href="/member/{{ session()->get('member_id') }}">Profile</a></li>
