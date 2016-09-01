@@ -58,7 +58,7 @@
 		@include('footer')
 		
 		<!-- jQuery / jQuery UI -->
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 		<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
 		<!-- BValidator -->
 		<script type="text/javascript" src="/js/jquery.bvalidator-yc.js"></script>
