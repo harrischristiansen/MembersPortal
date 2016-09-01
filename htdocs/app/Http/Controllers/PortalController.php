@@ -218,9 +218,10 @@ class PortalController extends Controller {
 		
 		$locations = $member->locations()->get();
 		$events = $member->events()->get();
+		$majors = Major::orderByRaw('(id = 1) DESC, name')->get(); // Order by name, but keep first major at top
 		$setPassword = true;
 		
-		return view('pages.member',compact("member","locations","events","setPassword","reset_token"));
+		return view('pages.member',compact("member","locations","events","majors","setPassword","reset_token"));
 	}
 	
 	/////////////////////////////// Editing Members ///////////////////////////////

@@ -9,8 +9,9 @@
 	@if ($member->id == session()->get('member_id') || session()->get('authenticated_admin') == "true" || isset($setPassword) ) {{-- Edit Profile --}}
 	<div class="panel panel-default">
 		<form method="post" action="/member/{{ $member->id }}" enctype="multipart/form-data" class="panel-body validate">
+			<p class="text-muted text-center">Fields marked with an * are required</p>
 			{!! csrf_field() !!}
-			<label for="memberName">Full Name</label>
+			<label for="memberName">Full Name *</label>
 			<input type="text" name="memberName" id="memberName" placeholder="Full Name" value="{{ $member->name }}" class="form-control" data-bvalidator="required" data-bvalidator-msg="Please enter your full name">
 			<br>
 			<label for="picture">Profile Picture (JPG or PNG)</label>
@@ -19,15 +20,15 @@
 			@endif
 			<input type="file" name="picture" id="picture" class="form-control">
 			<br>
-			<label for="email">Account Email</label>
+			<label for="email">Account Email *</label>
 			<input type="text" name="email" id="email" placeholder="Email" value="{{ $member->email }}" class="form-control" data-bvalidator="required,email" data-bvalidator-msg="An email is required for your account.">
 			<br>
 			@if (isset($setPassword))
-			<label for="password">Password</label>
+			<label for="password">Password *</label>
 			<input type="password" name="password" id="password" placeholder="Password" class="form-control" data-bvalidator="required" data-bvalidator-msg="A password is required">
 			<input type="hidden" name="reset_token" value="{{ $reset_token }}">
 			<br>
-			<label for="confirmPassword">Confirm Password</label>
+			<label for="confirmPassword">Confirm Password *</label>
 			<input type="password" name="confirmPassword" id="confirmPassword" placeholder="Confirm Password" class="form-control" data-bvalidator="required,equalto[password]" data-bvalidator-msg="Password does not match">
 			<br>
 			@endif
@@ -37,7 +38,7 @@
 			<label for="description">Public Message</label>
 			<textarea name="description" id="description" class="form-control" placeholder="Public Message">{{ $member->description }}</textarea>
 			<br>
-			<label for="gradYear">Year of Graduation</label>
+			<label for="gradYear">Year of Graduation *</label>
 			<input type="number" name="gradYear" id="gradYear" placeholder="Graduation Year" value="{{ $member->graduation_year}}" class="form-control" data-bvalidator="required,number" data-bvalidator-msg="A graduation year is required">
 			<br>
 			<label for="major">Major</label>
