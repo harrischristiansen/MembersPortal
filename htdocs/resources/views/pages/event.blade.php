@@ -5,7 +5,10 @@
 <div class="section"><div class='section-container'>
 	<h3>{{ $event->name }}
 		@if (session()->get('authenticated_admin') == "true")
-		<a href="/checkin/{{ $event->id }}" class="pull-right"><button type="button" class="btn btn-primary btn-sm">Checkin</button></a>
+			<a href="/checkin/{{ $event->id }}" class="pull-right"><button type="button" class="btn btn-primary btn-sm">Checkin</button></a>
+			@if ($canApply || $canRegister)
+			<a href="/applications/{{ $event->id }}" class="pull-left"><button type="button" class="btn btn-primary btn-sm">{{ count($applications) }} Applications</button></a>
+			@endif
 		@elseif ($canApply)
 			@if ($hasRegistered)
 			<button type="button" class="btn btn-primary btn-sm pull-right">Registered</button>
@@ -69,6 +72,8 @@
 	</div>
 	@endif
 	
+	@if(count($members) > 0)
+	
 	<hr>
 	
 	<h3>Members Attended</h3>
@@ -95,6 +100,8 @@
 		</tbody>
 		</table>
 	</div>
+	
+	@endif
 	
 	@if(session()->get('authenticated_admin') == "true")
 	<a href="/event-delete/{{ $event->id }}" class="pull-right"><button type="button" class="btn btn-danger btn-sm">Delete Event</button></a>

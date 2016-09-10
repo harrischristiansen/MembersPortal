@@ -495,8 +495,12 @@ class PortalController extends Controller {
 		if ($authenticatedMember != null) {
 			$hasRegistered = count($authenticatedMember->applications()->where('event_id',$eventID)->get()) > 0;
 		}
+		$applications = [];
+		if ($request->session()->get('authenticated_admin') == "true") {
+			$applications = $event->applications()->get();
+		}
 		
-		return view('pages.event',compact("event","members","canApply","canRegister","hasRegistered"));
+		return view('pages.event',compact("event","members","canApply","canRegister","hasRegistered","applications"));
 	}
 	
 	/////////////////////////////// Event Checkin System ///////////////////////////////
@@ -617,6 +621,13 @@ class PortalController extends Controller {
 		
 		$request->session()->flash('msg', 'Success, your application has been submitted!');
 		return $this->getEvent($request, $eventID);
+	}
+	
+	public function getApplications(AdminRequest $request, $eventID=-1) {
+		$event = Event::findOrFail($eventID);
+		$applications = $event->applications()->get();
+		
+		return view('pages.applications',compact("event","applications"));
 	}
 
 	/////////////////////////////// Helper Functions ///////////////////////////////

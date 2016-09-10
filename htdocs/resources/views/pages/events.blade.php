@@ -20,7 +20,7 @@
 				<th>Name</th>
 				<th>Date</th>
 				<th>Location</th>
-				<th># Checked-in</th>
+				<th># Attended</th>
 			</tr>
 		</thead>
 		<tbody>
