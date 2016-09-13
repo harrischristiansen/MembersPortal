@@ -99,7 +99,7 @@ class PortalController extends Controller {
 		$gradYear = $request->input('gradYear');
 		
 		if($memberName=="" || $email=="" || $password=="" || $gradYear=="") {
-			$request->session()->flash('msg', 'Please fill our all fields.');
+			$request->session()->flash('msg', 'Please enter all fields.');
 			return $this->getJoin();
 		}
 		
@@ -383,7 +383,6 @@ class PortalController extends Controller {
 	
 	/////////////////////////////// Editing Locations ///////////////////////////////
 	
-/*
 	public function postLocation(AdminRequest $request, $locationID) {
 		$location = Location::find($locationID);
 		
@@ -398,7 +397,6 @@ class PortalController extends Controller {
 		
 		return $this->getLocation($locationID);
 	}
-*/
 	
 	public function postLocationRecordNew(LoggedInRequest $request, $memberID) {
 		$locationName = $request->input("locationName");
@@ -421,7 +419,7 @@ class PortalController extends Controller {
 		$location = Location::firstOrCreate(['name'=>$locationName, 'city'=>$city]);
 		
 		if($location->loc_lat==0) {
-			$this->completeLocation($location);
+			$this->addLocationLatLng($location);
 		}
 		
 		$locationRecord = new LocationRecord;
@@ -435,7 +433,7 @@ class PortalController extends Controller {
 		return $this->getMember($request, $memberID);
 	}
 	
-	public function completeLocation($location) {
+	public function addLocationLatLng($location) {
 		//$location->loc_lat = rand(0, 90);
 		//$location->loc_lng = rand(0, 360);
 		
@@ -522,12 +520,37 @@ class PortalController extends Controller {
 		return view('pages.checkin',compact("event","eventID"));
 	}
 	
-	public function getCheckinMember(AdminRequest $request, $eventID, $memberID) {
-		$event = Event::find($eventID);
-		$member = Member::find($memberID);
+	public function postCheckinMember(AdminRequest $request) {
+		$successResult = "true";
 		
-		if(is_null($event) || is_null($member)) {
+		$event = Event::find($request->input("eventID"));
+		if ($request->input("memberID") > 0) {
+			$member = Member::find($request->input("memberID"));
+		} else { $member = null; }
+		
+		$memberName = $request->input("memberName");
+		$memberEmail = $request->input("memberEmail");
+		
+		if(strlen($memberName)<2 || !filter_var($memberEmail, FILTER_VALIDATE_EMAIL)) {
+			return "invalid";
+		}
+		
+		if(is_null($event)) {
 			return "false";
+		}
+		
+		if(is_null($member)) { // New Member
+			$member = new Member;
+			
+			if (Member::where('email',$memberEmail)->first()) {
+				return "exists";
+			}
+			
+			$member->name = $memberName;
+			$member->email = $memberEmail;
+			
+			$member->save();
+			$successResult = "new";
 		}
 		
 		if($event->members()->find($member->id)) {
@@ -535,7 +558,7 @@ class PortalController extends Controller {
 		}
 		$event->members()->attach($member->id);
 		
-		return "true";
+		return $successResult;
 	}
 	
 	/////////////////////////////// Managing Events ///////////////////////////////

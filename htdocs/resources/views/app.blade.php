@@ -60,6 +60,7 @@
 		<!-- jQuery / jQuery UI -->
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 		<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+		<script type="text/javascript" src="/js/jquery.cookie.js"></script>
 		<!-- BValidator -->
 		<script type="text/javascript" src="/js/jquery.bvalidator-yc.js"></script>
 		<!-- Bootstrap JS -->

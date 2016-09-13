@@ -2,7 +2,11 @@
 
 @section("content")
 <div class="section"><div class='section-container'>
-	<h3>Members</h3>
+	<h3>Members
+		@if(session()->get('authenticated_admin') == "true")
+		<button type="button" class="btn btn-primary btn-sm pull-right">{{ count($members) }} members</button>
+		@endif
+	</h3>
 	<div class="panel panel-default">
 		<table class="table table-bordered table-hover table-clickable panel-body" >
 		<thead>

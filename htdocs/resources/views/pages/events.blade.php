@@ -10,7 +10,8 @@
 		@endif
 		
 		@if(session()->get('authenticated_admin') == "true")
-		<a href="/event-new" class="pull-right"><button type="button" class="btn btn-primary btn-sm">Add Event</button></a>
+		<a href="/anvil-wifi" class="pull-left"><button type="button" class="btn btn-info btn-sm">Anvil Wifi</button></a>
+		<a href="/event-new" class="pull-right"><button type="button" class="btn btn-primary btn-sm">+ Add Event</button></a>
 		@endif
 	</h3>
 	<div class="panel panel-default">

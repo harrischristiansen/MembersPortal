@@ -9,7 +9,7 @@
                         </button>
 			<a id='nav-brand' class="navbar-brand" href="/">
 			<div class="nav-logo"></div>
-			@if(session()->get('authenticated_admin') != "true")
+			@if(true || session()->get('authenticated_admin') != "true")
 			<span class="nav-name">{{ env('ORG_NAME') }}</span>
 			@endif
 			</a>
@@ -23,9 +23,6 @@
 				<li><a href="/map">Map</a></li>
 				@if(session()->get('authenticated_member') == "true")
 					<li><a href="/events">Events</a></li>
-					@if(session()->get('authenticated_admin') == "true")
-						<li><a href="/anvil-wifi">Anvil Wifi</a></li>
-					@endif
 					<li><a href="/logout">Logout</a></li>
 				@else
 					<li><a href="/login">Login</a></li>

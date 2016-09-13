@@ -6,29 +6,36 @@
 	<h3>Checkin - {{ $event->name }}</h3>
 	<div class="panel panel-default">
 		<div class="panel-body">
-			<input type="text" name="memberName" id="memberName" placeholder="Name" class="form-control membersautocomplete">
-			<hr>
+			{{ csrf_field() }}
 			<div class="input-group">
-				<span class="input-group-addon" id="selectedMemberTitle">Selected Member: </span>
-				<input type="text" id="selectedMember" class="form-control" placeholder="Selected Member" readonly>
+				<span class="input-group-addon" id="memberNameTitle">Name: </span>
+				<input type="text" id="memberName" name="memberName" class="form-control membersautocomplete" placeholder="Member Name">
 				<span class="input-group-btn">
 					<button class="btn btn-primary" type="button" onclick="checkinMember();">Checkin</button>
 				</span>
     		</div>
     		<br>
 			<div class="input-group">
-				<span class="input-group-addon" id="selectedMemberTitle">Email: </span>
-				<input type="text" id="selectedEmail" class="form-control" placeholder="Selected Member Email" readonly>
+				<span class="input-group-addon" id="memberEmailTitle">Email: </span>
+				<input type="text" id="memberEmail" name="memberEmail" class="form-control membersautocomplete" placeholder="Member Email" >
     		</div>
     		<br>
 			<div class="input-group">
-				<span class="input-group-addon" id="selectedMemberTitle">Number Events Attended: </span>
-				<input type="text" id="selectedNumber" class="form-control" placeholder="Number Events Attended" readonly>
+				<span class="input-group-addon" id="memberAttendedTitle">Number Events Attended: </span>
+				<input type="text" id="memberAttended" class="form-control" placeholder="Number Events Attended" readonly>
     		</div>
 		</div>
 	</div>
 	<div id="checkinAlerts">
 	</div>
 </div></div>
+
+@stop
+
+@section("customJS")
+
+<script>
+	var eventID = {{ $event->id }};
+</script>
 
 @stop

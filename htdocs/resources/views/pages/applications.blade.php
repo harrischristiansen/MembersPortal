@@ -4,6 +4,7 @@
 <div class="section"><div class='section-container'>
 	<h3>{{ $event->name }} - Applications
 		<a href="/event/{{ $event->id }}" class="pull-left"><button type="button" class="btn btn-primary btn-sm"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> Event</button></a>
+		<button type="button" class="btn btn-primary btn-sm pull-right">{{ count($applications) }} applications</button>
 	</h3>
 	<div class="panel panel-default">
 		<table class="table table-bordered table-hover table-clickable panel-body" >
