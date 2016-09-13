@@ -472,7 +472,7 @@ class PortalController extends Controller {
 	/////////////////////////////// Viewing Events ///////////////////////////////
 	
 	public function getEvents() {
-		$events = Event::all();
+		$events = Event::orderBy("event_time")->get();
 		$checkin = false;
 		return view('pages.events',compact("events","checkin"));
 	}
