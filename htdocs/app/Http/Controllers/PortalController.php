@@ -169,7 +169,10 @@ class PortalController extends Controller {
 	/////////////////////////////// Viewing Members ///////////////////////////////
 	
 	public function getMembers() {
-		$members = Member::orderBy('name')->get();
+		$members = Member::with('events')->orderBy('name')->get()->sortByDesc(function($member, $key) {
+			return (100000 * $member->events->count()) - $key;
+		});
+		
 		return view('pages.members',compact("members"));
 	}
 	
