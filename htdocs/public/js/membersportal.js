@@ -11,6 +11,10 @@ $(".datepicker").datepicker({
 	dateFormat: 'yy-mm-dd',
 });
 
+$(document).ready(function() { 
+	$(".sortableTable").tablesorter(); 
+});
+
 var selectedID = -1;
 
 $(".membersautocomplete").autocomplete({

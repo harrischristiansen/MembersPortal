@@ -15,29 +15,29 @@
 		@endif
 	</h3>
 	<div class="panel panel-default">
-		<table class="table table-bordered table-hover table-clickable panel-body" >
-		<thead>
-			<tr>
-				<th>Name</th>
-				<th>Date</th>
-				<th>Location</th>
-				<th># Attended</th>
-			</tr>
-		</thead>
-		<tbody>
-		@foreach ($events as $event)
-			@if ($checkin == true)
-		    <tr onclick="location.href='{{ URL::to('/checkin', $event->id) }}';">
-			@else
-		    <tr onclick="location.href='{{ URL::to('/event', $event->id) }}';">
-			@endif
-		    	<td>{{ $event->name }}</td>
-				<td>{{ $event->event_time->format('M j, Y') }}</td>
-		    	<td>{{ $event->location }}</td>
-		    	<td>{{ count($event->members) }}</td>
-		    </tr>
-		@endforeach
-		</tbody>
+		<table class="table table-bordered table-hover table-clickable panel-body sortableTable">
+			<thead>
+				<tr>
+					<th>Name</th>
+					<th>Date</th>
+					<th>Location</th>
+					<th># Attended</th>
+				</tr>
+			</thead>
+			<tbody>
+			@foreach ($events as $event)
+				@if ($checkin == true)
+			    <tr onclick="location.href='{{ URL::to('/checkin', $event->id) }}';">
+				@else
+			    <tr onclick="location.href='{{ URL::to('/event', $event->id) }}';">
+				@endif
+			    	<td>{{ $event->name }}</td>
+					<td>{{ $event->event_time->format('M j, Y') }}</td>
+			    	<td>{{ $event->location }}</td>
+			    	<td>{{ count($event->members) }}</td>
+			    </tr>
+			@endforeach
+			</tbody>
 		</table>
 	</div>
 </div></div>
