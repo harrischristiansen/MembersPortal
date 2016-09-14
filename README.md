@@ -8,27 +8,22 @@ This Members Tracking Portal was originally developed for Purdue Hackers. Purdue
 
 ## Features
 
-- [X] Member - Register/Login 
-- [X] Member - Apply
-- [X] Member - Modify Account Info
+- [X] Member - Register/Login
 - [X] Member - Change Password
 - [ ] Member - Forgot/Reset Password
-- [X] Member - Add Personal Location
-- [X] Member - Delete Personal Location
-- [ ] Member - Automatic Status Changes (Member/Inactive/Alumni)
-- [X] Member - Profiles (Picture, About, Links, Resume)
-- [X] Members - View Members List
-- [X] Members - View Member Profile
-- [X] Members - View Locations on Map
-	- add location duplicate resolution?  
-- [X] Events - View Events List
-- [X] Events - View Event Info
-- [X] Events - Member Register
+- [X] Member - Profiles (Picture, About, Links, Resume, Status) + Locations + Event History
+	- Automatic Status Changes (Member/Inactive/Alumni)
+- [X] Members - Members List
+- [X] Members - Map of Members Locations
+	- Location duplicate resolution?  
+- [X] Events - Events List
+- [X] Events - Event Info
+- [X] Events - Apply/Register
 - [X] Admin - Members - Modify
-- [ ] Admin - Members - Manage Applications
 - [X] Admin - Events - Create
 - [X] Admin - Events - Modify
 - [X] Admin - Events - Delete
+- [ ] Admin - Events - Manage Applications
 - [X] Admin - Events - Checkin Members
 	- Undo Checkin (Delete Checkin Record)
 	- Create Account For (Provide only name/email, creates account and sends email to new member)
