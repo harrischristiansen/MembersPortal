@@ -100,7 +100,7 @@
 			<b>Major:</b> {{ $member->major->name }}<br>
 			@endif
 			@if ($member->description)
-			<b>About:</b> {{ $member->description }}<br>
+			<b>About:</b> {!! nl2br(e($member->description)) !!}<br>
 			@endif
 			@if ($member->facebook)
 			<b>Facebook Profile:</b> <a href="{{ $member->facebook }}">{{ $member->facebook }}</a><br>
