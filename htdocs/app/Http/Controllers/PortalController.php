@@ -10,6 +10,7 @@ namespace App\Http\Controllers;
 
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use DB;
 use Mail;
 use App\Http\Controllers\Controller;
@@ -59,11 +60,15 @@ class PortalController extends Controller {
 			}
 			
 			foreach($matchingMembers as $member) {
-				if($member->password == $passwordMD5) {
+				if(Hash::check($password, $member->password) || $member->password == $passwordMD5) {
 					$this->setAuthenticated($request, $member->id, $member->name);
 					
-					// Admin
-					if ($member->admin) {
+					if (Hash::needsRehash($member->password)) { // Check If Password Needs Rehash
+						$member->password = Hash::make($password);
+						$member->save();
+					}
+					
+					if ($member->admin) { // Admin Accounts
 						$request->session()->put('authenticated_admin', 'true');
 					}
 					
@@ -123,7 +128,7 @@ class PortalController extends Controller {
 		$member = new Member;
 		$member->name = $memberName;
 		$member->email = $email;
-		$member->password = md5($password);
+		$member->password = Hash::make($password);
 		if(strpos($email, ".edu") !== false) {
 			$member->email_edu = $email;
 		}
@@ -262,7 +267,7 @@ class PortalController extends Controller {
 		
 		// Password
 		if(strlen($password) > 0) {
-			$member->password = md5($password);
+			$member->password = Hash::make($password);
 			$this->setAuthenticated($request,$member->id,$member->name);
 		}
 		
