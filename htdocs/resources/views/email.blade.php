@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html><head>
 	<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
-	<title>Purdue Hackers Account Created</title>
+	<title>{{ env('ORG_NAME') }} Account Created</title>
 	<style>
 	body {
 		background-color: #eeda69;
@@ -20,7 +20,7 @@
 	.message {
 		margin-top: 15px;
 		background-color: #EEEEEE;
-		border-radius: 30px;
+		border-radius: 18px;
 		padding: 20px;
 		width: 500px;
 		margin-left: auto;
@@ -46,12 +46,12 @@
 	</style>
 </head><body>
 	<div id="header">
-		<img src="http://www.purduehackers.com/images/logo_white_square_300.png" id="headerImage">
+		<img src="{{ Request::root() }}/images/logo_white_square_300.png" id="headerImage">
 	</div>
 	
 	@yield('content')
 	
 	<div id="footer">
-		Sent by <a href="http://www.purduehackers.com">Purdue Hackers</a> (<a href="mailto:purduehackers@gmail.com">purduehackers@gmail.com</a>)
+		Sent by <a href="{{ Request::root() }}">{{ env('ORG_NAME') }}</a> (<a href="mailto:{{ env('MAIL_USERNAME') }}">{{ env('MAIL_USERNAME') }}</a>)
 	</div>
 </body></html>
