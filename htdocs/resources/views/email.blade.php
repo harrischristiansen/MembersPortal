@@ -49,11 +49,7 @@
 		<img src="http://www.purduehackers.com/images/logo_white_square_300.png" id="headerImage">
 	</div>
 	
-	<div class="message">
-		<p>Hi {{ $member->name }},</p>
-		<p>Welcome to Purdue Hackers! We hope you enjoyed attending {{ $event->name }}.</p>
-		<p>A Purdue Hackers account has been created for you. To set your password: <a href="#">click here</a></p>
-	</div>
+	@yield('content')
 	
 	<div id="footer">
 		Sent by <a href="http://www.purduehackers.com">Purdue Hackers</a> (<a href="mailto:purduehackers@gmail.com">purduehackers@gmail.com</a>)
