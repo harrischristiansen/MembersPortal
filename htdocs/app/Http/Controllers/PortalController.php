@@ -11,6 +11,7 @@ namespace App\Http\Controllers;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use DB;
+use Mail;
 use App\Http\Controllers\Controller;
 
 use App\Http\Requests;
@@ -552,8 +553,9 @@ class PortalController extends Controller {
 			$member->name = $memberName;
 			$member->email = $memberEmail;
 			
-			$member->save();
+			//$member->save();
 			$successResult = "new";
+			$this->emailAccountCreated($member, $event);
 		}
 		
 		if($event->members()->find($member->id)) {
@@ -562,6 +564,14 @@ class PortalController extends Controller {
 		$event->members()->attach($member->id);
 		
 		return $successResult;
+	}
+	
+	public function emailAccountCreated($member, $event) {
+		Mail::send('emails.accountCreated', ['member'=>$member, 'event'=>$event], function ($message) use ($member) {
+			$message->from('purduehackers@gmail.com', 'Purdue Hackers');
+			$message->to($member->email);
+			$message->subject("Welcome ".$member->name." to Purdue Hackers!");
+		});
 	}
 	
 	/////////////////////////////// Managing Events ///////////////////////////////
