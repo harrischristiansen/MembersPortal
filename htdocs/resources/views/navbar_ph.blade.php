@@ -17,12 +17,14 @@
 		<div class="collapse navbar-collapse" id="navbar">
 			<ul class="nav navbar-nav navbar-right">
 				@if (session()->get('authenticated_member') == "true")
-				<li><a href="/member/{{ session()->get('member_id') }}">Profile</a></li>
+					<li><a href="/member/{{ session()->get('member_id') }}">Profile</a></li>
+					<li><a href="/members">Members</a></li>
 				@endif
-				<li><a href="/members">Members</a></li>
-				<li><a href="/map">Map</a></li>
+				@if(session()->get('authenticated_admin') == "true")
+					<li><a href="/map">Map</a></li>
+				@endif
+				<li><a href="/events">Events</a></li>
 				@if(session()->get('authenticated_member') == "true")
-					<li><a href="/events">Events</a></li>
 					<li><a href="/logout">Logout</a></li>
 				@else
 					<li><a href="/login">Login</a></li>
