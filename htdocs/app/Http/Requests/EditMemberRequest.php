@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Http\Requests\Request;
+use App\Models\Member;
 
 class EditMemberRequest extends Request {
 	public function authorize() {
@@ -19,8 +20,8 @@ class EditMemberRequest extends Request {
 				return true;
 			}
 		} else { // Logged Out, Require Auth Token
-			$reset_token_valid = md5($memberID + env('ADMIN_PASS'));
-			if($reset_token == $reset_token_valid) {
+			$member = Member::find($memberID);
+			if($reset_token == $member->reset_token()) {
 				return true;
 			}
 		}
