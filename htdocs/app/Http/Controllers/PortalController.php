@@ -531,24 +531,30 @@ class PortalController extends Controller {
 	
 	public function postCheckinMember(AdminRequest $request) {
 		$successResult = "true";
-		
-		$event = Event::find($request->input("eventID"));
-		if ($request->input("memberID") > 0) {
-			$member = Member::find($request->input("memberID"));
-		} else { $member = null; }
-		
 		$memberName = $request->input("memberName");
 		$memberEmail = $request->input("memberEmail");
+		$event = Event::find($request->input("eventID"));
 		
-		if(strlen($memberName)<2 || !filter_var($memberEmail, FILTER_VALIDATE_EMAIL)) {
+		if ($request->input("memberID") > 0) { // Search By memberID
+			$member = Member::find($request->input("memberID"));
+			if ($memberEmail != $member->email) {
+				$member = null;
+			}
+		} else { $member = null; }
+		
+		if ($member == null) { // Search By Name
+			$member = Member::where('name',$memberName)->where('email',$memberEmail)->first();
+		}
+		
+		if (strlen($memberName)<2 || !filter_var($memberEmail, FILTER_VALIDATE_EMAIL)) { // Validate Input
 			return "invalid";
 		}
 		
-		if(is_null($event)) {
+		if (is_null($event)) { // Verify Event Exists
 			return "false";
 		}
 		
-		if(is_null($member)) { // New Member
+		if (is_null($member)) { // New Member
 			$member = new Member;
 			
 			if (Member::where('email',$memberEmail)->first()) {
@@ -563,10 +569,10 @@ class PortalController extends Controller {
 			$this->emailAccountCreated($member, $event);
 		}
 		
-		if($event->members()->find($member->id)) {
+		if ($event->members()->find($member->id)) { // Check if Repeat
 			return "repeat";
 		}
-		$event->members()->attach($member->id);
+		$event->members()->attach($member->id); // Save Record
 		
 		return $successResult;
 	}
