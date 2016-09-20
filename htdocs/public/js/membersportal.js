@@ -21,13 +21,17 @@ $(".membersautocomplete").autocomplete({
 	source: "/members-autocomplete",
 	minLength: 2,
 	autoFocus: true,
-	select: function( event, ui ) {
+	select: function(event, ui) {
 		if(ui.item) {
+			event.preventDefault();
 			selectedID = ui.item.id;
-			$("#memberName").val(ui.item.value);
+			$("#memberName").val(ui.item.name);
 			$("#memberEmail").val(ui.item.email);
 			$("#memberAttended").val(ui.item.attended);
 		}
+	},
+	focus: function(event, ui) {
+		event.preventDefault();
 	}
 });
 
