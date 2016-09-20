@@ -26,7 +26,6 @@ This Members Tracking Portal was originally developed for Purdue Hackers. Purdue
 - [ ] Admin - Events - Manage Applications
 - [X] Admin - Events - Checkin Members
 	- Undo Checkin (Delete Checkin Record)
-	- Create Account For (Provide only name/email, creates account and sends email to new member)
 	- Send emails to all accounts without passwords
 
 ## Local MAMP Installation - Mac  

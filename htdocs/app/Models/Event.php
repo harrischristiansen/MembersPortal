@@ -27,6 +27,10 @@ class Event extends Model {
 		return $this->event_time->format('Y-m-d');
 	}
 	
+	public function dateMonthDay() {
+		return $this->event_time->format('M j');
+	}
+	
 	public function dateFriendly() {
 		return $this->event_time->format('D, F j, Y \a\t g:i a');
 	}

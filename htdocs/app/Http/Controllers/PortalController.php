@@ -558,7 +558,7 @@ class PortalController extends Controller {
 			$member->name = $memberName;
 			$member->email = $memberEmail;
 			
-			//$member->save();
+			$member->save();
 			$successResult = "new";
 			$this->emailAccountCreated($member, $event);
 		}
