@@ -212,6 +212,34 @@ class PortalController extends Controller {
 		return view('pages.member',compact("member","locations","events","majors"));
 	}
 	
+	public function getRequestReset(Request $request) {
+		return view('pages.reset');
+	}
+	
+	public function postRequestReset(Request $request) {
+		$email = $request->input('email');
+		
+		$member = Member::where('email',$email)->first();
+		
+		if ($member == NULL) {
+			$request->session()->flash('msg', 'No account was found with that email!');
+			return $this->getRequestReset($request);
+		}
+		
+		$this->emailResetRequest($member);
+		
+		$request->session()->flash('msg', 'A link to reset your password has been sent to your email!');
+		return $this->getRequestReset($request);
+	}
+	
+	public function emailResetRequest($member) {
+		Mail::send('emails.resetRequest', ['member'=>$member], function ($message) use ($member) {
+			$message->from('purduehackers@gmail.com', 'Purdue Hackers');
+			$message->to($member->email);
+			$message->subject("Link to reset your Purdue Hackers account password");
+		});
+	}
+	
 	public function getReset(Request $request, $memberID, $reset_token) {
 		$member = Member::find($memberID);
 		

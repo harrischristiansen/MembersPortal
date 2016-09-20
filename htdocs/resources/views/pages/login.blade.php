@@ -12,6 +12,8 @@
 			<input type="password" name="password" id="password" placeholder="Password">
 			<br><br>
 			<input type="submit" value="Sign In">
+			<br><br>
+			Forgot your password? <a href="/request-reset">Click Here</a>
 		</form>
 	</div>
 </div></div>
