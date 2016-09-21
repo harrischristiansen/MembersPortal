@@ -236,7 +236,7 @@ class PortalController extends Controller {
 		Mail::send('emails.resetRequest', ['member'=>$member], function ($message) use ($member) {
 			$message->from('purduehackers@gmail.com', 'Purdue Hackers');
 			$message->to($member->email);
-			$message->subject("Link to reset your Purdue Hackers account password");
+			$message->subject("Reset your Purdue Hackers account password");
 		});
 	}
 	
