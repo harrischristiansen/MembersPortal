@@ -515,12 +515,7 @@ class PortalController extends Controller {
 	}
 	
 	public function getEvent(Request $request, $eventID) {
-		$event = Event::find($eventID);
-		
-		if(is_null($event)) {
-			$request->session()->flash('msg', 'Error: Event Not Found.');
-			return $this->getEvents();
-		}
+		$event = Event::findOrFail($eventID);
 		
 		$members = $event->members()->get();
 		
@@ -536,6 +531,15 @@ class PortalController extends Controller {
 		}
 		
 		return view('pages.event',compact("event","members","canApply","canRegister","hasRegistered","applications"));
+	}
+	
+	public function getEventGraphs(AdminRequest $request, $eventID) {
+		$event = Event::findOrFail($eventID);
+		
+		$members = $event->members()->get();
+		$applications = $event->applications()->get();
+		
+		return view('pages.event-graphs',compact("event","members","applications"));
 	}
 	
 	/////////////////////////////// Event Checkin System ///////////////////////////////
