@@ -30,6 +30,7 @@ This Members Tracking Portal was originally developed for Purdue Hackers. Purdue
 - [X] Admin - Events - Checkin Members
 	- Undo Checkin (Delete Checkin Record)
 	- Record admin who checked in 
+- [ ] Admin - Events - Email Attendees
 - [ ] Admin - Analytics
 	- Graphs of signup/apply/checkin
 	- See trends in who has been going to what events
@@ -42,7 +43,7 @@ This Members Tracking Portal was originally developed for Purdue Hackers. Purdue
 - [ ] Execute `cp .env.example .env` in the `./htdocs` directory  
 - [ ] Open `./htdocs/.env` - Fill in your database information and ORG/ADMIN Information
 - [ ] Download and Install [Composer](https://getcomposer.org/)  
-- [ ] Execute `composer install` in the `./htdocs` directory (`php composer.phar install` if using the composer.phar file)  
+- [ ] Execute `composer install` in the `./htdocs` directory (`php composer.phar install` if executing using composer.phar)  
 - [ ] Execute `php artisan migrate` in the `./htdocs` directory  
 - [ ] Execute `php artisan key:generate` in the `./htdocs` directory  
 - [ ] Execute `mkdir -p storage/framework/sessions` and `mkdir -p storage/framework/views` in the `./htdocs` directory  
