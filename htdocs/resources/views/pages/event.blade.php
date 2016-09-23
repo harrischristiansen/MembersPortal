@@ -82,6 +82,7 @@
 		<thead>
 			<tr>
 				<th>Member</th>
+				<th>Year</th>
 				<th># Attended Events</th>
 			</tr>
 		</thead>
@@ -89,6 +90,7 @@
 		@forelse ($members as $member)
 		    <tr onclick="location.href='{{ URL::to('/member', $member->id) }}';">
 		    	<td>{{ $member->name }}</td>
+		    	<td>{{ $member->graduation_year }}</td>
 				<td>{{ count($member->events) }}</td>
 		    </tr>
 		@empty

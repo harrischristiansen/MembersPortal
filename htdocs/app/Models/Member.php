@@ -30,6 +30,10 @@ class Member extends Model {
 		return $this->belongsToMany('App\Models\Event');
 	}
 	
+	public function publicEventCount() {
+		return $this->events()->where('privateEvent',false)->get()->count();
+	}
+	
 	public function applications() {
 		return $this->hasMany('App\Models\Application');
 	}

@@ -23,7 +23,7 @@
 			    	<td>{{ $member->name }}</td>
 					<td>{{ $member->graduation_year }}</td>
 			    	<td>{{ $member->created_at->format('M j, Y') }}</td>
-			    	<td>{{ count($member->events) }}</td>
+			    	<td>{{ $member->publicEventCount() }}</td>
 			    </tr>
 			@endforeach
 			</tbody>

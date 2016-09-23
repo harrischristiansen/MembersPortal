@@ -145,6 +145,10 @@ class PortalController extends Controller {
 		return $request->session()->get('authenticated_member') == "true";
 	}
 	
+	public function isAdmin($request) {
+		return $request->session()->get('authenticated_admin') == "true";
+	}
+	
 	public function getAuthenticated($request) {
 		if ($this->isAuthenticated($request)) {
 			return Member::find($this->getAuthenticatedID($request));
@@ -176,7 +180,7 @@ class PortalController extends Controller {
 	
 	public function getMembers() {
 		$members = Member::with('events')->orderBy('name')->get()->sortByDesc(function($member, $key) {
-			return (100000 * $member->events->count()) - $key;
+			return (100000 * $member->publicEventCount()) - $key;
 		});
 		
 		return view('pages.members',compact("members"));
@@ -510,8 +514,12 @@ class PortalController extends Controller {
 	
 	/////////////////////////////// Viewing Events ///////////////////////////////
 	
-	public function getEvents() {
-		$events = Event::orderBy("event_time")->get();
+	public function getEvents(Request $request) {
+		if ($this->isAdmin($request)) {
+			$events = Event::orderBy("event_time")->get();
+		} else {
+			$events = Event::where('privateEvent',false)->orderBy("event_time")->get();
+		}
 		$checkin = false;
 		return view('pages.events',compact("events","checkin"));
 	}
@@ -594,7 +602,7 @@ class PortalController extends Controller {
 	/////////////////////////////// Event Checkin System ///////////////////////////////
 	
 	public function getCheckinEvents(AdminRequest $request) {
-		$events = Event::all();
+		$events = Event::orderBy("event_time")->get();
 		$checkin = true;
 		return view('pages.events',compact("events","checkin"));
 	}
