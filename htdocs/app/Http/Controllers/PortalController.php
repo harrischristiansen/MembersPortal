@@ -212,55 +212,6 @@ class PortalController extends Controller {
 		return view('pages.member',compact("member","locations","events","majors"));
 	}
 	
-	public function getRequestReset(Request $request) {
-		return view('pages.reset');
-	}
-	
-	public function postRequestReset(Request $request) {
-		$email = $request->input('email');
-		
-		$member = Member::where('email',$email)->first();
-		
-		if ($member == NULL) {
-			$request->session()->flash('msg', 'No account was found with that email!');
-			return $this->getRequestReset($request);
-		}
-		
-		$this->emailResetRequest($member);
-		
-		$request->session()->flash('msg', 'A link to reset your password has been sent to your email!');
-		return $this->getRequestReset($request);
-	}
-	
-	public function emailResetRequest($member) {
-		Mail::send('emails.resetRequest', ['member'=>$member], function ($message) use ($member) {
-			$message->from('purduehackers@gmail.com', 'Purdue Hackers');
-			$message->to($member->email);
-			$message->subject("Reset your Purdue Hackers account password");
-		});
-	}
-	
-	public function getReset(Request $request, $memberID, $reset_token) {
-		$member = Member::find($memberID);
-		
-		if(is_null($member)) {
-			$request->session()->flash('msg', 'Error: Member Not Found.');
-			return $this->getIndex();
-		}
-		
-		if($reset_token != $member->reset_token()) {
-			$request->session()->flash('msg', 'Error: Member Not Found.');
-			return $this->getIndex();
-		}
-		
-		$locations = $member->locations()->get();
-		$events = $member->events()->get();
-		$majors = Major::orderByRaw('(id = 1) DESC, name')->get(); // Order by name, but keep first major at top
-		$setPassword = true;
-		
-		return view('pages.member',compact("member","locations","events","majors","setPassword","reset_token"));
-	}
-	
 	/////////////////////////////// Editing Members ///////////////////////////////
 	
 	public function postMember(EditMemberRequest $request, $memberID) {
@@ -354,6 +305,57 @@ class PortalController extends Controller {
 		// Return Response
 		$request->session()->flash('msg', 'Profile Saved!');
 		return $this->getMember($request, $memberID);
+	}
+	
+	/////////////////////////////// Password Reset ///////////////////////////////
+	
+	public function getRequestReset(Request $request) {
+		return view('pages.reset');
+	}
+	
+	public function postRequestReset(Request $request) {
+		$email = $request->input('email');
+		
+		$member = Member::where('email',$email)->first();
+		
+		if ($member == NULL) {
+			$request->session()->flash('msg', 'No account was found with that email!');
+			return $this->getRequestReset($request);
+		}
+		
+		$this->emailResetRequest($member);
+		
+		$request->session()->flash('msg', 'A link to reset your password has been sent to your email!');
+		return $this->getRequestReset($request);
+	}
+	
+	public function emailResetRequest($member) {
+		Mail::send('emails.resetRequest', ['member'=>$member], function ($message) use ($member) {
+			$message->from('purduehackers@gmail.com', 'Purdue Hackers');
+			$message->to($member->email);
+			$message->subject("Reset your Purdue Hackers account password");
+		});
+	}
+	
+	public function getReset(Request $request, $memberID, $reset_token) {
+		$member = Member::find($memberID);
+		
+		if(is_null($member)) {
+			$request->session()->flash('msg', 'Error: Member Not Found.');
+			return $this->getIndex();
+		}
+		
+		if($reset_token != $member->reset_token()) {
+			$request->session()->flash('msg', 'Error: Member Not Found.');
+			return $this->getIndex();
+		}
+		
+		$locations = $member->locations()->get();
+		$events = $member->events()->get();
+		$majors = Major::orderByRaw('(id = 1) DESC, name')->get(); // Order by name, but keep first major at top
+		$setPassword = true;
+		
+		return view('pages.member',compact("member","locations","events","majors","setPassword","reset_token"));
 	}
 	
 	
@@ -542,6 +544,53 @@ class PortalController extends Controller {
 		return view('pages.event-graphs',compact("event","members","applications"));
 	}
 	
+	/////////////////////////////// Managing Events ///////////////////////////////
+	
+	public function postEvent(EditEventRequest $request, $eventID) {
+		$eventName = $request->input("eventName");
+		$eventDate = $request->input("date");
+		$eventHour = $request->input("hour");
+		$eventMinute = $request->input("minute");
+		$eventLocation = $request->input("location");
+		$eventFB = $request->input("facebook");
+		
+		if($eventID >= 0) {
+			$event = Event::find($eventID);
+		} else {
+			$event = new Event;
+		}
+		
+		// Verify Input
+		if(is_null($event)) {
+			$request->session()->flash('msg', 'Error: Event Not Found.');
+			return $this->getEvents();
+		}
+		
+		// Edit Event
+		$event->name = $eventName;
+		$event->event_time = new Carbon($eventDate." ".$eventHour.":".$eventMinute);
+		$event->location = $eventLocation;
+		$event->facebook = $eventFB;
+		$event->save();
+		
+		// Return Response
+		if($eventID >= 0) {
+			$request->session()->flash('msg', 'Event Updated!');
+			return $this->getEvent($request, $eventID);
+		} else { // New Event
+			return redirect()->action('PortalController@getEvent', [$event->id])->with('msg', 'Event Created!');
+		}
+	}
+	
+	public function getEventNew() {
+		return view('pages.event_new');
+	}
+	
+	public function getEventDelete($eventID) {
+		Event::findOrFail($eventID)->delete();
+		return $this->getEvents();
+	}
+	
 	/////////////////////////////// Event Checkin System ///////////////////////////////
 	
 	public function getCheckinEvents(AdminRequest $request) {
@@ -609,59 +658,31 @@ class PortalController extends Controller {
 		return $successResult;
 	}
 	
+	/////////////////////////////// Account Setup Emails ///////////////////////////////
+	
+	public function getSetupAccountEmails(AdminRequest $request) { // Batch email all accounts that have not been setup, prompting them to setup.
+		$members = Member::where('graduation_year',0)->get();
+		
+		$nowDate = Carbon::now();
+		
+		foreach ($members as $member) {
+			if ($member->setupEmailSent->diffInDays($nowDate) > 30) {
+				$this->emailAccountCreated($member, $member->events()->first());
+			}
+		}
+		
+		$request->session()->flash('msg', 'Success, setup account emails have been sent!');
+		return $this->getIndex();
+	}
+	
 	public function emailAccountCreated($member, $event) {
 		Mail::send('emails.accountCreated', ['member'=>$member, 'event'=>$event], function ($message) use ($member) {
 			$message->from('purduehackers@gmail.com', 'Purdue Hackers');
 			$message->to($member->email);
 			$message->subject("Welcome ".$member->name." to Purdue Hackers!");
 		});
-	}
-	
-	/////////////////////////////// Managing Events ///////////////////////////////
-	
-	public function postEvent(EditEventRequest $request, $eventID) {
-		$eventName = $request->input("eventName");
-		$eventDate = $request->input("date");
-		$eventHour = $request->input("hour");
-		$eventMinute = $request->input("minute");
-		$eventLocation = $request->input("location");
-		$eventFB = $request->input("facebook");
-		
-		if($eventID >= 0) {
-			$event = Event::find($eventID);
-		} else {
-			$event = new Event;
-		}
-		
-		// Verify Input
-		if(is_null($event)) {
-			$request->session()->flash('msg', 'Error: Event Not Found.');
-			return $this->getEvents();
-		}
-		
-		// Edit Event
-		$event->name = $eventName;
-		$event->event_time = new Carbon($eventDate." ".$eventHour.":".$eventMinute);
-		$event->location = $eventLocation;
-		$event->facebook = $eventFB;
-		$event->save();
-		
-		// Return Response
-		if($eventID >= 0) {
-			$request->session()->flash('msg', 'Event Updated!');
-			return $this->getEvent($request, $eventID);
-		} else { // New Event
-			return redirect()->action('PortalController@getEvent', [$event->id])->with('msg', 'Event Created!');
-		}
-	}
-	
-	public function getEventNew() {
-		return view('pages.event_new');
-	}
-	
-	public function getEventDelete($eventID) {
-		Event::findOrFail($eventID)->delete();
-		return $this->getEvents();
+		$member->setupEmailSent = Carbon::now();
+		$member->save();
 	}
 	
 	/////////////////////////////// Applications ///////////////////////////////
