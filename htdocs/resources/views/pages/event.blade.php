@@ -28,8 +28,14 @@
 	<div class="panel panel-default">
 		<form method="post" action="/event/{{ $event->id }}" class="panel-body validate">
 			{!! csrf_field() !!}
-			<label for="eventName">Event Name</label>
-			<input type="text" name="eventName" id="eventName" placeholder="Event Name" value="{{ $event->name }}" class="form-control" data-bvalidator="required" data-bvalidator-msg="Event requires name.">
+			<label for="privateEvent" class="text-right">Private Event ?</label>
+			<div class="input-group">
+				<span class="input-group-addon" id="eventNameAria">Event Name</span>
+				<input type="text" name="eventName" id="eventName" placeholder="Event Name" value="{{ $event->name }}" class="form-control" data-bvalidator="required" data-bvalidator-msg="Event requires name." aria-describedby="eventNameAria">
+				<span class="input-group-addon" id="privateEventAria">
+					<input type="checkbox" name="privateEvent" id="privateEvent" value="true" {{ $event->privateEvent ? "checked" : "" }}>
+				</span>
+			</div>
 			<br>
 			<label for="date">Date</label>
 			<input type="text" name="date" id="date" placeholder="Date" value="{{ $event->date() }}" class="form-control datepicker" data-bvalidator="required,date[yyyy-mm-dd]" data-bvalidator-msg="Event requires date/time.">
@@ -45,7 +51,7 @@
 				<select name="minute" id="minute" class="form-control" data-bvalidator="required" data-bvalidator-msg="Event requires date/time.">
 					<option value="">Minute</option>
 					@for ($i = 0; $i < 60; $i+=15)
-					<option value="{{$i}}" {{ $event->minute()==$i ? "selected":""}}>{{$i}}</option>
+					<option value="{{ sprintf("%02d", $i) }}" {{ $event->minute()==$i ? "selected":""}}>{{ sprintf("%02d", $i) }}</option>
 					@endfor
 				</select>
 			</div>

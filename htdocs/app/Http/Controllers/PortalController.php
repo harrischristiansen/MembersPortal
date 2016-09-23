@@ -552,10 +552,11 @@ class PortalController extends Controller {
 		return view('pages.event-graphs',compact("event","members","applications"));
 	}
 	
-	/////////////////////////////// Managing Events ///////////////////////////////
+	/////////////////////////////// Editing Events ///////////////////////////////
 	
 	public function postEvent(EditEventRequest $request, $eventID) {
 		$eventName = $request->input("eventName");
+		$eventPrivate = $request->input("privateEvent")=="true" ? true : false;
 		$eventDate = $request->input("date");
 		$eventHour = $request->input("hour");
 		$eventMinute = $request->input("minute");
@@ -576,6 +577,7 @@ class PortalController extends Controller {
 		
 		// Edit Event
 		$event->name = $eventName;
+		$event->privateEvent = $eventPrivate;
 		$event->event_time = new Carbon($eventDate." ".$eventHour.":".$eventMinute);
 		$event->location = $eventLocation;
 		$event->facebook = $eventFB;
