@@ -123,12 +123,12 @@
 	
 	<hr>
 	
-	<h3>Locations</h3>
+	<h3>Job History</h3>
 	<div class="panel panel-default">
 		<table class="table table-bordered table-hover table-clickable panel-body">
 		<thead>
 			<tr>
-				<th>Location</th>
+				<th>Company</th>
 				<th>City</th>
 				<th>Start Date</th>
 				<th>End Date</th>
