@@ -191,9 +191,13 @@ class PortalController extends Controller {
 		
 		// Join Dates
 		$joinDatesDict = [];
+		$end = Carbon::now();
+		for($i = $members[0]->created_at; $i <= $end; $i->modify('+1 day')){
+			$joinDatesDict[$i->toDateString()] = 0;
+		}
 		foreach ($members as $member) {
 			$dateString = $member->created_at->toDateString();
-			$joinDatesDict[$dateString] = isset($joinDatesDict[$dateString]) ? $joinDatesDict[$dateString]+1 : 1;
+			$joinDatesDict[$dateString]++;
 		}
 		$joinDates = [];
 		foreach ($joinDatesDict as $date=>$count) {
@@ -210,6 +214,9 @@ class PortalController extends Controller {
 		foreach ($memberYearsDict as $key=>$count) {
 			array_push($memberYears, compact("key","count"));
 		}
+		$memberYears = array_values(array_sort($memberYears, function ($value) {
+			return $value['key'];
+		}));
 		
 		return view('pages.members-graphs',compact("members","joinDates","memberYears"));
 	}
