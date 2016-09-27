@@ -218,7 +218,24 @@ class PortalController extends Controller {
 			return $value['key'];
 		}));
 		
-		return view('pages.members-graphs',compact("members","joinDates","memberYears"));
+		// Major
+		$majors = Major::all();
+		$majorsDict = [];
+		foreach ($majors as $major) {
+			$majorsDict[$major->name] = 0;
+		}
+		foreach ($members as $member) {
+			if(isset($member->major)) {
+				$majorsDict[$member->major->name]++;
+			}
+		}
+		$majorsData = [];
+		foreach ($majorsDict as $key=>$count) {
+			$key = preg_replace('~\b(\w)|.~', '$1', $key);
+			array_push($majorsData, compact("key","count"));
+		}
+		
+		return view('pages.members-graphs',compact("members","joinDates","memberYears","majorsData"));
 	}
 	
 	public function getMembersAutocomplete(AdminRequest $request) {

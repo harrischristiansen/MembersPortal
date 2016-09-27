@@ -10,6 +10,7 @@
 	<div class="panel panel-default">
 		<div id="joinDates" class="graph"></div>
 		<div id="memberYears" class="graph"></div>
+		<div id="majorsGraph" class="graph"></div>
 	</div>
 	
 </div></div>
@@ -40,6 +41,15 @@
 				"size": 11
 			}],
 		}, intChartProperties));
+	
+	var majorsGraphData = JSON.parse('{!! json_encode($majorsData); !!}');
+	var majorsGraph = AmCharts.makeChart("majorsGraph", $.extend( {
+			"dataProvider": majorsGraphData,
+			"titles": [{
+				"text": "Major",
+				"size": 11
+			}],
+		}, textChartProperties));
 </script>
 
 @stop

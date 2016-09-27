@@ -166,3 +166,35 @@ var intChartProperties = {
         "minorGridEnabled": true
 	}
 };
+
+var textChartProperties = {
+    "type": "serial",
+    "legend": {
+        "useGraphSettings": true
+    },
+    "valueAxes": [{
+        "id":"v1",
+        "axisColor": "#FF6600",
+        "position": "left"
+    }],
+    "graphs": [{
+        "valueAxis": "v1",
+        "lineColor": "#FF6600",
+        "bullet": "round",
+        "hideBulletsCount": 30,
+        "title": "# Members",
+        "valueField": 'count',
+        "type": "smoothedLine",
+    }],
+    "chartScrollbar": {
+		"scrollbarHeight": 15
+	},
+    "chartCursor": {
+        "cursorPosition": "mouse"
+    },
+    "categoryField": 'key',
+    "categoryAxis": {
+        "axisColor": "#DADADA",
+        "minorGridEnabled": true,
+	}
+};
