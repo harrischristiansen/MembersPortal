@@ -529,13 +529,19 @@ class PortalController extends Controller {
 		
 		$members = $event->members()->get();
 		
+		foreach ($members as $member) { // Pre-calculate names of users who checked student in
+			$recorded_member = Member::find($member->events()->find($eventID)->pivot->recorded_by);
+			$member->recorded_by = $recorded_member;
+		}
+		
 		$canApply = $this->isAuthenticated($request) && $event->requiresApplication;
 		$canRegister = $this->isAuthenticated($request) && $event->requiresRegistration;
 		$authenticatedMember = $this->getAuthenticated($request);
 		if ($authenticatedMember != null) {
 			$hasRegistered = count($authenticatedMember->applications()->where('event_id',$eventID)->get()) > 0;
 		}
-		$applications = [];
+		
+		$applications = []; // Get list of applications (if admin)
 		if ($request->session()->get('authenticated_admin') == "true") {
 			$applications = $event->applications()->get();
 		}
@@ -663,7 +669,7 @@ class PortalController extends Controller {
 		if ($event->members()->find($member->id)) { // Check if Repeat
 			return "repeat";
 		}
-		$event->members()->attach($member->id); // Save Record
+		$event->members()->attach($member->id,['recorded_by' => $this->getAuthenticatedID($request)]); // Save Record
 		
 		return $successResult;
 	}

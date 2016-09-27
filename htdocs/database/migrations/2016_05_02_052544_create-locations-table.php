@@ -21,9 +21,9 @@ class CreateLocationsTable extends Migration {
         });
         Schema::create('location-member', function (Blueprint $table) {
             $table->increments('id');
-			$table->integer('location_id')->unsigned();
+			$table->integer('location_id')->unsigned()->index();
 			$table->foreign('location_id')->references('id')->on('locations');
-			$table->integer('member_id')->unsigned();
+			$table->integer('member_id')->unsigned()->index();
 			$table->foreign('member_id')->references('id')->on('members');
 			$table->date('date_start');
 			$table->date('date_end');

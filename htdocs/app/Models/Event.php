@@ -16,7 +16,7 @@ class Event extends Model {
 	protected $dates = ['event_time','deleted_at'];
 
 	public function members() {
-		return $this->belongsToMany('App\Models\Member');
+		return $this->belongsToMany('App\Models\Member')->withPivot('recorded_by');
 	}
 	
 	public function applications() {

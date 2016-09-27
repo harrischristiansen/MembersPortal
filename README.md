@@ -27,7 +27,6 @@ This Members Tracking Portal was originally developed for Purdue Hackers. Purdue
 - [ ] Admin - Events - Manage Applications
 - [X] Admin - Events - Checkin Members
 	- Undo Checkin (Delete Checkin Record)
-	- Record admin who checked in 
 - [ ] Admin - Events - Email Attendees
 - [ ] Admin - Analytics
 	- Graphs of signup/apply/checkin

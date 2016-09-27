@@ -27,7 +27,7 @@ class Member extends Model {
 	}
 	
 	public function events() {
-		return $this->belongsToMany('App\Models\Event');
+		return $this->belongsToMany('App\Models\Event')->withPivot('recorded_by');
 	}
 	
 	public function publicEventCount() {
