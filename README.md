@@ -24,6 +24,7 @@ This Members Tracking Portal was originally developed for Purdue Hackers. Purdue
 - [X] Events - Apply/Register
 - [X] Admin - Members - Modify
 - [X] Admin - Events - Create/Modify/Delete
+	- Enable/Disable Registration/Applications
 - [ ] Admin - Events - Manage Applications
 - [X] Admin - Events - Checkin Members
 	- Undo Checkin (Delete Checkin Record)
