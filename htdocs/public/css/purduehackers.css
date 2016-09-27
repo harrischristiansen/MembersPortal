@@ -460,6 +460,11 @@ hr {
   border-width: 0;
   border-top: 1px solid #E1E1E1; }
   
+.member-icon {
+	max-width: 100px;
+	max-height: 100px;
+}
+  
   
 
 /* ------------------------ Graphs ------------------------- */
