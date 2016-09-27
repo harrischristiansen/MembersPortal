@@ -21,8 +21,6 @@
 <script type="text/javascript" src="//www.amcharts.com/lib/3/themes/light.js"></script>
 
 <script type="text/javascript">
-	var joinDatesData = JSON.parse('{!! json_encode($joinDates); !!}');
-	var joinDates = AmCharts.makeChart("joinDates", $.extend({"dataProvider": joinDatesData}, commonChartProperties));
 	
 	var commonChartProperties = {
 	    "type": "serial",
@@ -57,6 +55,15 @@
 	        "minorGridEnabled": true
 		}
 	};
+		
+	var joinDatesData = JSON.parse('{!! json_encode($joinDates); !!}');
+	var joinDates = AmCharts.makeChart("joinDates", $.extend( {
+			"dataProvider": joinDatesData,
+			"titles": [{
+				"text": "Joined Dates",
+				"size": 11
+			}],
+		}, commonChartProperties));
 </script>
 
 @stop

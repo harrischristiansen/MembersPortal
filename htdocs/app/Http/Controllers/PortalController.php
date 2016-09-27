@@ -187,7 +187,7 @@ class PortalController extends Controller {
 	}
 	
 	public function getMembersGraphs(AdminRequest $request) {
-		$members = Member::all();
+		$members = Member::orderBy('created_at')->get();
 		
 		$joinDatesDict = [];
 		
