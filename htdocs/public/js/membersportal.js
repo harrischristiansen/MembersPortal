@@ -98,3 +98,71 @@ function clearCheckinFields() {
 	$("#memberEmail").val("");
 	$("#memberAttended").val("");
 }
+
+////////////////////////////////// Chart Options //////////////////////////////////
+
+var dateChartProperties = {
+    "type": "serial",
+    "dataDateFormat": "YYYY-MM-DD",
+    "legend": {
+        "useGraphSettings": true
+    },
+    "valueAxes": [{
+        "id":"v1",
+        "axisColor": "#FF6600",
+        "position": "left"
+    }],
+    "graphs": [{
+        "valueAxis": "v1",
+        "lineColor": "#FF6600",
+        "bullet": "round",
+        "hideBulletsCount": 30,
+        "title": "# Members",
+        "valueField": 'count',
+        "type": "smoothedLine",
+    }],
+    "chartScrollbar": {
+		"scrollbarHeight": 15
+	},
+    "chartCursor": {
+        "cursorPosition": "mouse"
+    },
+    "categoryField": 'date',
+    "categoryAxis": {
+        "parseDates": true,
+        "axisColor": "#DADADA",
+        "minorGridEnabled": true
+	}
+};
+
+var intChartProperties = {
+    "type": "serial",
+    "legend": {
+        "useGraphSettings": true
+    },
+    "valueAxes": [{
+        "id":"v1",
+        "axisColor": "#FF6600",
+        "position": "left"
+    }],
+    "graphs": [{
+        "valueAxis": "v1",
+        "lineColor": "#FF6600",
+        "bullet": "round",
+        "hideBulletsCount": 30,
+        "title": "# Members",
+        "valueField": 'count',
+        "type": "smoothedLine",
+    }],
+    "chartScrollbar": {
+		"scrollbarHeight": 15
+	},
+    "chartCursor": {
+        "cursorPosition": "mouse"
+    },
+    "categoryField": 'key',
+    "categoryAxis": {
+        "axisColor": "#DADADA",
+        "minorGridEnabled": true
+	}
+};

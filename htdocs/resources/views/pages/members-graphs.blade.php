@@ -3,11 +3,13 @@
 @section("content")
 
 <div class="section"><div class='section-container'>
-	<h3>{{ env('ORG_NAME') }} Members
+	<h3>Members Graphs
+		<button type="button" class="btn btn-primary btn-sm pull-right">{{ count($members) }} members</button>
 	</h3>
 	
 	<div class="panel panel-default">
 		<div id="joinDates" class="graph"></div>
+		<div id="memberYears" class="graph"></div>
 	</div>
 	
 </div></div>
@@ -21,41 +23,6 @@
 <script type="text/javascript" src="//www.amcharts.com/lib/3/themes/light.js"></script>
 
 <script type="text/javascript">
-	
-	var commonChartProperties = {
-	    "type": "serial",
-	    "dataDateFormat": "YYYY-MM-DD",
-	    "legend": {
-	        "useGraphSettings": true
-	    },
-	    "valueAxes": [{
-	        "id":"v1",
-	        "axisColor": "#FF6600",
-	        "position": "left"
-	    }],
-	    "graphs": [{
-	        "valueAxis": "v1",
-	        "lineColor": "#FF6600",
-	        "bullet": "round",
-	        "hideBulletsCount": 30,
-	        "title": "# Items",
-	        "valueField": 'count',
-	        "type": "smoothedLine",
-	    }],
-	    "chartScrollbar": {
-			"scrollbarHeight": 15
-		},
-	    "chartCursor": {
-	        "cursorPosition": "mouse"
-	    },
-	    "categoryField": 'date',
-	    "categoryAxis": {
-	        "parseDates": true,
-	        "axisColor": "#DADADA",
-	        "minorGridEnabled": true
-		}
-	};
-		
 	var joinDatesData = JSON.parse('{!! json_encode($joinDates); !!}');
 	var joinDates = AmCharts.makeChart("joinDates", $.extend( {
 			"dataProvider": joinDatesData,
@@ -63,7 +30,16 @@
 				"text": "Joined Dates",
 				"size": 11
 			}],
-		}, commonChartProperties));
+		}, dateChartProperties));
+	
+	var memberYearsData = JSON.parse('{!! json_encode($memberYears); !!}');
+	var memberYears = AmCharts.makeChart("memberYears", $.extend( {
+			"dataProvider": memberYearsData,
+			"titles": [{
+				"text": "Graduation Year",
+				"size": 11
+			}],
+		}, intChartProperties));
 </script>
 
 @stop

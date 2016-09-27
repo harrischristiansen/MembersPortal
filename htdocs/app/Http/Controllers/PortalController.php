@@ -189,20 +189,29 @@ class PortalController extends Controller {
 	public function getMembersGraphs(AdminRequest $request) {
 		$members = Member::orderBy('created_at')->get();
 		
+		// Join Dates
 		$joinDatesDict = [];
-		
 		foreach ($members as $member) {
 			$dateString = $member->created_at->toDateString();
 			$joinDatesDict[$dateString] = isset($joinDatesDict[$dateString]) ? $joinDatesDict[$dateString]+1 : 1;
 		}
-		
 		$joinDates = [];
-		
 		foreach ($joinDatesDict as $date=>$count) {
 			array_push($joinDates, compact("date","count"));
 		}
 		
-		return view('pages.members-graphs',compact("members","joinDates"));
+		// Member Graduation Year
+		$memberYearsDict = [];
+		foreach ($members as $member) {
+			$memberYear = $member->graduation_year;
+			$memberYearsDict[$memberYear] = isset($memberYearsDict[$memberYear]) ? $memberYearsDict[$memberYear]+1 : 1;
+		}
+		$memberYears = [];
+		foreach ($memberYearsDict as $key=>$count) {
+			array_push($memberYears, compact("key","count"));
+		}
+		
+		return view('pages.members-graphs',compact("members","joinDates","memberYears"));
 	}
 	
 	public function getMembersAutocomplete(AdminRequest $request) {
