@@ -28,7 +28,7 @@
 	var joinDates = AmCharts.makeChart("joinDates", $.extend( {
 			"dataProvider": joinDatesData,
 			"titles": [{
-				"text": "Joined Dates",
+				"text": "Join Date",
 				"size": 11
 			}],
 		}, dateChartProperties));

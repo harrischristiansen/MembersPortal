@@ -29,8 +29,8 @@ This Members Tracking Portal was originally developed for Purdue Hackers. Purdue
 - [X] Admin - Events - Checkin Members
 	- Undo Checkin (Delete Checkin Record)
 - [ ] Admin - Events - Email Attendees
-- [ ] Admin - Analytics
-	- Graphs of signup/apply/checkin
+- [X] Admin - Analytics
+	- Graphs of apply, register
 	- See trends in who has been going to what events
 
 ## Local MAMP Installation - Mac  

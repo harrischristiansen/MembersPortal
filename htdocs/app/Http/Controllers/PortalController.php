@@ -190,50 +190,13 @@ class PortalController extends Controller {
 		$members = Member::orderBy('created_at')->get();
 		
 		// Join Dates
-		$joinDatesDict = [];
-		$end = Carbon::now();
-		for($i = $members[0]->created_at; $i <= $end; $i->modify('+1 day')){
-			$joinDatesDict[$i->toDateString()] = 0;
-		}
-		foreach ($members as $member) {
-			$dateString = $member->created_at->toDateString();
-			$joinDatesDict[$dateString]++;
-		}
-		$joinDates = [];
-		foreach ($joinDatesDict as $date=>$count) {
-			array_push($joinDates, compact("date","count"));
-		}
+		$joinDates = $this->graphDataJoinDates($members);
 		
 		// Member Graduation Year
-		$memberYearsDict = [];
-		foreach ($members as $member) {
-			$memberYear = $member->graduation_year;
-			$memberYearsDict[$memberYear] = isset($memberYearsDict[$memberYear]) ? $memberYearsDict[$memberYear]+1 : 1;
-		}
-		$memberYears = [];
-		foreach ($memberYearsDict as $key=>$count) {
-			array_push($memberYears, compact("key","count"));
-		}
-		$memberYears = array_values(array_sort($memberYears, function ($value) {
-			return $value['key'];
-		}));
+		$memberYears = $this->graphDataMemberYears($members);
 		
 		// Major
-		$majors = Major::all();
-		$majorsDict = [];
-		foreach ($majors as $major) {
-			$majorsDict[$major->name] = 0;
-		}
-		foreach ($members as $member) {
-			if(isset($member->major)) {
-				$majorsDict[$member->major->name]++;
-			}
-		}
-		$majorsData = [];
-		foreach ($majorsDict as $key=>$count) {
-			$key = preg_replace('~\b(\w)|.~', '$1', $key);
-			array_push($majorsData, compact("key","count"));
-		}
+		$majorsData = $this->graphDataMajor($members);
 		
 		return view('pages.members-graphs',compact("members","joinDates","memberYears","majorsData"));
 	}
@@ -607,7 +570,17 @@ class PortalController extends Controller {
 		$members = $event->members()->get();
 		$applications = $event->applications()->get();
 		
-		return view('pages.event-graphs',compact("event","members","applications"));
+		// Join Dates
+		$joinDates = $this->graphDataJoinDates($members);
+		
+		// Member Graduation Year
+		$memberYears = $this->graphDataMemberYears($members);
+		
+		// Major
+		$majorsData = $this->graphDataMajor($members);
+
+		
+		return view('pages.event-graphs',compact("event","joinDates","memberYears","majorsData"));
 	}
 	
 	/////////////////////////////// Editing Events ///////////////////////////////
@@ -813,6 +786,62 @@ class PortalController extends Controller {
             $randomString .= $characters[rand(0, $charactersLength - 1)];
         }
         return $randomString;
+    }
+    
+    public function graphDataJoinDates($members) {
+	    $joinDatesDict = [];
+	    $start = Member::orderBy('created_at')->first()->created_at;
+		$end = Carbon::now();
+		for($i = $start; $i <= $end; $i->modify('+1 day')){
+			$joinDatesDict[$i->toDateString()] = 0;
+		}
+		foreach ($members as $member) {
+			$dateString = $member->created_at->toDateString();
+			$joinDatesDict[$dateString]++;
+		}
+		$joinDates = [];
+		foreach ($joinDatesDict as $date=>$count) {
+			array_push($joinDates, compact("date","count"));
+		}
+		
+		return $joinDates;
+    }
+    
+    public function graphDataMemberYears($members) {
+	    $memberYearsDict = [];
+		foreach ($members as $member) {
+			$memberYear = $member->graduation_year;
+			$memberYearsDict[$memberYear] = isset($memberYearsDict[$memberYear]) ? $memberYearsDict[$memberYear]+1 : 1;
+		}
+		$memberYears = [];
+		foreach ($memberYearsDict as $key=>$count) {
+			array_push($memberYears, compact("key","count"));
+		}
+		$memberYears = array_values(array_sort($memberYears, function ($value) {
+			return $value['key'];
+		}));
+		
+		return $memberYears;
+    }
+    
+    public function graphDataMajor($members) {
+	    $majors = Major::all();
+		$majorsDict = [];
+		foreach ($majors as $major) {
+			$majorsDict[$major->name] = 0;
+		}
+		foreach ($members as $member) {
+			if(isset($member->major)) {
+				$majorsDict[$member->major->name]++;
+			}
+		}
+		$majorsData = [];
+		foreach ($majorsDict as $key=>$count) {
+			$key = preg_replace('~\b(\w)|.~', '$1', $key);
+			array_push($majorsData, compact("key","count"));
+		}
+		
+		return $majorsData;
     }
     
 }

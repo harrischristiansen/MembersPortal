@@ -8,6 +8,8 @@
 			<a href="/checkin/{{ $event->id }}" class="pull-right"><button type="button" class="btn btn-primary btn-sm">Checkin</button></a>
 			@if ($canApply || $canRegister)
 			<a href="/applications/{{ $event->id }}" class="pull-left"><button type="button" class="btn btn-primary btn-sm">{{ count($applications) }} Applications</button></a>
+			@else
+			<a href="/event-graphs/{{ $event->id }}" class="pull-left"><button type="button" class="btn btn-primary btn-sm">Graphs</button></a>
 			@endif
 		@elseif ($canApply)
 			@if ($hasRegistered)

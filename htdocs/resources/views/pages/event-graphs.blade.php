@@ -4,11 +4,13 @@
 
 <div class="section"><div class='section-container'>
 	<h3>{{ $event->name }} Graphs
-		<a href="/event/{{ $event->id }}" class="pull-left"><button type="button" class="btn btn-primary btn-sm"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> Event</button></a>
+		<a href="/event/{{ $event->id }}" class="pull-left"><button type="button" class="btn btn-primary btn-sm"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> {{ $event->name }}</button></a>
 	</h3>
 	
 	<div class="panel panel-default">
-		<div id="firstGraph" class="graph"></div>
+		<div id="joinDates" class="graph"></div>
+		<div id="memberYears" class="graph"></div>
+		<div id="majorsGraph" class="graph"></div>
 	</div>
 	
 </div></div>
@@ -22,14 +24,32 @@
 <script type="text/javascript" src="//www.amcharts.com/lib/3/themes/light.js"></script>
 
 <script type="text/javascript">
-	var firstChartData = [{"date":"2016-09-20","count":1},{"date":"2016-09-21","count":6},{"date":"2016-09-22","count":4}];
-	var firstGraph = AmCharts.makeChart("firstGraph", $.extend( {
-			"dataProvider": firstChartData,
+	var joinDatesData = JSON.parse('{!! json_encode($joinDates); !!}');
+	var joinDates = AmCharts.makeChart("joinDates", $.extend( {
+			"dataProvider": joinDatesData,
 			"titles": [{
-				"text": "First Graph",
+				"text": "Date Joined {{ env('ORG_NAME') }}",
 				"size": 11
 			}],
 		}, dateChartProperties));
+	
+	var memberYearsData = JSON.parse('{!! json_encode($memberYears); !!}');
+	var memberYears = AmCharts.makeChart("memberYears", $.extend( {
+			"dataProvider": memberYearsData,
+			"titles": [{
+				"text": "Graduation Year",
+				"size": 11
+			}],
+		}, intChartProperties));
+	
+	var majorsGraphData = JSON.parse('{!! json_encode($majorsData); !!}');
+	var majorsGraph = AmCharts.makeChart("majorsGraph", $.extend( {
+			"dataProvider": majorsGraphData,
+			"titles": [{
+				"text": "Major",
+				"size": 11
+			}],
+		}, textChartProperties));
 </script>
 
 @stop
