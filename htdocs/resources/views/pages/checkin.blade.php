@@ -26,6 +26,8 @@
 				<span class="input-group-addon" id="memberAttendedTitle">Number Events Attended: </span>
 				<input type="text" id="memberAttended" class="form-control" placeholder="Number Events Attended" readonly>
     		</div>
+    		<br>
+			<button class="btn btn-primary" type="button" onclick="checkinMember();" style="float: right;">Checkin</button>
 		</div>
 	</div>
 	<div id="checkinAlerts">
