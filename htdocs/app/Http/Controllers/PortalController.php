@@ -267,6 +267,10 @@ class PortalController extends Controller {
 		if(strlen($password) > 0) {
 			$member->password = Hash::make($password);
 			$this->setAuthenticated($request,$member->id,$member->name);
+			
+			if ($member->admin) { // Admin Accounts
+				$request->session()->put('authenticated_admin', 'true');
+			}
 		}
 		
 		// Email
