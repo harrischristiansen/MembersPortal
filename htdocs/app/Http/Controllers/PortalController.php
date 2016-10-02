@@ -795,8 +795,8 @@ class PortalController extends Controller {
     public function graphDataJoinDates($members) {
 	    $joinDatesDict = [];
 	    $start = Member::orderBy('created_at')->first()->created_at;
-		$end = Carbon::now();
-		for($i = $start; $i <= $end; $i->modify('+1 day')){
+		$end = Carbon::now()->modify('+1 day');
+		for ($i = $start; $i < $end; $i->modify('+1 day')) {
 			$joinDatesDict[$i->toDateString()] = 0;
 		}
 		foreach ($members as $member) {
