@@ -535,9 +535,9 @@ class PortalController extends Controller {
 	
 	public function getEvents(Request $request) {
 		if ($this->isAdmin($request)) {
-			$events = Event::orderBy("event_time")->get();
+			$events = Event::orderBy("event_time","desc")->get();
 		} else {
-			$events = Event::where('privateEvent',false)->orderBy("event_time")->get();
+			$events = Event::where('privateEvent',false)->orderBy("event_time","desc")->get();
 		}
 		$checkin = false;
 		return view('pages.events',compact("events","checkin"));
