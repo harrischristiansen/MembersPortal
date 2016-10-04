@@ -641,6 +641,42 @@ class PortalController extends Controller {
 		return $this->getEvents();
 	}
 	
+	/////////////////////////////////// Event Emails ///////////////////////////////////
+	
+	public function getEventEmail(AdminRequest $request, $eventID) {
+		$event = Event::findOrFail($eventID);
+	}
+	
+	public function postEventEmail(AdminRequest $request, $eventID) {
+		$event = Event::findOrFail($eventID);
+		
+		$subject = $request->input("subject");
+		$msg = $request->input("message");
+		$target = $request->input("target");
+		
+		if ($target == "All") {
+			$members = Member::all();
+		} elseif ($target == "AttAndReg") {
+			$members_att = $event->members()->get();
+			$members_reg = $event->applications()->get();
+			$members = $members_att->merge($members_reg)->all();
+		} elseif ($target == "Attended") {
+			$members = $event->members()->get();
+		} elseif ($target == "Registered") {
+			$event->applications()->get();
+		} elseif ($target == "NotRegistered") {
+			$members_all = Member::all();
+			$members_reg = $event->applications()->get();
+			$members = $members_all->diff($members_reg)->all();
+		} else {
+			$members = $event->members()->get();
+		}
+		
+		foreach ($members as $member) {
+			sendEmail($member, $subject, $msg);
+		}
+	}
+	
 	/////////////////////////////// Event Checkin System ///////////////////////////////
 	
 	public function getCheckinEvents(AdminRequest $request) {
@@ -796,6 +832,14 @@ class PortalController extends Controller {
         }
         return $randomString;
     }
+	
+	public function sendEmail($member, $subject, $msg) {
+		Mail::send('emails.default', ['member'=>$member, 'msg'=>$msg], function ($message) use ($member) {
+			$message->from('purduehackers@gmail.com', 'Purdue Hackers');
+			$message->to($member->email);
+			$message->subject($subject);
+		});
+	}
     
     public function graphDataJoinDates($members) {
 	    $joinDatesDict = [];
