@@ -571,8 +571,8 @@ class PortalController extends Controller {
 	public function getEventGraphs(AdminRequest $request, $eventID) {
 		$event = Event::findOrFail($eventID);
 		
-		$members = $event->members()->get();
-		$applications = $event->applications()->get();
+		//$members = $event->members()->get();
+		$members = $event->applications()->join('members', 'applications.member_id', '=', 'members.id')->get();
 		
 		// Join Dates
 		$joinDates = $this->graphDataJoinDates($members);
@@ -583,7 +583,7 @@ class PortalController extends Controller {
 		// Major
 		$majorsData = $this->graphDataMajor($members);
 		
-		return view('pages.event-live', compact("event","joinDates","memberYears","majorsData"));
+		return view('pages.event-graphs', compact("event","joinDates","memberYears","majorsData"));
 	}
 	
 	public function getLive(AdminRequest $request, $eventID) {
