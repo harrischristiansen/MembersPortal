@@ -565,7 +565,7 @@ class PortalController extends Controller {
 			$applications = $event->applications()->get();
 		}
 		
-		return view('pages.event',compact("event","members","canApply","canRegister","hasRegistered","applications"));
+		return view('pages.event', compact("event","members","canApply","canRegister","hasRegistered","applications"));
 	}
 	
 	public function getEventGraphs(AdminRequest $request, $eventID) {
@@ -582,9 +582,14 @@ class PortalController extends Controller {
 		
 		// Major
 		$majorsData = $this->graphDataMajor($members);
-
 		
-		return view('pages.event-graphs',compact("event","joinDates","memberYears","majorsData"));
+		return view('pages.event-live', compact("event","joinDates","memberYears","majorsData"));
+	}
+	
+	public function getLive(AdminRequest $request, $eventID) {
+		$event = Event::findOrFail($eventID);
+		
+		return view('pages.event-live', compact("event"));
 	}
 	
 	/////////////////////////////// Editing Events ///////////////////////////////
