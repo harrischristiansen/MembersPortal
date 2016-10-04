@@ -661,7 +661,7 @@ class PortalController extends Controller {
 			$members = Member::all();
 		} elseif ($target == "both") {
 			$members_att = $event->members()->get();
-			$members_reg = $event->applications()->get();
+			$members_reg = $event->appliedMembers()->get();
 			$members = $members_att->merge($members_reg)->all();
 		} elseif ($target == "att") {
 			$members = $event->members()->get();
@@ -669,7 +669,7 @@ class PortalController extends Controller {
 			$members = $event->appliedMembers()->get();
 		} elseif ($target == "not") {
 			$members_all = Member::all();
-			$members_reg = $event->applications()->get();
+			$members_reg = $event->appliedMembers()->get();
 			$members = $members_all->diff($members_reg)->all();
 		} else {
 			$members = $event->members()->get();
