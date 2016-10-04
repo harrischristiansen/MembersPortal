@@ -23,6 +23,11 @@ class Event extends Model {
 		return $this->hasMany('App\Models\Application');
 	}
 	
+	public function appliedMembers()
+    {
+        return $this->hasManyThrough('App\Models\Member', 'App\Models\Application', 'member_id', 'id');
+    }
+	
 	public function date() {
 		return $this->event_time->format('Y-m-d');
 	}

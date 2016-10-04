@@ -3,9 +3,7 @@
 @section("content")
 
 <div class="message">
-	<p>Hi {{ $member->name }},</p>
-	
-	{!! $msg !!}
+	<p>{!! $msg !!}</p>
 </div>
 
 @stop

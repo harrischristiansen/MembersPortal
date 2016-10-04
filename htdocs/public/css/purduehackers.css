@@ -464,7 +464,10 @@ hr {
 	max-width: 100px;
 	max-height: 100px;
 }
-  
+
+.marginR {
+	margin-right: 8px;
+}
   
 
 /* ------------------------ Graphs ------------------------- */

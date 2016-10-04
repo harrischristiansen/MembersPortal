@@ -645,26 +645,29 @@ class PortalController extends Controller {
 	
 	public function getEventEmail(AdminRequest $request, $eventID) {
 		$event = Event::findOrFail($eventID);
+		
+		return view('pages.event-email', compact("event"));
 	}
 	
 	public function postEventEmail(AdminRequest $request, $eventID) {
 		$event = Event::findOrFail($eventID);
 		
 		$subject = $request->input("subject");
-		$msg = $request->input("message");
+		$msg = nl2br(e($request->input("message")));
 		$target = $request->input("target");
 		
-		if ($target == "All") {
+		$members = null;
+		if ($target == "all") {
 			$members = Member::all();
-		} elseif ($target == "AttAndReg") {
+		} elseif ($target == "both") {
 			$members_att = $event->members()->get();
 			$members_reg = $event->applications()->get();
 			$members = $members_att->merge($members_reg)->all();
-		} elseif ($target == "Attended") {
+		} elseif ($target == "att") {
 			$members = $event->members()->get();
-		} elseif ($target == "Registered") {
-			$event->applications()->get();
-		} elseif ($target == "NotRegistered") {
+		} elseif ($target == "reg") {
+			$members = $event->appliedMembers()->get();
+		} elseif ($target == "not") {
 			$members_all = Member::all();
 			$members_reg = $event->applications()->get();
 			$members = $members_all->diff($members_reg)->all();
@@ -673,8 +676,12 @@ class PortalController extends Controller {
 		}
 		
 		foreach ($members as $member) {
-			sendEmail($member, $subject, $msg);
+			// Add Placeholders
+			$this->sendEmail($member, $subject, $msg);
 		}
+		
+		$request->session()->flash('msg', 'Success, email sent!');
+		return $this->getEventEmail($request, $eventID);
 	}
 	
 	/////////////////////////////// Event Checkin System ///////////////////////////////
@@ -834,7 +841,7 @@ class PortalController extends Controller {
     }
 	
 	public function sendEmail($member, $subject, $msg) {
-		Mail::send('emails.default', ['member'=>$member, 'msg'=>$msg], function ($message) use ($member) {
+		Mail::send('emails.default', ['member'=>$member, 'msg'=>$msg], function ($message) use ($member, $subject) {
 			$message->from('purduehackers@gmail.com', 'Purdue Hackers');
 			$message->to($member->email);
 			$message->subject($subject);

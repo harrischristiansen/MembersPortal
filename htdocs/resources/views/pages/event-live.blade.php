@@ -4,7 +4,7 @@
 
 <div class="section"><div class='section-container'>
 	<h3>{{ $event->name }}
-		<a href="/event/{{ $event->id }}" class="pull-left"><button type="button" class="btn btn-primary btn-sm"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> {{ $event->name }}</button></a>
+		<a href="/event/{{ $event->id }}" class="pull-left"><button type="button" class="btn btn-primary btn-sm"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> Event</button></a>
 	</h3>
 	
 	<div class="panel panel-default text-left">

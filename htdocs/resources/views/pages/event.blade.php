@@ -5,12 +5,12 @@
 <div class="section"><div class='section-container'>
 	<h3>{{ $event->name }}
 		@if (session()->get('authenticated_admin') == "true")
-			<a href="/checkin/{{ $event->id }}" class="pull-right"><button type="button" class="btn btn-primary btn-sm">Checkin</button></a>
+			<a href="/event-graphs/{{ $event->id }}" class="pull-left marginR"><button type="button" class="btn btn-primary btn-sm">Graphs</button></a>
 			@if ($canApply || $canRegister)
-			<a href="/applications/{{ $event->id }}" class="pull-left"><button type="button" class="btn btn-primary btn-sm">{{ count($applications) }} Applications</button></a>
-			@else
-			<a href="/event-graphs/{{ $event->id }}" class="pull-left"><button type="button" class="btn btn-primary btn-sm">Graphs</button></a>
+			<a href="/applications/{{ $event->id }}" class="pull-left marginR"><button type="button" class="btn btn-primary btn-sm">{{ count($applications) }} Applications</button></a>
 			@endif
+			<a href="/checkin/{{ $event->id }}" class="pull-right"><button type="button" class="btn btn-primary btn-sm">Checkin</button></a>
+			<a href="/event-email/{{ $event->id }}" class="pull-right marginR"><button type="button" class="btn btn-primary btn-sm">Email</button></a>
 		@elseif ($canApply)
 			@if ($hasRegistered)
 			<button type="button" class="btn btn-primary btn-sm pull-right">Registered</button>
