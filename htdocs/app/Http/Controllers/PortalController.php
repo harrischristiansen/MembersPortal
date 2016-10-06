@@ -571,8 +571,10 @@ class PortalController extends Controller {
 	public function getEventGraphs(AdminRequest $request, $eventID) {
 		$event = Event::findOrFail($eventID);
 		
-		//$members = $event->members()->get();
-		$members = $event->getAppliedMembers();
+		$members = $event->members()->get();
+		if(count($members) == 0) {
+			$members = $event->getAppliedMembers();
+		}
 		
 		// Join Dates
 		$joinDates = $this->graphDataJoinDates($members);
