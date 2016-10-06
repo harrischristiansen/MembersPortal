@@ -859,9 +859,16 @@ class PortalController extends Controller {
 	
 	public function getApplicationsUpperclassmen(AdminRequest $request, $eventID=-1) {
 		$event = Event::findOrFail($eventID);
-		$members = $event->getAppliedMembers()->whereIn('graduation_year', [2017,2018,2019])->pluck("email","name");
+		$members = $event->getAppliedMembers();
+		$upperclassmen = [];
+		foreach ($members as $member) {
+			if ($member->graduation_year > 2016 && $member->graduation_year < 2020) {
+				array_push($upperclassmen, $member);
+			}
+		}
+		$upperclassmen = collect($upperclassmen)->pluck("email","name");
 		
-		return $members;
+		return $upperclassmen;
 	}
 
 	/////////////////////////////// Helper Functions ///////////////////////////////
