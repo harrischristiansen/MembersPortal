@@ -27,9 +27,26 @@
 			<textarea name="message" id="message" placeholder="Message" class="form-control" data-bvalidator="required" rows="12"></textarea>
 			<br>
 			<input type="submit" value="Send Email" class="btn btn-primary">
-			ADD PLACEHOLDERS
 		</form>
 	</div>
+	<table class="panel panel-default table table-bordered">
+		<tr>
+			<td>Placeholder</td>
+			<td>Example</td>
+		</tr>
+		<tr>
+			<td>@{{name}}</td>
+			<td>Member Name</td>
+		</tr>
+		<tr>
+			<td>@{{setpassword}}</td>
+			<td>Link to set/reset account password</td>
+		</tr>
+		<tr>
+			<td>@{{register}}</td>
+			<td>Link to register for {{ $event->name }}</td>
+		</tr>
+	</table>
 </div></div>
 
 @stop

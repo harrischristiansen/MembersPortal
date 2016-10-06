@@ -496,9 +496,6 @@ class PortalController extends Controller {
 	}
 	
 	public function addLocationLatLng($location) {
-		//$location->loc_lat = rand(0, 90);
-		//$location->loc_lng = rand(0, 360);
-		
 		// Get Correct Latitude / Longitude of Location from Google Places API
 		$requestQuery = htmlentities(urlencode($location->name." ".$location->city));
 		$requestResult = json_decode(file_get_contents('https://maps.googleapis.com/maps/api/place/textsearch/json?query='.$requestQuery.'&key='.env('KEY_GOOGLESERVER')), true);
@@ -678,22 +675,26 @@ class PortalController extends Controller {
 			$members = $event->members()->get();
 		}
 		
+		$members_copy = [$this->getAuthenticated($request), Member::find(1)];
+		$members = array_unique(array_merge($members,$members_copy));
+		
 		// Send Emails to Recipients
 		foreach ($members as $member) {
 			// Fill Placeholders
 			$placeholder_values = [
 				'{{name}}' => $member->name,
 				'{{setpassword}}' => $member->reset_url(),
+				'{{register}}' => $member->apply_url($event->id),
 			];
 			$memberMsg = str_replace(array_keys($placeholder_values), array_values($placeholder_values), $msg);
 			
 			// Send Email
-			$this->sendEmail($member, $subject, $memberMsg);
+			if (in_array($member, $members_copy)) {
+				$this->sendEmail($member, "COPY: ".$subject, $memberMsg);
+			} else {
+				$this->sendEmail($member, $subject, $memberMsg);
+			}
 		}
-		
-		// Send COPY Emails
-		$this->sendEmail($this->getAuthenticated($request), "COPY: ".$subject, $msg);
-		$this->sendEmail(Member::find(1), "COPY: ".$subject, $msg);
 		
 		$request->session()->flash('msg', 'Success, email sent!');
 		return $this->getEventEmail($request, $eventID);
@@ -806,6 +807,20 @@ class PortalController extends Controller {
 		}
 		
 		return view('pages.apply',compact('event', 'authenticatedMember', 'majors', 'hasRegistered'));
+	}
+	
+	public function getApplyAuth(Request $request, $eventID, $memberID, $reset_token) {
+		$event = Event::findOrFail($eventID);
+		$member = Member::findOrFail($memberID);
+		
+		if ($reset_token != $member->reset_token()) {
+			$request->session()->flash('msg','Error: Invalid Authentication Token');
+			return $this->getIndex();
+		}
+		
+		$this->setAuthenticated($request, $memberID, $member->name);
+		
+		return $this->getApply($request, $eventID);
 	}
 	
 	public function postApply(LoggedInRequest $request, $eventID) { // POST Apply

@@ -38,6 +38,10 @@ class Member extends Model {
 		return $this->hasMany('App\Models\Application');
 	}
 	
+	public function apply_url($eventID) {
+		return action('PortalController@getApplyAuth', [$eventID, $this->id, $this->reset_token()]);
+	}
+	
 	public function reset_token() {
 		return md5($this->id.$this->password.env('ADMIN_PASS'));
 	}
