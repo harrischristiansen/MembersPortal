@@ -676,7 +676,7 @@ class PortalController extends Controller {
 		}
 		
 		$members_copy = [$this->getAuthenticated($request), Member::find(1)];
-		$members = array_unique(array_merge($members,$members_copy));
+		$members = collect($members)->merge($members_copy)->unique()->all();
 		
 		// Send Emails to Recipients
 		foreach ($members as $member) {
