@@ -856,6 +856,13 @@ class PortalController extends Controller {
 		
 		return view('pages.applications',compact("event","applications"));
 	}
+	
+	public function getApplicationsUpperclassmen(AdminRequest $request, $eventID=-1) {
+		$event = Event::findOrFail($eventID);
+		$members = $event->getAppliedMembers()->whereIn('graduation_year', [2017,2018,2019])->pluck("email","name");
+		
+		return $members;
+	}
 
 	/////////////////////////////// Helper Functions ///////////////////////////////
 	

@@ -9,29 +9,31 @@ This Members Tracking Portal was originally developed for Purdue Hackers. Purdue
 ## Features
 
 - [X] Member - Register/Login
-	- Keep url path through login
+	- [ ] Keep url path through login
 - [X] Member - Change Password
 - [X] Member - Reset Password
 - [X] Member - Profiles (Picture, About, Links, Resume, Status) + Locations + Event History
-	- Automatic Status Changes (Member/Inactive/Alumni)
-	- Mailing List Integration
-	- Log Profile changes
+	- [ ] Automatic Status Changes (Member/Inactive/Alumni)
+	- [ ] Mailing List Integration
+	- [ ] Log Profile changes
 - [X] Members - Members List
 - [X] Members - Map of Members Locations
-	- Location duplicate resolution?  
+	- [ ] Location duplicate resolution?  
 - [X] Events - Events List
 - [X] Events - Event Info
 - [X] Events - Apply/Register
 - [X] Admin - Members - Modify
 - [X] Admin - Events - Create/Modify/Delete
-	- Enable/Disable Registration/Applications
+	- [ ] Enable/Disable Registration/Applications
 - [ ] Admin - Events - Manage Applications
 - [X] Admin - Events - Checkin Members
 	- Undo Checkin (Delete Checkin Record)
-- [ ] Admin - Events - Email Attendees
+- [X] Admin - Events - Email Attendees
+	- [ ] Inline Links
+	- [ ] Ignore Inactive Members
 - [X] Admin - Analytics
-	- Graphs of apply, register
-	- See trends in who has been going to what events
+	- [ ] Graphs of apply, register
+	- [ ] See trends in who has been going to what events
 
 ## Local MAMP Installation - Mac  
 
