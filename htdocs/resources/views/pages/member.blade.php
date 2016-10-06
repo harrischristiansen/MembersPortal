@@ -39,7 +39,7 @@
 			<textarea name="description" id="description" class="form-control" placeholder="Public Message">{{ $member->description }}</textarea>
 			<br>
 			<label for="gradYear">Year of Graduation *</label>
-			<input type="number" name="gradYear" id="gradYear" placeholder="Graduation Year" value="{{ $member->graduation_year}}" class="form-control" data-bvalidator="required,number,between[1900:2500]" data-bvalidator-msg="A graduation year is required">
+			<input type="number" name="gradYear" id="gradYear" placeholder="Graduation Year" value="{{ $member->graduation_year}}" class="form-control" data-bvalidator="required,number,between[1900:2100]" data-bvalidator-msg="A graduation year is required">
 			<br>
 			<label for="major">Major</label>
 			<select name="major" id="major" class="form-control" {!! $member->major_id ? 'data-bvalidator="required"' : "" !!}>

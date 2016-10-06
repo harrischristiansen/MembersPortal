@@ -572,7 +572,7 @@ class PortalController extends Controller {
 		$event = Event::findOrFail($eventID);
 		
 		//$members = $event->members()->get();
-		$members = $event->applications()->join('members', 'applications.member_id', '=', 'members.id')->get();
+		$members = $event->getAppliedMembers();
 		
 		// Join Dates
 		$joinDates = $this->graphDataJoinDates($members);
@@ -661,15 +661,15 @@ class PortalController extends Controller {
 			$members = Member::all();
 		} elseif ($target == "both") {
 			$members_att = $event->members()->get();
-			$members_reg = $event->applications()->join('members', 'applications.member_id', '=', 'members.id')->get(); // Get Applied Members
+			$members_reg = $event->getAppliedMembers();
 			$members = $members_att->merge($members_reg)->all();
 		} elseif ($target == "att") {
 			$members = $event->members()->get();
 		} elseif ($target == "reg") {
-			$members = $event->applications()->join('members', 'applications.member_id', '=', 'members.id')->get(); // Get Applied Members
+			$members = $event->getAppliedMembers();
 		} elseif ($target == "not") {
 			$members_all = Member::all();
-			$members_reg = $$event->applications()->join('members', 'applications.member_id', '=', 'members.id')->get(); // Get Applied Members
+			$members_reg = $event->getAppliedMembers();
 			$members = $members_all->diff($members_reg)->all();
 		} else {
 			$members = $event->members()->get();

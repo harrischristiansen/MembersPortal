@@ -19,8 +19,8 @@
 			<label for="confirmPassword">Confirm Password</label>
 			<input type="password" name="confirmPassword" id="confirmPassword" placeholder="Confirm Password" class="form-control" data-bvalidator="required,equalto[password]" data-bvalidator-msg="Password does not match">
 			<br>
-			<label for="gradYear">Graduation Year</label>
-			<input type="number" name="gradYear" id="gradYear" placeholder="Graduation Year" class="form-control" data-bvalidator="required,number" data-bvalidator-msg="A graduation year is required">
+			<label for="gradYear">(Expected) Year of Graduation</label>
+			<input type="number" name="gradYear" id="gradYear" placeholder="Graduation Year" class="form-control" data-bvalidator="required,number,between[1900:2100]" data-bvalidator-msg="Please provide your expected year of graduation">
 			<br>
 			<input type="submit" value="Join" class="btn btn-primary">
 		</form>
