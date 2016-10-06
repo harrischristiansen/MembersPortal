@@ -42,6 +42,10 @@ class Member extends Model {
 		return md5($this->id.$this->password.env('ADMIN_PASS'));
 	}
 	
+	public function reset_url() {
+		return action('PortalController@getReset', [$this->id, $this->reset_token()]);
+	}
+	
 	public function picturePath() {
 		$fileExt = pathinfo($this->picture, PATHINFO_EXTENSION);
 		return '/uploads/member_pictures/'.$this->id."_".substr(md5($this->picture), -6).'.'.$fileExt;

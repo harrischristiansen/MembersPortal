@@ -81,9 +81,9 @@
 			<br>
 			@if (!isset($setPassword))
 				@if(session()->get('authenticated_admin') == "true")
-				<a href="/reset/{{ $member->id }}/{{ $member->reset_token() }}" class="btn btn-warning pull-left">Reset Password</a>
+				<a href="{{ $member->reset_url() }}" class="btn btn-warning pull-left">Reset Password</a>
 				@elseif($member->id == session()->get('member_id'))
-				<a href="/reset/{{ $member->id }}/{{ $member->reset_token() }}" class="btn btn-warning pull-left">Change Password</a>
+				<a href="{{ $member->reset_url() }}" class="btn btn-warning pull-left">Change Password</a>
 				@endif
 			@endif
 			<input type="submit" value="Update Profile" class="btn btn-primary pull-right">

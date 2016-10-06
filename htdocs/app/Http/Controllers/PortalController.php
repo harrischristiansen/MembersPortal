@@ -658,6 +658,7 @@ class PortalController extends Controller {
 		$msg = nl2br(e($request->input("message")));
 		$target = $request->input("target");
 		
+		// Get Recipient Members
 		$members = null;
 		if ($target == "all") {
 			$members = Member::all();
@@ -677,10 +678,22 @@ class PortalController extends Controller {
 			$members = $event->members()->get();
 		}
 		
+		// Send Emails to Recipients
 		foreach ($members as $member) {
-			// Add Placeholders
-			$this->sendEmail($member, $subject, $msg);
+			// Fill Placeholders
+			$placeholder_values = [
+				'{{name}}' => $member->name,
+				'{{setpassword}}' => $member->reset_url(),
+			];
+			$memberMsg = str_replace(array_keys($placeholder_values), array_values($placeholder_values), $msg);
+			
+			// Send Email
+			$this->sendEmail($member, $subject, $memberMsg);
 		}
+		
+		// Send COPY Emails
+		$this->sendEmail($this->getAuthenticated($request), "COPY: ".$subject, $msg);
+		$this->sendEmail(Member::find(1), "COPY: ".$subject, $msg);
 		
 		$request->session()->flash('msg', 'Success, email sent!');
 		return $this->getEventEmail($request, $eventID);
@@ -843,11 +856,13 @@ class PortalController extends Controller {
     }
 	
 	public function sendEmail($member, $subject, $msg) {
-		Mail::send('emails.default', ['member'=>$member, 'msg'=>$msg], function ($message) use ($member, $subject) {
-			$message->from('purduehackers@gmail.com', 'Purdue Hackers');
-			$message->to($member->email);
-			$message->subject($subject);
-		});
+		if ($member->graduation_year == 2040) {
+			Mail::send('emails.default', ['member'=>$member, 'msg'=>$msg], function ($message) use ($member, $subject) {
+				$message->from('purduehackers@gmail.com', 'Purdue Hackers');
+				$message->to($member->email);
+				$message->subject($subject);
+			});
+		}
 	}
     
     public function graphDataJoinDates($members) {
