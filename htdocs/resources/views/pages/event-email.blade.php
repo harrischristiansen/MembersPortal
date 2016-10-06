@@ -49,6 +49,10 @@
 				<td>@{{register}}</td>
 				<td>Link to register for {{ $event->name }}</td>
 			</tr>
+			<tr>
+				<td>@{{link}}http://www.google.com/@{{link-text}}Google@{{/link}}</td>
+				<td>Link to URL</td>
+			</tr>
 		</tbody>
 	</table>
 </div></div>

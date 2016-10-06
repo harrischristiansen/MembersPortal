@@ -685,6 +685,9 @@ class PortalController extends Controller {
 				'{{name}}' => $member->name,
 				'{{setpassword}}' => $member->reset_url(),
 				'{{register}}' => $member->apply_url($event->id),
+				'{{link}}' => '<a href="',
+				'{{link-text}}' => '">',
+				'{{/link}}' => '</a>',
 			];
 			$memberMsg = str_replace(array_keys($placeholder_values), array_values($placeholder_values), $msg);
 			
