@@ -6,10 +6,10 @@
 	<h3>Login</h3>
 	
 	<div class="panel panel-default">
-		<form method="post" action="/login" class="panel-body">
+		<form method="post" action="/login" class="panel-body validate">
 			{!! csrf_field() !!}
-			<input type="text" name="email" id="email" placeholder="Email">
-			<input type="password" name="password" id="password" placeholder="Password">
+			<input type="text" name="email" id="email" placeholder="Email" data-bvalidator="required,email">
+			<input type="password" name="password" id="password" placeholder="Password" data-bvalidator="required">
 			<br><br>
 			<input type="submit" value="Sign In">
 			<br><br>

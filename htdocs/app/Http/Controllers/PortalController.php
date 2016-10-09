@@ -65,13 +65,16 @@ class PortalController extends Controller {
 					
 					if (Hash::needsRehash($member->password)) { // Check If Password Needs Rehash
 						$member->password = Hash::make($password);
-						$member->save();
 					}
+					
+					$member->authenticated_at = Carbon::now();
 					
 					if ($member->admin) { // Admin Accounts
 						$request->session()->put('authenticated_admin', 'true');
 					}
 					
+					$member->timestamps = false; // Don't update timestamps
+					$member->save();
 					return $this->getIndex();
 				}
 			}
