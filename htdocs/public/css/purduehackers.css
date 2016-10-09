@@ -44,6 +44,11 @@ body {
 	font-size: 1.7em;
 }
 
+.navbar li a {
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
 .navbar a {
 	font-family: MontserratLite, sans-serif !important;
 	color: #666;

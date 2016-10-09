@@ -21,6 +21,9 @@
 					<li><a href="/members">Members</a></li>
 				@endif
 				<li><a href="/events">Events</a></li>
+				@if(session()->get('authenticated_admin') == "true")
+					<li><a href="/projects">Projects</a></li>
+				@endif
 				@if(session()->get('authenticated_member') == "true")
 					<li><a href="/logout">Logout</a></li>
 				@else
