@@ -86,28 +86,28 @@
 	
 	<h3>Members Attended</h3>
 	<div class="panel panel-default">
-		<table class="table table-bordered table-hover table-clickable panel-body">
-		<thead>
-			<tr>
-				<th>Member</th>
-				<th>Year</th>
-				<th># Attended Events</th>
-			</tr>
-		</thead>
-		<tbody>
-		@forelse ($members as $member)
-		    <tr onclick="location.href='{{ URL::to('/member', $member->id) }}';">
-		    	<td>{{ $member->name }}</td>
-		    	<td>{{ $member->graduation_year }}</td>
-				<td>{{ count($member->events) }}</td>
-		    </tr>
-		@empty
-			<tr>
-				<td>No Members Attended</td>
-				<td></td>
-			</tr>
-		@endforelse
-		</tbody>
+		<table class="table table-bordered table-hover table-clickable panel-body sortableTable">
+			<thead>
+				<tr>
+					<th>Member</th>
+					<th>Year</th>
+					<th># Attended Events</th>
+				</tr>
+			</thead>
+			<tbody>
+			@forelse ($members as $member)
+			    <tr onclick="location.href='{{ URL::to('/member', $member->id) }}';">
+			    	<td>{{ $member->name }}</td>
+			    	<td>{{ $member->graduation_year }}</td>
+					<td>{{ count($member->events) }}</td>
+			    </tr>
+			@empty
+				<tr>
+					<td>No Members Attended</td>
+					<td></td>
+				</tr>
+			@endforelse
+			</tbody>
 		</table>
 	</div>
 	
