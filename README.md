@@ -8,32 +8,36 @@ This Members Tracking Portal was originally developed for Purdue Hackers. Purdue
 
 ## Features
 
-- [X] Member - Register/Login
-	- [ ] Keep url path through login
-- [X] Member - Change Password
-- [X] Member - Reset Password
-- [X] Member - Profiles (Picture, About, Links, Resume, Status) + Locations + Event History
-	- [ ] Automatic Status Changes (Member/Inactive/Alumni)
-	- [ ] Mailing List Integration
-	- [ ] Log Profile changes
-- [X] Members - Members List
-- [X] Members - Map of Members Locations
-	- [ ] Location duplicate resolution?  
-- [X] Events - Events List
-- [X] Events - Event Info
-- [X] Events - Apply/Register
-- [X] Admin - Members - Modify
-- [X] Admin - Events - Create/Modify/Delete
-	- [ ] Enable/Disable Registration/Applications
-- [ ] Admin - Events - Manage Applications
-- [X] Admin - Events - Checkin Members
-	- Undo Checkin (Delete Checkin Record)
-- [X] Admin - Events - Email Attendees
-	- [ ] Inline Links
-	- [ ] Ignore Inactive Members
-- [X] Admin - Analytics
-	- [ ] Graphs of apply, register
-	- [ ] See trends in who has been going to what events
+- [X] Member
+	- [X] Register, Login
+		- [ ] Keep url path through login
+	- [X] Change Password
+	- [X] Reset Password
+	- [X] Profiles (Picture, About, Links, Resume, Status) + Locations + Event History
+		- [ ] Automatic Status Changes (Member/Inactive/Alumni)
+		- [ ] Mailing List Integration
+		- [ ] Log Profile changes
+	- [X] Map of Members Locations
+		- [ ] Location duplicate resolution?  
+- [X] Events
+	- [X] List, View
+	- [X] Register, Apply
+- [ ] Projects
+	- [ ] Create, View
+	- [ ] Add Team Members
+- [X] Admin
+	- [X] Members - Modify
+	- [X] Events - Create, Modify, Delete
+		- [ ] Enable/Disable Registration/Applications
+		- [ ] Events - Manage Applications
+		- [X] Checkin Members
+			- [ ] Undo Checkin (Delete Checkin Record)
+		- [X] Message Attendees
+			- [ ] Ignore Inactive Members
+			- [ ] SMS Messages via Twilio
+	- [X] Analytics
+		- [ ] Graphs of "# events attended"
+		- [ ] See trends in who has been going to what events
 
 ## Local MAMP Installation - Mac  
 
