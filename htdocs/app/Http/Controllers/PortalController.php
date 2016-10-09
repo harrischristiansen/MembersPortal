@@ -28,6 +28,7 @@ use App\Models\Location;
 use App\Models\LocationRecord;
 use App\Models\Major;
 use App\Models\Member;
+use App\Models\Project;
 
 class PortalController extends Controller {
 	
@@ -898,6 +899,49 @@ class PortalController extends Controller {
 		$upperclassmen = collect($upperclassmen)->pluck("email","name");
 		
 		return $upperclassmen;
+	}
+	
+	/////////////////////////////// Viewing Projects ///////////////////////////////
+	
+	public function getProjects(LoggedInRequest $request) {
+		$projects = $this->getAuthenticated($request)->projects();
+		
+		return view('pages.projects',compact("projects"));
+	}
+	
+	public function getProjectsAll(AdminRequest $request) {
+		$projects = Project::all();
+		$allProjects = true;
+		
+		return view('pages.projects',compact("projects","allProjects"));
+	}
+	
+	public function getProject(LoggedInRequest $request, $projectID) {
+		$project = Event::findOrFail($projectID);
+		
+		return view('pages.project', compact("project"));
+	}
+	
+	/////////////////////////////// Creating Projects ///////////////////////////////
+	
+	public function getProjectNew(LoggedInRequest $request) {
+		
+	}
+	
+	/////////////////////////////// Editing Projects ///////////////////////////////
+	
+	public function postProject(LoggedInRequest $request, $projectID=0) {
+		
+	}
+	
+	public function getProjectAddMember(LoggedInRequest $request, $projectID, $memberID) {
+		$project = Event::findOrFail($projectID);
+		$member = Member::findOrFail($memberID);
+	}
+	
+	public function getProjectRemoveMember(LoggedInRequest $request, $projectID, $memberID) {
+		$project = Event::findOrFail($projectID);
+		$member = Member::findOrFail($memberID);
 	}
 
 	/////////////////////////////// Helper Functions ///////////////////////////////

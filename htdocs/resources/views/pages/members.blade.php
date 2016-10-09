@@ -4,7 +4,8 @@
 <div class="section"><div class='section-container'>
 	<h3>Members
 		@if(session()->get('authenticated_admin') == "true")
-		<a href="/members-graphs" class="pull-left"><button type="button" class="btn btn-primary btn-sm">Graphs</button></a>
+		<a href="/members-graphs" class="pull-left"><button type="button" class="btn btn-primary btn-sm marginR">Graphs</button></a>
+		<a href="/map" class="pull-left"><button type="button" class="btn btn-primary btn-sm">Map</button></a>
 		<button type="button" class="btn btn-primary btn-sm pull-right">{{ count($members) }} members</button>
 		@endif
 	</h3>

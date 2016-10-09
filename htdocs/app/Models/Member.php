@@ -27,6 +27,10 @@ class Member extends Model {
 		return $this->hasMany('App\Models\LocationRecord');
 	}
 	
+	public function projects() {
+		return $this->belongsToMany('App\Models\Project');
+	}
+	
 	public function events() {
 		return $this->belongsToMany('App\Models\Event')->withPivot('recorded_by');
 	}
