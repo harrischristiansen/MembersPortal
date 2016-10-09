@@ -644,15 +644,16 @@ class PortalController extends Controller {
 	
 	/////////////////////////////////// Event Emails ///////////////////////////////////
 	
-	public function getEventEmail(AdminRequest $request, $eventID) {
+	public function getEventMessage(AdminRequest $request, $eventID) {
 		$event = Event::findOrFail($eventID);
 		
-		return view('pages.event-email', compact("event"));
+		return view('pages.event-message', compact("event"));
 	}
 	
-	public function postEventEmail(AdminRequest $request, $eventID) {
+	public function postEventMessage(AdminRequest $request, $eventID) {
 		$event = Event::findOrFail($eventID);
 		
+		$method = $request->input("method");
 		$subject = $request->input("subject");
 		$msg = nl2br(e($request->input("message")));
 		$target = $request->input("target");
@@ -680,7 +681,7 @@ class PortalController extends Controller {
 		$members_copy = [$this->getAuthenticated($request), Member::find(1)];
 		$members = collect($members)->merge($members_copy)->unique()->all();
 		
-		// Send Emails to Recipients
+		// Send Messages to Recipients
 		foreach ($members as $member) {
 			// Fill Placeholders
 			$placeholder_values = [
@@ -693,16 +694,22 @@ class PortalController extends Controller {
 			];
 			$memberMsg = str_replace(array_keys($placeholder_values), array_values($placeholder_values), $msg);
 			
-			// Send Email
-			if (in_array($member, $members_copy)) {
-				$this->sendEmail($member, "COPY: ".$subject, $memberMsg);
-			} else {
-				$this->sendEmail($member, $subject, $memberMsg);
+			// Send Message
+			if ($method == "email") { // Send Email
+				if (in_array($member, $members_copy)) {
+					$this->sendEmail($member, "COPY: ".$subject, $memberMsg);
+				} else {
+					$this->sendEmail($member, $subject, $memberMsg);
+				}
+			} elseif ($method == "sms") { // Send SMS
+				if (strlen($member->phone) > 9) { // If valid #
+					// TODO: Send SMS Message via Twilio
+				}
 			}
 		}
 		
-		$request->session()->flash('msg', 'Success, email sent!');
-		return $this->getEventEmail($request, $eventID);
+		$request->session()->flash('msg', 'Success, message sent!');
+		return $this->getEventMessage($request, $eventID);
 	}
 	
 	/////////////////////////////// Event Checkin System ///////////////////////////////

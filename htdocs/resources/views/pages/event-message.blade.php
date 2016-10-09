@@ -3,14 +3,21 @@
 @section("content")
 
 <div class="section"><div class='section-container'>
-	<h3>Email: {{ $event->name }}
+	<h3>Message: {{ $event->name }}
 		<a href="/event/{{ $event->id }}" class="pull-left"><button type="button" class="btn btn-primary btn-sm"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> Event</button></a>
 	</h3>
 	
 	<div class="panel panel-default">
-		<form method="post" action="/event-email/{{ $event->id }}" class="panel-body validate">
+		<form method="post" action="/event-message/{{ $event->id }}" class="panel-body validate">
 			{!! csrf_field() !!}
-			<label for="target">Send Email To:</label>
+			<label for="method">Send Method:</label>
+			<select name="method" id="method" class="form-control" data-bvalidator="required">
+				<option value="" selected> - SELECT - </option>
+				<option value="email">Email</option>
+				<option value="sms">SMS</option>
+			</select>
+			<br>
+			<label for="target">Send To:</label>
 			<select name="target" id="target" class="form-control" data-bvalidator="required">
 				<option value="" selected> - SELECT - </option>
 				<option value="all">All Members</option>
@@ -20,13 +27,13 @@
 				<option value="not">Members Not Registered for {{ $event->name}}</option>
 			</select>
 			<br>
-			<label for="subject">Subject</label>
-			<input type="text" name="subject" id="subject" placeholder="Subject" class="form-control" data-bvalidator="required">
+			<label for="subject">Subject (email only)</label>
+			<input type="text" name="subject" id="subject" placeholder="Subject (email only)" class="form-control" data-bvalidator="required">
 			<br>
 			<label for="message">Message</label>
 			<textarea name="message" id="message" placeholder="Message" class="form-control" data-bvalidator="required" rows="12"></textarea>
 			<br>
-			<input type="submit" value="Send Email" class="btn btn-primary">
+			<input type="submit" value="Send Message" class="btn btn-primary">
 		</form>
 	</div>
 	<table class="panel panel-default table table-bordered sortableTable">
@@ -51,7 +58,7 @@
 			</tr>
 			<tr>
 				<td>@{{link}}http://www.google.com/@{{link-text}}Google@{{/link}}</td>
-				<td>Link to URL</td>
+				<td>Link to URL (email only)</td>
 			</tr>
 		</tbody>
 	</table>

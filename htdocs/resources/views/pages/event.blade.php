@@ -10,7 +10,7 @@
 			<a href="/applications/{{ $event->id }}" class="pull-left marginR"><button type="button" class="btn btn-primary btn-sm">{{ count($applications) }} Applications</button></a>
 			@endif
 			<a href="/checkin/{{ $event->id }}" class="pull-right"><button type="button" class="btn btn-primary btn-sm">Checkin</button></a>
-			<a href="/event-email/{{ $event->id }}" class="pull-right marginR"><button type="button" class="btn btn-primary btn-sm">Email</button></a>
+			<a href="/event-message/{{ $event->id }}" class="pull-right marginR"><button type="button" class="btn btn-primary btn-sm">Send Message</button></a>
 		@elseif ($canApply)
 			@if ($hasRegistered)
 			<button type="button" class="btn btn-primary btn-sm pull-right">Registered</button>
