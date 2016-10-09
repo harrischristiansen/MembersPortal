@@ -32,6 +32,9 @@
 			<input type="password" name="confirmPassword" id="confirmPassword" placeholder="Confirm Password" class="form-control" data-bvalidator="required,equalto[password]" data-bvalidator-msg="Password does not match">
 			<br>
 			@endif
+			<label for="phone">Cell Phone Number (private, only for text notifications)</label>
+			<input type="text" name="phone" id="phone" placeholder="Cell Phone Number" value="{{ $member->phone }}" class="form-control" data-bvalidator="minlength[10]" data-bvalidator-msg="Please enter a valid cell phone # (with area code)">
+			<br>
 			<label for="email_public">Public Email</label>
 			<input type="text" name="email_public" id="email_public" placeholder="Public Email" value="{{ $member->email_public }}" class="form-control" data-bvalidator="email" data-bvalidator-msg="Please enter a valid email address. (Optional)">
 			<br>

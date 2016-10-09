@@ -27,6 +27,7 @@ $(".membersautocomplete").autocomplete({
 			selectedID = ui.item.id;
 			$("#memberName").val(ui.item.name);
 			$("#memberEmail").val(ui.item.email);
+			$("#memberPhone").val(ui.item.phone);
 			$("#memberAttended").val(ui.item.attended);
 		}
 	},
@@ -67,7 +68,8 @@ function checkinMember() {
 			eventID:eventID,
 			memberID:selectedID,
 			memberName:$("#memberName").val(),
-			memberEmail:$("#memberEmail").val()
+			memberEmail:$("#memberEmail").val(),
+			memberPhone:$("#memberPhone").val(),
 		},
 		headers: {
 			"X-XSRF-TOKEN":$.cookie("XSRF-TOKEN")
@@ -84,6 +86,8 @@ function checkinMember() {
 			clearCheckinFields();
 		} else if(data=="invalid") {
 			alertMsg = '<div class="alert alert-danger" role="alert">Error: Please enter valid information for all fields!</div>';
+		} else if(data=="phone") {
+			alertMsg = '<div class="alert alert-warning" role="alert">Checked In: '+selectedName+', but an invalid phone # was provided.</div>';
 		} else if(data=="exists") {
 			alertMsg = '<div class="alert alert-danger" role="alert">Error: An account with that email address already exists, please select it from the dropdown!</div>';
 		} else {
@@ -96,6 +100,7 @@ function checkinMember() {
 function clearCheckinFields() {
 	$("#memberName").val("");
 	$("#memberEmail").val("");
+	$("#memberPhone").val("");
 	$("#memberAttended").val("");
 }
 

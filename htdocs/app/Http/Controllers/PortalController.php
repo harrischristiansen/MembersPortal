@@ -239,6 +239,7 @@ class PortalController extends Controller {
 		$memberName = $request->input('memberName');
 		$password = $request->input('password');
 		$email = $request->input('email');
+		$phone = $request->input('phone');
 		$email_public = $request->input('email_public');
 		$gradYear = $request->input('gradYear');
 		$gender = $request->input('gender');
@@ -284,6 +285,7 @@ class PortalController extends Controller {
 		}
 		
 		// Text Fields
+		$member->phone = $phone;
 		$member->graduation_year = $gradYear;
 		$member->gender = $gender;
 		if ($major > 0) {
@@ -722,10 +724,17 @@ class PortalController extends Controller {
 		return view('pages.checkin',compact("event","eventID"));
 	}
 	
+	public function getCheckinPhone(AdminRequest $request, $eventID) {
+		$getCheckin = $this->getCheckin($request, $eventID);
+		
+		return $getCheckin->with('checkinPhone',true);
+	}
+	
 	public function postCheckinMember(AdminRequest $request) {
 		$successResult = "true";
 		$memberName = $request->input("memberName");
 		$memberEmail = $request->input("memberEmail");
+		$memberPhone = $request->input("memberPhone");
 		$event = Event::find($request->input("eventID"));
 		
 		if ($request->input("memberID") > 0) { // Search By memberID
@@ -766,6 +775,13 @@ class PortalController extends Controller {
 			return "repeat";
 		}
 		$event->members()->attach($member->id,['recorded_by' => $this->getAuthenticatedID($request)]); // Save Record
+		
+		if (strlen($memberPhone) > 9) {
+			$member->phone = $memberPhone;
+			$member->save();
+		} elseif (strlen($memberPhone)>2) {
+			return "phone";
+		}
 		
 		return $successResult;
 	}
@@ -888,7 +904,7 @@ class PortalController extends Controller {
     }
 	
 	public function sendEmail($member, $subject, $msg) {
-		if ($member->graduation_year == 2040) {
+		if (true) {
 			Mail::send('emails.default', ['member'=>$member, 'msg'=>$msg], function ($message) use ($member, $subject) {
 				$message->from('purduehackers@gmail.com', 'Purdue Hackers');
 				$message->to($member->email);
