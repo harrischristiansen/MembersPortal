@@ -36,7 +36,7 @@
     		@endif
 			<div class="input-group">
 				<span class="input-group-addon" id="memberAttendedTitle">Number Events Attended: </span>
-				<input type="text" id="memberAttended" class="form-control" placeholder="Number Events Attended" readonly>
+				<input type="text" id="memberAttended" class="form-control" readonly>
 				<span id="hasRegistered" class="input-group-btn"></span>
     		</div>
     		<br>
