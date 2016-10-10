@@ -5,10 +5,10 @@
 <div class="section"><div class='section-container'>
 	<h3>Create Event</h3>
 	<div class="panel panel-default">
-		<form method="post" action="/event/-1" class="panel-body validate">
+		<form method="post" action="/event/0" class="panel-body validate">
 			{!! csrf_field() !!}
 			<label for="eventName">Event Name</label>
-			<input type="text" name="eventName" id="eventName" placeholder="Name" class="form-control" data-bvalidator="required">
+			<input type="text" name="eventName" id="eventName" placeholder="Event Name" class="form-control" data-bvalidator="required">
 			<br>
 			<label for="date">Date</label>
 			<input type="text" name="date" id="date" placeholder="Date" class="form-control datepicker" data-bvalidator="required,date[yyyy-mm-dd]">

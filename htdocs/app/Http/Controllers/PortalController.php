@@ -608,10 +608,10 @@ class PortalController extends Controller {
 		$eventLocation = $request->input("location");
 		$eventFB = $request->input("facebook");
 		
-		if($eventID >= 0) {
-			$event = Event::find($eventID);
-		} else {
+		if($eventID == 0) {
 			$event = new Event;
+		} else {
+			$event = Event::find($eventID);
 		}
 		
 		// Verify Input
@@ -629,11 +629,11 @@ class PortalController extends Controller {
 		$event->save();
 		
 		// Return Response
-		if($eventID >= 0) {
+		if($eventID == 0) { // New Event
+			return redirect()->action('PortalController@getEvent', [$event->id])->with('msg', 'Event Created!');
+		} else {
 			$request->session()->flash('msg', 'Event Updated!');
 			return $this->getEvent($request, $eventID);
-		} else { // New Event
-			return redirect()->action('PortalController@getEvent', [$event->id])->with('msg', 'Event Created!');
 		}
 	}
 	
@@ -785,7 +785,6 @@ class PortalController extends Controller {
 		if ($event->members()->find($member->id)) { // Check if Repeat
 			return "repeat";
 		}
-		$event->members()->attach($member->id,['recorded_by' => $this->getAuthenticatedID($request)]); // Save Record
 		
 		if (strlen($memberPhone) > 9) {
 			$member->phone = $memberPhone;
@@ -904,7 +903,7 @@ class PortalController extends Controller {
 	/////////////////////////////// Viewing Projects ///////////////////////////////
 	
 	public function getProjects(LoggedInRequest $request) {
-		$projects = $this->getAuthenticated($request)->projects();
+		$projects = $this->getAuthenticated($request)->projects()->get();
 		
 		return view('pages.projects',compact("projects"));
 	}
@@ -917,7 +916,7 @@ class PortalController extends Controller {
 	}
 	
 	public function getProject(LoggedInRequest $request, $projectID) {
-		$project = Event::findOrFail($projectID);
+		$project = Project::findOrFail($projectID);
 		
 		return view('pages.project', compact("project"));
 	}
@@ -925,13 +924,43 @@ class PortalController extends Controller {
 	/////////////////////////////// Creating Projects ///////////////////////////////
 	
 	public function getProjectNew(LoggedInRequest $request) {
-		
+		$project = new Project;
+		$project->id = 0;
+		return view('pages.project', compact("project"));
 	}
 	
 	/////////////////////////////// Editing Projects ///////////////////////////////
 	
-	public function postProject(LoggedInRequest $request, $projectID=0) {
+	public function postProject(LoggedInRequest $request, $projectID) {
+		$projectName = $request->input("name");
+		$projectDescription = $request->input("description");
 		
+		if($projectID == 0) { // Create New Project
+			$project = new Project;
+		} else {
+			$project = Project::find($projectID);
+		}
+		
+		// Verify Input
+		if(is_null($project)) {
+			$request->session()->flash('msg', 'Error: Project Not Found.');
+			return $this->getProjects($request);
+		}
+		
+		// Edit Project
+		$project->name = $projectName;
+		$project->description = $projectDescription;
+		$project->save();
+		
+		// Return Response
+		if($projectID == 0) { // New Project
+			$member = $this->getAuthenticated($request);
+			$project->members()->attach($member->id); // Attach Project to Member
+			return redirect()->action('PortalController@getProject', [$project->id])->with('msg', 'Project Created!');
+		} else {
+			$request->session()->flash('msg', 'Project Updated!');
+			return $this->getProject($request, $projectID);
+		}
 	}
 	
 	public function getProjectAddMember(LoggedInRequest $request, $projectID, $memberID) {

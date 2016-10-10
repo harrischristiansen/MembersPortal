@@ -33,7 +33,7 @@ class EditMemberRequest extends Request {
 			'email' => 'required|email',
 			'email_public' => 'email',
 			'confirmPassword' => 'same:password',
-			'gradYear' => 'required|integer',
+			'gradYear' => 'required|integer|min:1900|max:2200',
 		];
 	}
 }
