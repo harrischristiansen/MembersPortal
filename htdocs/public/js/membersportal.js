@@ -19,7 +19,7 @@ var selectedID = -1;
 
 $(".membersautocomplete").autocomplete({
 	source: "/members-autocomplete",
-	minLength: 2,
+	minLength: 3,
 	autoFocus: true,
 	select: function(event, ui) {
 		if(ui.item) {

@@ -209,7 +209,7 @@ class PortalController extends Controller {
 		$requestTerm = $request->input('term');
 
 		$searchFor = "%".$requestTerm.'%';
-		$members = Member::where('name','LIKE',$searchFor)->orWhere('email','LIKE',$searchFor)->orWhere('email_public','LIKE',$searchFor)->orWhere('email_edu','LIKE',$searchFor)->orWhere('description','LIKE',$searchFor);
+		$members = Member::where('name','LIKE',$searchFor)->orWhere('email','LIKE',$searchFor)->orWhere('email_public','LIKE',$searchFor)->orWhere('email_edu','LIKE',$searchFor)->orWhere('phone','LIKE',$searchFor)->orWhere('description','LIKE',$searchFor);
 		$results = $members->get();
 		
 		for($i=0;$i<count($results);$i++) {
