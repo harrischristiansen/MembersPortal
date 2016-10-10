@@ -122,7 +122,7 @@
 	@if(session()->get('authenticated_admin') == "true")
 	<a href="/event-delete/{{ $event->id }}" class="pull-right"><button type="button" class="btn btn-danger btn-sm">Delete Event</button></a>
 	@endif
-	@if ($hasRegistered)
+	@if (session()->get('authenticated_member') && $hasRegistered)
 	<a href="/unregister/{{ $event->id }}" class="pull-right"><button type="button" class="btn btn-danger btn-sm">Unregister for event</button></a>
 	@endif
 </div></div>
