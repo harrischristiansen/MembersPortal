@@ -986,7 +986,9 @@ class PortalController extends Controller {
 	public function getProjectNew(LoggedInRequest $request) {
 		$project = new Project;
 		$project->id = 0;
-		return view('pages.project', compact("project"));
+		$members = [];
+		
+		return view('pages.project', compact("project","members"));
 	}
 	
 	/////////////////////////////// Editing Projects ///////////////////////////////
