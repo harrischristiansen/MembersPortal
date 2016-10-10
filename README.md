@@ -24,7 +24,7 @@ This Members Tracking Portal was originally developed for Purdue Hackers. Purdue
 - [ ] Projects
 	- [X] Create, View
 		- [ ] Delete
-	- [ ] Add Team Members
+	- [X] Add Team Members
 	- [ ] Remove Team Members
 - [X] Admin
 	- [X] Members - Modify

@@ -784,6 +784,8 @@ class PortalController extends Controller {
 			return "repeat";
 		}
 		
+		$event->members()->attach($member->id,['recorded_by' => $this->getAuthenticatedID($request)]); // Save Record
+		
 		if (strlen($memberPhone) > 9) {
 			$member->phone = $memberPhone;
 			$member->save();
@@ -921,7 +923,9 @@ class PortalController extends Controller {
 			return $this->getProjects($request);
 		}
 		
-		return view('pages.project', compact("project"));
+		$members = $project->members;
+		
+		return view('pages.project', compact("project","members"));
 	}
 	
 	public function canAccessProject($request, $project) {
@@ -978,28 +982,55 @@ class PortalController extends Controller {
 	
 	/////////////////////////////// Editing Project Members ///////////////////////////////
 	
-	public function getProjectAddMember(LoggedInRequest $request, $projectID, $memberID) {
-		$project = Event::findOrFail($projectID);
-		$member = Member::findOrFail($memberID);
+	public function postProjectAddMember(LoggedInRequest $request, $projectID) {
+		$project = Project::findOrFail($projectID);
+		$memberInput = $request->input("member");
+		$member = Member::where('name',$memberInput)->orWhere('email',$memberInput)->first();
 		
 		if ($this->canAccessProject($request, $project) == false) {
-			$request->session()->flash('msg', 'Error: Project Not Found.');
+			$request->session()->flash('msg', 'Error: Project Not Found');
 			return $this->getProjects($request);
 		}
 		
+		if ($member == null) {
+			$request->session()->flash('msg', 'Error: Member not found. Do they have a '.env("ORG_NAME").' account?');
+			return $this->getProject($request, $projectID);
+		}
 		
+		if ($project->members()->find($member->id)) {
+			$request->session()->flash('msg', 'Error: Member already in team');
+			return $this->getProject($request, $projectID);
+		}
+		
+		$project->members()->attach($member->id);
+		
+		$request->session()->flash('msg', 'Success: Added '.$member->name.' to project '.$project->name);
+		return $this->getProject($request, $projectID);
 	}
 	
 	public function getProjectRemoveMember(LoggedInRequest $request, $projectID, $memberID) {
-		$project = Event::findOrFail($projectID);
+		$project = Project::findOrFail($projectID);
 		$member = Member::findOrFail($memberID);
 		
 		if ($this->canAccessProject($request, $project) == false) {
-			$request->session()->flash('msg', 'Error: Project Not Found.');
+			$request->session()->flash('msg', 'Error: Project Not Found');
 			return $this->getProjects($request);
 		}
 		
+		if ($member == null) {
+			$request->session()->flash('msg', 'Error: Member Not Found');
+			return $this->getProject($request, $projectID);
+		}
 		
+		if ($project->members()->find($member->id) == false) {
+			$request->session()->flash('msg', 'Error: Member is not in team');
+			return $this->getProject($request, $projectID);
+		}
+		
+		$project->members()->detach($member->id);
+		
+		$request->session()->flash('msg', 'Success: Removed '.$member->name.' from project '.$project->name);
+		return $this->getProject($request, $projectID);
 	}
 
 	/////////////////////////////// Helper Functions ///////////////////////////////

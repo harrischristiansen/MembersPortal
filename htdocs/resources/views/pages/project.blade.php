@@ -16,7 +16,36 @@
 			<input type="submit" value="{{ $project->name ? 'Save' : 'Create'}} Project" class="btn btn-primary">
 		</form>
 	</div>
+	
 	<h3>Team Members</h3>
+	<div class="panel panel-default">
+		<table class="table table-bordered table-hover table-clickable panel-body sortableTable">
+			<thead>
+				<tr>
+					<th>Member</th>
+				</tr>
+			</thead>
+			<tbody>
+			@foreach ($members as $member)
+			    <tr onclick="location.href='{{ URL::to('/member', $member->id) }}';">
+			    	<td>{{ $member->name }}</td>
+			    </tr>
+			@endforeach
+				<tr><td>
+					<form method="post" action="/project-add-member/{{ $project->id }}">
+						{!! csrf_field() !!}
+						<div class="input-group">
+							<span class="input-group-addon" id="memberTitle">Add Team Member: </span>
+							<input type="text" id="memberEmail" name="member" class="form-control membersautocomplete" placeholder="(Name or Email)">
+							<span class="input-group-btn">
+								<input type="submit" class="btn btn-primary" value="Add">
+							</span>
+			    		</div>
+					</form>
+				</td></tr>
+			</tbody>
+		</table>
+	</div>
 </div></div>
 
 @stop
