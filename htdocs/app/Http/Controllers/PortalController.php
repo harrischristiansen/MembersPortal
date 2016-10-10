@@ -214,7 +214,7 @@ class PortalController extends Controller {
 		
 		for($i=0;$i<count($results);$i++) {
 			$results[$i]['value'] = $results[$i]['name'];
-			$results[$i]['attended'] = count($results[$i]->events()->get());
+			$results[$i]['attended'] = count($results[$i]->events);
 		}
 
 		return $results;
@@ -228,8 +228,8 @@ class PortalController extends Controller {
 			return $this->getMembers();
 		}
 		
-		$locations = $member->locations()->get();
-		$events = $member->events()->get();
+		$locations = $member->locations;
+		$events = $member->events;
 		$majors = Major::orderByRaw('(id = 1) DESC, name')->get(); // Order by name, but keep first major at top
 		
 		return view('pages.member',compact("member","locations","events","majors"));
@@ -379,8 +379,8 @@ class PortalController extends Controller {
 			return $this->getIndex();
 		}
 		
-		$locations = $member->locations()->get();
-		$events = $member->events()->get();
+		$locations = $member->locations;
+		$events = $member->events;
 		$majors = Major::orderByRaw('(id = 1) DESC, name')->get(); // Order by name, but keep first major at top
 		$setPassword = true;
 		
@@ -412,8 +412,7 @@ class PortalController extends Controller {
 		$requestTerm = $request->input('term');
 
 		$searchFor = "%".$requestTerm.'%';
-		$locations = Location::where('name','LIKE',$searchFor);
-		$results = $locations->get();
+		$results = Location::where('name','LIKE',$searchFor)->get();
 		
 		for($i=0;$i<count($results);$i++) {
 			$results[$i]['value'] = $results[$i]['name'];
@@ -426,8 +425,7 @@ class PortalController extends Controller {
 		$requestTerm = $request->input('term');
 
 		$searchFor = "%".$requestTerm.'%';
-		$locations = Location::where('city','LIKE',$searchFor);
-		$results = $locations->get();
+		$results = Location::where('city','LIKE',$searchFor)->get();
 		
 		for($i=0;$i<count($results);$i++) {
 			$results[$i]['value'] = $results[$i]['city'];
@@ -444,7 +442,7 @@ class PortalController extends Controller {
 			return $this->getLocations();
 		}
 		
-		$members = $location->members()->get();
+		$members = $location->members;
 		
 		return view('pages.location',compact("location","members"));
 	}
@@ -549,7 +547,7 @@ class PortalController extends Controller {
 	public function getEvent(Request $request, $eventID) {
 		$event = Event::findOrFail($eventID);
 		
-		$members = $event->members()->get();
+		$members = $event->members;
 		
 		foreach ($members as $member) { // Pre-calculate names of users who checked student in
 			$recorded_member = Member::find($member->events()->find($eventID)->pivot->recorded_by);
@@ -565,7 +563,7 @@ class PortalController extends Controller {
 		
 		$applications = []; // Get list of applications (if admin)
 		if ($request->session()->get('authenticated_admin') == "true") {
-			$applications = $event->applications()->get();
+			$applications = $event->applications;
 		}
 		
 		return view('pages.event', compact("event","members","canApply","canRegister","hasRegistered","applications"));
@@ -574,7 +572,7 @@ class PortalController extends Controller {
 	public function getEventGraphs(AdminRequest $request, $eventID) {
 		$event = Event::findOrFail($eventID);
 		
-		$members = $event->members()->get();
+		$members = $event->members;
 		if(count($members) == 0) {
 			$members = $event->getAppliedMembers();
 		}
@@ -667,11 +665,11 @@ class PortalController extends Controller {
 		if ($target == "all") {
 			$members = Member::all();
 		} elseif ($target == "both") {
-			$members_att = $event->members()->get();
+			$members_att = $event->members;
 			$members_reg = $event->getAppliedMembers();
 			$members = $members_att->merge($members_reg)->all();
 		} elseif ($target == "att") {
-			$members = $event->members()->get();
+			$members = $event->members;
 		} elseif ($target == "reg") {
 			$members = $event->getAppliedMembers();
 		} elseif ($target == "not") {
@@ -679,7 +677,7 @@ class PortalController extends Controller {
 			$members_reg = $event->getAppliedMembers();
 			$members = $members_all->diff($members_reg)->all();
 		} else {
-			$members = $event->members()->get();
+			$members = $event->members;
 		}
 		
 		$members_copy = [$this->getAuthenticated($request), Member::find(1)];
@@ -881,7 +879,7 @@ class PortalController extends Controller {
 	
 	public function getApplications(AdminRequest $request, $eventID=-1) {
 		$event = Event::findOrFail($eventID);
-		$applications = $event->applications()->get();
+		$applications = $event->applications;
 		
 		return view('pages.applications',compact("event","applications"));
 	}
