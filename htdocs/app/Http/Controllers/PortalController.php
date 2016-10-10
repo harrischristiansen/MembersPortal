@@ -980,6 +980,20 @@ class PortalController extends Controller {
 		}
 	}
 	
+	public function getProjectDelete(LoggedInRequest $request, $projectID) {
+		$project = Project::findOrFail($projectID);
+		
+		if ($this->canAccessProject($request, $project) == false) {
+			$request->session()->flash('msg', 'Error: Project Not Found.');
+			return $this->getProjects($request);
+		}
+		
+		$project->delete();
+		
+		$request->session()->flash('msg', 'Success: Project Deleted. If this was by mistake, contact an organizer to reverse the change.');
+		return $this->getProjects($request);
+	}
+	
 	/////////////////////////////// Editing Project Members ///////////////////////////////
 	
 	public function postProjectAddMember(LoggedInRequest $request, $projectID) {

@@ -46,6 +46,8 @@
 			</tbody>
 		</table>
 	</div>
+	
+	<a href="/project-delete/{{ $project->id }}" class="pull-right"><button type="button" class="btn btn-danger btn-sm">Delete Project</button></a>
 </div></div>
 
 @stop
