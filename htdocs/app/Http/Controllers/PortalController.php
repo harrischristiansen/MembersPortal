@@ -554,8 +554,7 @@ class PortalController extends Controller {
 			$member->recorded_by = $recorded_member;
 		}
 		
-		$canApply = $this->isAuthenticated($request) && $event->requiresApplication;
-		$canRegister = $this->isAuthenticated($request) && $event->requiresRegistration;
+		$requiresApplication = $this->isAuthenticated($request) && $event->requiresApplication;
 		$authenticatedMember = $this->getAuthenticated($request);
 		if ($authenticatedMember != null) {
 			$hasRegistered = count($authenticatedMember->applications()->where('event_id',$eventID)->get()) > 0;
@@ -566,7 +565,7 @@ class PortalController extends Controller {
 			$applications = $event->applications;
 		}
 		
-		return view('pages.event', compact("event","members","canApply","canRegister","hasRegistered","applications"));
+		return view('pages.event', compact("event","members","requiresApplication","hasRegistered","applications"));
 	}
 	
 	public function getEventGraphs(AdminRequest $request, $eventID) {
@@ -852,6 +851,41 @@ class PortalController extends Controller {
 		return $this->getApply($request, $eventID);
 	}
 	
+	public function getRegister(LoggedInRequest $request, $eventID) { // Submit Empty Application
+		$event = Event::findOrFail($eventID);
+		
+		if ($event->requiresApplication) {
+			$request->session()->flash('msg','Error: Invalid Authentication Token');
+			return $this->getEvent($request, $eventID);
+		}
+		
+		$memberID = $this->getAuthenticatedID($request);
+		
+		if ($event->applications()->where('member_id',$memberID)->first()) {
+			$request->session()->flash('msg','Error: You are already registered for '.$event->name.".");
+			return $this->getEvent($request, $eventID);
+		}
+		
+		$application = new Application();
+		$application->member_id = $memberID;
+		$application->event_id = $eventID;
+		$application->save();
+		
+		$request->session()->flash('msg','Success: You are registered for '.$event->name.'!');
+		return $this->getEvent($request, $eventID);
+	}
+	
+	public function getUnregister(LoggedInRequest $request, $eventID) { // Delete Application
+		$event = Event::findOrFail($eventID);
+		
+		$memberID = $this->getAuthenticatedID($request);
+		
+		$event->applications()->where('member_id',$memberID)->first()->delete();
+		
+		$request->session()->flash('msg','You are no longer registered for '.$event->name.'.');
+		return $this->getEvent($request, $eventID);
+	}
+	
 	public function postApply(LoggedInRequest $request, $eventID) { // POST Apply
 		// Member Details
 		$gender = $request->input('gender');
@@ -868,7 +902,7 @@ class PortalController extends Controller {
 		$dietary = $request->input('dietary');
 		
 		$application = new Application();
-		$application->member_id = $this->getAuthenticatedID($request);
+		$application->member_id = $member->id;
 		$application->event_id = $eventID;
 		$application->tshirt = $tshirt;
 		$application->interests = $interests;

@@ -18,7 +18,6 @@ class CreateEventsTable extends Migration {
 			$table->timestamp('event_time');
 			$table->text('facebook');
 			$table->boolean('requiresApplication');
-			$table->boolean('requiresRegistration');
             $table->timestamps();
 			$table->softDeletes();
         });

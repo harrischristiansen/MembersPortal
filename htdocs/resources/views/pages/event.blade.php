@@ -6,18 +6,18 @@
 	<h3>{{ $event->name }}
 		@if (session()->get('authenticated_admin') == "true")
 			<a href="/event-graphs/{{ $event->id }}" class="pull-left marginR"><button type="button" class="btn btn-primary btn-sm">Graphs</button></a>
-			@if ($canApply || $canRegister)
-			<a href="/applications/{{ $event->id }}" class="pull-left marginR"><button type="button" class="btn btn-primary btn-sm">{{ count($applications) }} Applications</button></a>
+			@if (count($applications))
+			<a href="/applications/{{ $event->id }}" class="pull-left marginR"><button type="button" class="btn btn-primary btn-sm">{{ count($applications) }} {{ $requiresApplication ? "Applications" : "Registrations" }}</button></a>
 			@endif
 			<a href="/checkin/{{ $event->id }}" class="pull-right"><button type="button" class="btn btn-primary btn-sm">Checkin</button></a>
 			<a href="/event-message/{{ $event->id }}" class="pull-right marginR"><button type="button" class="btn btn-primary btn-sm">Send Message</button></a>
-		@elseif ($canApply)
+		@elseif ($requiresApplication)
 			@if ($hasRegistered)
 			<button type="button" class="btn btn-primary btn-sm pull-right">Registered</button>
 			@else
 			<a href="/apply/{{ $event->id }}" class="pull-right"><button type="button" class="btn btn-primary btn-sm">Sign Up</button></a>
 			@endif
-		@elseif ($canRegister)
+		@elseif (session()->get('authenticated_member'))
 			@if ($hasRegistered)
 			<button type="button" class="btn btn-primary btn-sm pull-right">Registered</button>
 			@else
@@ -115,6 +115,9 @@
 	
 	@if(session()->get('authenticated_admin') == "true")
 	<a href="/event-delete/{{ $event->id }}" class="pull-right"><button type="button" class="btn btn-danger btn-sm">Delete Event</button></a>
+	@endif
+	@if ($hasRegistered)
+	<a href="/unregister/{{ $event->id }}" class="pull-right"><button type="button" class="btn btn-danger btn-sm">Unregister for event</button></a>
 	@endif
 </div></div>
 

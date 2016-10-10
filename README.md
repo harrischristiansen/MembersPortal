@@ -20,7 +20,7 @@ This Members Tracking Portal was originally developed for Purdue Hackers. Purdue
 		- [ ] Location duplicate resolution?  
 - [X] Events
 	- [X] List, View
-	- [X] Register, Apply
+	- [X] Register, Apply, Unregister
 - [ ] Projects
 	- [X] Create, View, Modify, Delete
 	- [X] Add Team Members
