@@ -20,10 +20,10 @@
 					<li><a href="/member/{{ session()->get('member_id') }}">Profile</a></li>
 					<li><a href="/members">Members</a></li>
 				@endif
-				<li><a href="/events">Events</a></li>
 				@if(session()->get('authenticated_admin') == "true")
 					<li><a href="/projects">Projects</a></li>
 				@endif
+				<li><a href="/events">Events</a></li>
 				@if(session()->get('authenticated_member') == "true")
 					<li><a href="/logout">Logout</a></li>
 				@else

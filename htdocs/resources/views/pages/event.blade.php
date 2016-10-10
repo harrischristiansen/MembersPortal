@@ -39,8 +39,14 @@
 				</span>
 			</div>
 			<br>
-			<label for="date">Date</label>
-			<input type="text" name="date" id="date" placeholder="Date" value="{{ $event->date() }}" class="form-control datepicker" data-bvalidator="required,date[yyyy-mm-dd]" data-bvalidator-msg="Event requires date/time.">
+			<label for="date">Date<span class="pull-right">Requires Application?</span></label>
+			<div class="input-group">
+				<input type="text" name="date" id="date" placeholder="Date" value="{{ $event->date() }}" class="form-control datepicker" data-bvalidator="required,date[yyyy-mm-dd]" data-bvalidator-msg="Event requires date/time.">
+				<span class="input-group-addon" id="applicationAria">
+					<input type="checkbox" name="requiresApplication" id="requiresApplication" value="true" {{ $event->requiresApplication ? "checked" : "" }}>
+				</span>
+			</div>
+			
 			<br>
 			<label for="date">Time</label>
 			<div class='form-inline'>
