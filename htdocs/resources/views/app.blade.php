@@ -77,11 +77,13 @@
 		<!-- Tablesorter -->
 		<script type="text/javascript" src="/js/jquery.tablesorter.min.js"></script>
 		<!-- EventID -->
-		@if (isset($eventID) || isset($event))
 		<script type="text/javascript">
+		@if (isset($eventID) || isset($event))
 			var eventID = {{ isset($eventID) ? $eventID : $event->id }};
-		</script>
+		@else
+			var eventID = 0;
 		@endif
+		</script>
 		<!-- Site JS -->
 		<script type="text/javascript" src="/js/membersportal.js"></script>
 		<!-- Page Specific JS -->
