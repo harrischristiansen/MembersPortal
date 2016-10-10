@@ -205,16 +205,27 @@ class PortalController extends Controller {
 		return view('pages.members-graphs',compact("members","joinDates","memberYears","majorsData"));
 	}
 	
-	public function getMembersAutocomplete(AdminRequest $request) {
+	public function getMembersAutocomplete(AdminRequest $request, $eventID=0) {
 		$requestTerm = $request->input('term');
-
 		$searchFor = "%".$requestTerm.'%';
-		$members = Member::where('name','LIKE',$searchFor)->orWhere('email','LIKE',$searchFor)->orWhere('email_public','LIKE',$searchFor)->orWhere('email_edu','LIKE',$searchFor)->orWhere('phone','LIKE',$searchFor)->orWhere('description','LIKE',$searchFor);
-		$results = $members->get();
 		
-		for($i=0;$i<count($results);$i++) {
-			$results[$i]['value'] = $results[$i]['name'];
-			$results[$i]['attended'] = count($results[$i]->events);
+		$members = Member::where('name','LIKE',$searchFor)->orWhere('email','LIKE',$searchFor)->orWhere('email_public','LIKE',$searchFor)->orWhere('email_edu','LIKE',$searchFor)->orWhere('phone','LIKE',$searchFor)->orWhere('description','LIKE',$searchFor)->get();
+		
+		if ($eventID != 0) {
+			$event = Event::findOrFail($eventID);
+		}
+		
+		$results = [];
+		$numResults = count($members);
+		for($i=0;$i<$numResults;$i++) {
+			$results[$i]['value'] = $members[$i]->name;
+			$results[$i]['name'] = $members[$i]->name;
+			$results[$i]['email'] = $members[$i]->email;
+			$results[$i]['phone'] = $members[$i]->phone;
+			$results[$i]['attended'] = count($members[$i]->events);
+			if ($numResults<=8 && $eventID!=0) {
+				$results[$i]['registered'] = count($event->applications()->where('member_id',$members[$i]->id)->get());
+			}
 		}
 
 		return $results;

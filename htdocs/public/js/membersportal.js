@@ -18,7 +18,7 @@ $(document).ready(function() {
 var selectedID = -1;
 
 $(".membersautocomplete").autocomplete({
-	source: "/members-autocomplete",
+	source: "/members-autocomplete/"+eventID,
 	minLength: 3,
 	autoFocus: true,
 	select: function(event, ui) {
@@ -29,6 +29,12 @@ $(".membersautocomplete").autocomplete({
 			$("#memberEmail").val(ui.item.email);
 			$("#memberPhone").val(ui.item.phone);
 			$("#memberAttended").val(ui.item.attended);
+			console.log(ui.item);
+			if (ui.item.registered == 0) {
+				$("#hasRegistered").html('<button class="btn btn-danger" type="button">Not Registered</button>');
+			} else if (ui.item.registered > 0) {
+				$("#hasRegistered").html('<button class="btn btn-success" type="button">Registered</button>');
+			}
 		}
 	},
 	focus: function(event, ui) {
@@ -38,10 +44,12 @@ $(".membersautocomplete").autocomplete({
 
 $("#memberName").change(function() {
 	selectedID = -1;
+	$("#hasRegistered").html('');
 });
 
 $("#memberEmail").change(function() {
 	selectedID = -1;
+	$("#hasRegistered").html('');
 });
 
 $(".locationsautocomplete").autocomplete({
