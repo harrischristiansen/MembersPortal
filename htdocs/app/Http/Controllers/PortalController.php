@@ -903,7 +903,7 @@ class PortalController extends Controller {
 	/////////////////////////////// Viewing Projects ///////////////////////////////
 	
 	public function getProjects(LoggedInRequest $request) {
-		$projects = $this->getAuthenticated($request)->projects()->get();
+		$projects = $this->getAuthenticated($request)->projects;
 		
 		return view('pages.projects',compact("projects"));
 	}
@@ -918,7 +918,18 @@ class PortalController extends Controller {
 	public function getProject(LoggedInRequest $request, $projectID) {
 		$project = Project::findOrFail($projectID);
 		
+		if ($this->canAccessProject($request, $project) == false) {
+			$request->session()->flash('msg', 'Error: Project Not Found.');
+			return $this->getProjects($request);
+		}
+		
 		return view('pages.project', compact("project"));
+	}
+	
+	public function canAccessProject($request, $project) {
+		$member = $this->getAuthenticated($request);
+		
+		return $project->members->contains($member) || $this->isAdmin($request);
 	}
 	
 	/////////////////////////////// Creating Projects ///////////////////////////////
@@ -939,6 +950,10 @@ class PortalController extends Controller {
 			$project = new Project;
 		} else {
 			$project = Project::find($projectID);
+			if ($this->canAccessProject($request, $project) == false) { // Verify Permissions
+				$request->session()->flash('msg', 'Error: Project Not Found.');
+				return $this->getProjects($request);
+			}
 		}
 		
 		// Verify Input
@@ -963,14 +978,30 @@ class PortalController extends Controller {
 		}
 	}
 	
+	/////////////////////////////// Editing Project Members ///////////////////////////////
+	
 	public function getProjectAddMember(LoggedInRequest $request, $projectID, $memberID) {
 		$project = Event::findOrFail($projectID);
 		$member = Member::findOrFail($memberID);
+		
+		if ($this->canAccessProject($request, $project) == false) {
+			$request->session()->flash('msg', 'Error: Project Not Found.');
+			return $this->getProjects($request);
+		}
+		
+		
 	}
 	
 	public function getProjectRemoveMember(LoggedInRequest $request, $projectID, $memberID) {
 		$project = Event::findOrFail($projectID);
 		$member = Member::findOrFail($memberID);
+		
+		if ($this->canAccessProject($request, $project) == false) {
+			$request->session()->flash('msg', 'Error: Project Not Found.');
+			return $this->getProjects($request);
+		}
+		
+		
 	}
 
 	/////////////////////////////// Helper Functions ///////////////////////////////

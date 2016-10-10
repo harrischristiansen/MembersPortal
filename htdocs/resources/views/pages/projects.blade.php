@@ -18,14 +18,14 @@
 			<thead>
 				<tr>
 					<th>Name</th>
-					<th># Team Members</th>
+					<th>Team Members</th>
 				</tr>
 			</thead>
 			<tbody>
 			@foreach ($projects as $project)
 			    <tr onclick="location.href='{{ URL::to('/project', $project->id) }}';">
 			    	<td>{{ $project->name }}</td>
-			    	<td>{{ count($project->members) }}</td>
+			    	<td>{{ $project->members->implode("name",", ") }}</td>
 			    </tr>
 			@endforeach
 			</tbody>
