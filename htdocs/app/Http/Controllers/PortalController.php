@@ -579,6 +579,16 @@ class PortalController extends Controller {
 		return view('pages.event', compact("event","members","requiresApplication","hasRegistered","applications"));
 	}
 	
+	public function getEventNew() {
+		$event = new Event;
+		$event->id = 0;
+		$members = [];
+		$requiresApplication = false;
+		$hasRegistered = false;
+		$applications = [];
+		return view('pages.event', compact("event","members","requiresApplication","hasRegistered","applications"));
+	}
+	
 	public function getEventGraphs(AdminRequest $request, $eventID) {
 		$event = Event::findOrFail($eventID);
 		
@@ -626,7 +636,7 @@ class PortalController extends Controller {
 		// Verify Input
 		if(is_null($event)) {
 			$request->session()->flash('msg', 'Error: Event Not Found.');
-			return $this->getEvents();
+			return $this->getEvents($request);
 		}
 		
 		// Edit Event
@@ -647,13 +657,10 @@ class PortalController extends Controller {
 		}
 	}
 	
-	public function getEventNew() {
-		return view('pages.event_new');
-	}
-	
-	public function getEventDelete($eventID) {
+	public function getEventDelete(AdminRequest $request, $eventID) {
 		Event::findOrFail($eventID)->delete();
-		return $this->getEvents();
+		$request->session()->flash('msg', 'Event Deleted! If this was done by mistake, contact the site administrator to restore this event.');
+		return $this->getEvents($request);
 	}
 	
 	/////////////////////////////////// Event Emails ///////////////////////////////////
@@ -739,7 +746,7 @@ class PortalController extends Controller {
 		
 		if(is_null($event)) {
 			$request->session()->flash('msg', 'Error: Event Not Found.');
-			return $this->getEvents();
+			return $this->getEvents($request);
 		}
 		
 		return view('pages.checkin',compact("event","eventID"));

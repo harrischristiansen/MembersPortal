@@ -31,22 +31,22 @@ class Event extends Model {
 	}
 	
 	public function date() {
-		return $this->event_time->format('Y-m-d');
+		return $this->event_time ? $this->event_time->format('Y-m-d') : "-";
 	}
 	
 	public function dateMonthDay() {
-		return $this->event_time->format('M j');
+		return $this->event_time ? $this->event_time->format('M j') : "-";
 	}
 	
 	public function dateFriendly() {
-		return $this->event_time->format('D, F j, Y \a\t g:i a');
+		return $this->event_time ? $this->event_time->format('D, F j, Y \a\t g:i a') : "-";
 	}
 	
 	public function hour() {
-		return $this->event_time->format('H');
+		return $this->event_time ? $this->event_time->format('H') : "-";
 	}
 	
 	public function minute() {
-		return $this->event_time->format('i');
+		return $this->event_time ? $this->event_time->format('i') : "-";
 	}
 }

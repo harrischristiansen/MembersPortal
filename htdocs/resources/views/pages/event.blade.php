@@ -3,7 +3,9 @@
 @section("content")
 
 <div class="section"><div class='section-container'>
-	<h3>{{ substr($event->name,0,38) }}
+	<h3>{{ substr($event->name,0,38) ?: "Create Event" }}
+		@if ($event->id != 0)
+		
 		@if (session()->get('authenticated_admin') == "true")
 			<a href="/event-graphs/{{ $event->id }}" class="pull-left marginR"><button type="button" class="btn btn-primary btn-sm">Graphs</button></a>
 			@if (count($applications))
@@ -23,6 +25,8 @@
 			@else
 			<a href="/register/{{ $event->id }}" class="pull-right"><button type="button" class="btn btn-primary btn-sm">Register</button></a>
 			@endif
+		@endif
+		
 		@endif
 	</h3>
 	
@@ -46,20 +50,19 @@
 					<input type="checkbox" name="requiresApplication" id="requiresApplication" value="true" {{ $event->requiresApplication ? "checked" : "" }}>
 				</span>
 			</div>
-			
 			<br>
 			<label for="date">Time</label>
 			<div class='form-inline'>
 				<select name="hour" id="hour" class="form-control" data-bvalidator="required" data-bvalidator-msg="Event requires date/time.">
 					<option value="">Hour</option>
 					@for ($i = 0; $i < 24; $i++)
-					<option value="{{$i}}" {{ $event->hour()==$i ? "selected":""}}>{{$i}}</option>
+					<option value="{{$i}}" {{ ($event->hour()!="-" && $event->hour()==$i) ? "selected":""}}>{{$i}}</option>
 					@endfor
 				</select>
 				<select name="minute" id="minute" class="form-control" data-bvalidator="required" data-bvalidator-msg="Event requires date/time.">
 					<option value="">Minute</option>
 					@for ($i = 0; $i < 60; $i+=15)
-					<option value="{{ sprintf("%02d", $i) }}" {{ $event->minute()==$i ? "selected":""}}>{{ sprintf("%02d", $i) }}</option>
+					<option value="{{ sprintf("%02d", $i) }}" {{ ($event->minute()!="-" && $event->minute()==$i) ? "selected":""}}>{{ sprintf("%02d", $i) }}</option>
 					@endfor
 				</select>
 			</div>
@@ -119,7 +122,7 @@
 	
 	@endif
 	
-	@if(session()->get('authenticated_admin') == "true")
+	@if(session()->get('authenticated_admin') == "true" && $event->id != 0)
 	<a href="/event-delete/{{ $event->id }}" class="pull-right"><button type="button" class="btn btn-danger btn-sm">Delete Event</button></a>
 	@endif
 	@if (session()->get('authenticated_member') && $hasRegistered)
