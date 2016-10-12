@@ -790,6 +790,10 @@ class PortalController extends Controller {
 			$member->save();
 			$successResult = "new";
 			$this->emailAccountCreated($member, $event);
+		} else { // Existing Member, If account not setup, send creation email
+			if ($member->graduation_year == 0) {
+				$this->emailAccountCreated($member, $event);
+			}
 		}
 		
 		if ($event->members()->find($member->id)) { // Check if Repeat
