@@ -3,7 +3,7 @@
 @section("content")
 
 <div class="section"><div class='section-container'>
-	<h3>{{ $event->name }}
+	<h3>{{ substr($event->name,0,38) }}
 		@if (session()->get('authenticated_admin') == "true")
 			<a href="/event-graphs/{{ $event->id }}" class="pull-left marginR"><button type="button" class="btn btn-primary btn-sm">Graphs</button></a>
 			@if (count($applications))
