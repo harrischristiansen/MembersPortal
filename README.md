@@ -23,8 +23,7 @@ This Members Tracking Portal was originally developed for Purdue Hackers. Purdue
 	- [X] Register, Apply, Unregister
 - [ ] Projects
 	- [X] Create, View, Modify, Delete
-	- [X] Add Team Members
-	- [ ] Remove Team Members
+	- [X] Add/Remove Team Members
 - [X] Admin
 	- [X] Members - Modify
 	- [X] Events - Create, Modify, Delete
@@ -33,7 +32,6 @@ This Members Tracking Portal was originally developed for Purdue Hackers. Purdue
 			- [ ] Undo Checkin (Delete Checkin Record)
 		- [X] Message Attendees
 			- [ ] Ignore Inactive Members
-			- [ ] SMS Messages via Twilio
 	- [X] Analytics
 		- [ ] Graphs of "# events attended"
 		- [ ] See trends in who has been going to what events
