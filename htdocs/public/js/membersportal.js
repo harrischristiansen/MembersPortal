@@ -126,6 +126,8 @@ function clearCheckinFields() {
 	$("#memberEmail").val("");
 	$("#memberPhone").val("");
 	$("#memberAttended").val("");
+	$("#hasRegistered").html("");
+	$("#graduationYear").val("");
 }
 
 ////////////////////////////////// Chart Options //////////////////////////////////
