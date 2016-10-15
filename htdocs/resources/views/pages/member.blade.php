@@ -145,7 +145,7 @@
 				<td>{{ $location->date_start }}</td>
 				<td>{{ $location->date_end }}
 					@if ($member->id == session()->get('member_id') || session()->get('authenticated_admin') == "true")
-					<a href="{{ URL::to('/location-record-delete', $location->id) }}" class="btn btn-sm btn-danger pull-right">Remove</a>
+					<a href="/location-record-delete/{{ $location->id }}" class="btn btn-sm btn-danger pull-right">Remove</a>
 					@endif
 				</td>
 		    </tr>

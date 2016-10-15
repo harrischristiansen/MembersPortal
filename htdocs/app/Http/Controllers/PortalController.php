@@ -660,8 +660,8 @@ class PortalController extends Controller {
 	
 	public function getEventDelete(AdminRequest $request, $eventID) {
 		Event::findOrFail($eventID)->delete();
-		$request->session()->flash('msg', 'Event Deleted! If this was done by mistake, contact the site administrator to restore this event.');
-		return $this->getEvents($request);
+		
+		return redirect()->action('PortalController@getEvents')->with('msg', 'Event Deleted! If this was done by mistake, contact the site administrator to restore this event.');
 	}
 	
 	/////////////////////////////////// Event Emails ///////////////////////////////////
@@ -730,8 +730,7 @@ class PortalController extends Controller {
 			}
 		}
 		
-		$request->session()->flash('msg', 'Success, message sent!');
-		return $this->getEventMessage($request, $eventID);
+		return redirect()->action('PortalController@getEventMessage', [$eventID])->with('msg', 'Success, message sent!');
 	}
 	
 	/////////////////////////////// Event Checkin System ///////////////////////////////
@@ -1051,8 +1050,7 @@ class PortalController extends Controller {
 		
 		$project->delete();
 		
-		$request->session()->flash('msg', 'Success: Project Deleted. If this was by mistake, contact an organizer to reverse the change.');
-		return $this->getProjects($request);
+		return redirect()->action('PortalController@getProjects')->with('msg', 'Success: Project Deleted. If this was by mistake, contact an organizer to reverse the change.');
 	}
 	
 	/////////////////////////////// Editing Project Members ///////////////////////////////
@@ -1079,8 +1077,7 @@ class PortalController extends Controller {
 		
 		$project->members()->attach($member->id);
 		
-		$request->session()->flash('msg', 'Success: Added '.$member->name.' to project '.$project->name);
-		return $this->getProject($request, $projectID);
+		return redirect()->action('PortalController@getProject', [$projectID])->with('msg', 'Success: Added '.$member->name.' to project '.$project->name);
 	}
 	
 	public function getProjectRemoveMember(LoggedInRequest $request, $projectID, $memberID) {
@@ -1097,6 +1094,11 @@ class PortalController extends Controller {
 			return $this->getProject($request, $projectID);
 		}
 		
+		if (count($project->members) <= 1) {
+			$request->session()->flash('msg', 'Error: Cannot leave project with only 1 member. Please delete project to remove.');
+			return $this->getProject($request, $projectID);
+		}
+		
 		if ($project->members()->find($member->id) == false) {
 			$request->session()->flash('msg', 'Error: Member is not in team');
 			return $this->getProject($request, $projectID);
@@ -1104,8 +1106,7 @@ class PortalController extends Controller {
 		
 		$project->members()->detach($member->id);
 		
-		$request->session()->flash('msg', 'Success: Removed '.$member->name.' from project '.$project->name);
-		return $this->getProject($request, $projectID);
+		return redirect()->action('PortalController@getProject', [$projectID])->with('msg', 'Success: Removed '.$member->name.' from project '.$project->name);
 	}
 
 	/////////////////////////////// Helper Functions ///////////////////////////////

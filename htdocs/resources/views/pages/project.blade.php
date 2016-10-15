@@ -24,12 +24,14 @@
 			<thead>
 				<tr>
 					<th>Member</th>
+					<th>Remove</th>
 				</tr>
 			</thead>
 			<tbody>
 			@foreach ($members as $member)
-			    <tr onclick="location.href='{{ URL::to('/member', $member->id) }}';">
-			    	<td>{{ $member->name }}</td>
+			    <tr>
+			    	<td onclick="location.href='{{ URL::to('/member', $member->id) }}';">{{ $member->name }}</td>
+			    	<td><a href="/project-remove-member/{{ $project->id }}/{{ $member->id }}" class="btn btn-sm btn-danger pull-right">{{ $member->id==session()->get('member_id') ? "Leave" : "Remove" }}</a></td>
 			    </tr>
 			@endforeach
 				<tr><td>
@@ -43,7 +45,8 @@
 							</span>
 			    		</div>
 					</form>
-				</td></tr>
+				</td>
+				<td></td></tr>
 			</tbody>
 		</table>
 	</div>
