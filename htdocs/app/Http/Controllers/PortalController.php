@@ -223,6 +223,7 @@ class PortalController extends Controller {
 			$results[$i]['email'] = $members[$i]->email;
 			$results[$i]['phone'] = $members[$i]->phone;
 			$results[$i]['attended'] = count($members[$i]->events);
+			$results[$i]['graduation_year'] = $members[$i]->graduation_year;
 			if ($numResults<=10 && $eventID!=0 && $event->requiresApplication) {
 				$results[$i]['registered'] = count($event->applications()->where('member_id',$members[$i]->id)->get());
 			}
