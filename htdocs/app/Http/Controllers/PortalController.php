@@ -11,6 +11,7 @@ namespace App\Http\Controllers;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Twilio\Rest\Client;
 use DB;
 use Mail;
 use App\Http\Controllers\Controller;
@@ -725,7 +726,7 @@ class PortalController extends Controller {
 				}
 			} elseif ($method == "sms") { // Send SMS
 				if (strlen($member->phone) > 9) { // If valid #
-					// TODO: Send SMS Message via Twilio
+					$this->sendSMS($member, $memberMsg);
 				}
 			}
 		}
@@ -1129,6 +1130,22 @@ class PortalController extends Controller {
 				$message->to($member->email);
 				$message->subject($subject);
 			});
+		}
+	}
+    
+    static $twilioClient;
+    public  function TwilioClient() {
+	    if (null === static::$twilioClient) {
+            static::$twilioClient = new Client(env("TWILIO_SID"), env("TWILIO_TOKEN"));
+        }
+        
+        return static::$twilioClient;
+    }
+	
+	public function sendSMS($member, $msg) {
+		if (strlen($member->phone) > 7) {
+			$phoneNum = preg_replace("/[^0-9]/", "", $member->phone);
+			$this->TwilioClient()->messages->create($phoneNum, ['from'=>'+17652312066', 'body'=>$msg]);
 		}
 	}
     
