@@ -80,6 +80,10 @@ $(".citiesautocomplete").autocomplete({
 });
 
 function checkinMember() {
+	if(!$('#checkinForm').data('bValidator').validate()) {
+		return;
+	}
+	
 	selectedName = $("#memberName").val();
 	$.ajax({
 		url: '/checkin-member',

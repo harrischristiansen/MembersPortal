@@ -12,11 +12,11 @@
 		@endif
 	</h3>
 	<div class="panel panel-default">
-		<div class="panel-body" autocomplete="off">
+		<div id="checkinForm" class="panel-body validate" autocomplete="off">
 			{{ csrf_field() }}
 			<div class="input-group">
 				<span class="input-group-addon" id="memberNameTitle">Name: </span>
-				<input type="text" id="memberName" name="memberName" class="form-control membersautocomplete" placeholder="Member Name" autocomplete="off">
+				<input type="text" id="memberName" name="memberName" class="form-control membersautocomplete" placeholder="Member Name" autocomplete="off" data-bvalidator="required" data-bvalidator-msg="Please enter your full name">
 				<span class="input-group-btn">
 					<button class="btn btn-primary" type="button" onclick="checkinMember();">Checkin</button>
 				</span>
@@ -24,13 +24,13 @@
     		<br>
 			<div class="input-group">
 				<span class="input-group-addon" id="memberEmailTitle">Email: </span>
-				<input type="text" id="memberEmail" name="memberEmail" class="form-control membersautocomplete" placeholder="Member Email" >
+				<input type="text" id="memberEmail" name="memberEmail" class="form-control membersautocomplete" placeholder="Member Email" data-bvalidator="required,email" data-bvalidator-msg="An email is required for your account.">
     		</div>
     		<br>
     		@if (isset($checkinPhone))
 			<div class="input-group">
 				<span class="input-group-addon" id="memberPhoneTitle">Cell Phone #: </span>
-				<input type="text" id="memberPhone" name="memberPhone" class="form-control membersautocomplete" placeholder="Cell Phone Number">
+				<input type="text" id="memberPhone" name="memberPhone" class="form-control membersautocomplete" placeholder="Cell Phone Number" data-bvalidator="minlength[10]" data-bvalidator-msg="Please enter a valid cell phone # (with area code)">
     		</div>
     		<span class="pull-left" style="font-size: 9px">Your phone number is kept private and is only used for notifications.</span>
     		<br>

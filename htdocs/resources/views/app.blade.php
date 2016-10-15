@@ -33,7 +33,7 @@
         <link href="https://fonts.googleapis.com/css?family=Lato:400,900" rel="stylesheet" type="text/css">
 	    
 	    <!-- Portal Site CSS -->
-	    <link rel="stylesheet" type="text/css" href="/css/purduehackers.css">
+	    <link rel="stylesheet" type="text/css" href="/css/purduehackers.css?v=2">
 	    
     </head>
     <body>
@@ -87,7 +87,7 @@
 		</script>
 		@endif
 		<!-- Site JS -->
-		<script type="text/javascript" src="/js/membersportal.js"></script>
+		<script type="text/javascript" src="/js/membersportal.js?v=2"></script>
 		<!-- Page Specific JS -->
 		@yield('customJS')
     </body>
