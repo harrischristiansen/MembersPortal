@@ -32,9 +32,7 @@
 				<span class="input-group-addon" id="memberPhoneTitle">Cell Phone #: </span>
 				<input type="text" id="memberPhone" name="memberPhone" class="form-control membersautocomplete" placeholder="Cell Phone Number">
     		</div>
-    		@if (isset($checkinPhone))
     		<span class="pull-left" style="font-size: 9px">Your phone number is kept private and is only used for notifications.</span>
-    		@endif
     		<br>
     		@endif
 			<div class="input-group">
@@ -43,6 +41,13 @@
 				<span id="hasRegistered" class="input-group-btn"></span>
     		</div>
     		<br>
+    		@if (isset($checkinPhone))
+			<div class="input-group">
+				<span class="input-group-addon" id="graduationYearTitle">Graduation Year: </span>
+				<input type="text" id="graduationYear" class="form-control" readonly>
+    		</div>
+    		<br>
+    		@endif
 			<button class="btn btn-primary" type="button" onclick="checkinMember();" style="float: right;">Checkin</button>
 		</div>
 	</div>

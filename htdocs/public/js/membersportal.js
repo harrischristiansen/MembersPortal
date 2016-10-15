@@ -29,6 +29,7 @@ $(".membersautocomplete").autocomplete({
 			$("#memberEmail").val(ui.item.email);
 			$("#memberPhone").val(ui.item.phone);
 			$("#memberAttended").val(ui.item.attended);
+			$("#graduationYear").val(ui.item.graduation_year);
 			console.log(ui.item);
 			if (ui.item.registered == 0) {
 				$("#hasRegistered").html('<button class="btn btn-danger" type="button">Not Registered</button>');
@@ -44,12 +45,23 @@ $(".membersautocomplete").autocomplete({
 
 $("#memberName").change(function() {
 	selectedID = -1;
+	$("#memberAttended").val('N/A');
 	$("#hasRegistered").html('');
+	$("#graduationYear").val('Unknown');
 });
 
 $("#memberEmail").change(function() {
 	selectedID = -1;
+	$("#membersAttended").val('N/A');
 	$("#hasRegistered").html('');
+	$("#graduationYear").val('Unknown');
+});
+
+$("#memberPhone").change(function() {
+	selectedID = -1;
+	$("#memberAttended").val('N/A');
+	$("#hasRegistered").html('');
+	$("#graduationYear").val('Unknown');
 });
 
 $(".locationsautocomplete").autocomplete({

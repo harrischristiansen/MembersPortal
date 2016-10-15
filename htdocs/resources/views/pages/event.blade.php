@@ -101,6 +101,9 @@
 					<th>Member</th>
 					<th>Year</th>
 					<th># Attended Events</th>
+					@if (session()->get('authenticated_admin') == "true" && $requiresApplication)
+					<th>Checked In By</th>
+					@endif
 				</tr>
 			</thead>
 			<tbody>
@@ -109,10 +112,14 @@
 			    	<td>{{ $member->name }}</td>
 			    	<td>{{ $member->graduation_year }}</td>
 					<td>{{ count($member->events) }}</td>
+					@if (session()->get('authenticated_admin') == "true" && $requiresApplication)
+					<td style="color: #FFFFFF; background-color: {{ count($event->applications()->where('member_id',$member->id)->get()) ? "green":"red" }};">{{ $member->recorded_by->name }}</td>
+					@endif
 			    </tr>
 			@empty
 				<tr>
 					<td>No Members Attended</td>
+					<td></td>
 					<td></td>
 				</tr>
 			@endforelse
