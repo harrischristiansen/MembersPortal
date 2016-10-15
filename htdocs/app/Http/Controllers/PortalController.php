@@ -611,12 +611,6 @@ class PortalController extends Controller {
 		return view('pages.event-graphs', compact("event","joinDates","memberYears","majorsData"));
 	}
 	
-	public function getLive(AdminRequest $request, $eventID) {
-		$event = Event::findOrFail($eventID);
-		
-		return view('pages.event-live', compact("event"));
-	}
-	
 	/////////////////////////////// Editing Events ///////////////////////////////
 	
 	public function postEvent(EditEventRequest $request, $eventID) {
