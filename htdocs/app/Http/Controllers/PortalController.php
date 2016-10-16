@@ -1137,7 +1137,7 @@ class PortalController extends Controller {
     }
 	
 	public function sendSMS($member, $msg) {
-		$msg = str_replace(["<br />","<br>"], ["",""], $msg)
+		$msg = str_replace(["<br />","<br>"], ["",""], $msg);
 		
 		if (strlen($member->phone) > 7) {
 			$phoneNum = preg_replace("/[^0-9]/", "", $member->phone);
