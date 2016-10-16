@@ -1137,9 +1137,13 @@ class PortalController extends Controller {
     }
 	
 	public function sendSMS($member, $msg) {
+		$msg = str_replace(["<br />","<br>"], ["",""], $msg)
+		
 		if (strlen($member->phone) > 7) {
 			$phoneNum = preg_replace("/[^0-9]/", "", $member->phone);
-			$this->TwilioClient()->messages->create($phoneNum, ['from'=>'+17652312066', 'body'=>$msg]);
+			if (strlen($phoneNum) == 10) {
+				$this->TwilioClient()->messages->create($phoneNum, ['from'=>'+17652312066', 'body'=>$msg]);
+			}
 		}
 	}
     
