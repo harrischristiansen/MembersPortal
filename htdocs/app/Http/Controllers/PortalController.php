@@ -611,6 +611,22 @@ class PortalController extends Controller {
 		return view('pages.event-graphs', compact("event","joinDates","memberYears","majorsData"));
 	}
 	
+	public function getEventBook(AdminRequest $request, $eventID) {
+		$event = Event::findOrFail($eventID);
+		
+		$members = $event->members;
+		$members_book = [];
+		
+		foreach ($members as $member) { // Pre-calculate names of users who checked student in
+			$members_book[$member->name]["email"] = $member->email;
+			if ($member->resume) {
+				$members_book[$member->name]["resume"] = $request->root().$member->resumePath();
+			}
+		}
+		
+		return stripslashes(json_encode($members_book));
+	}
+	
 	/////////////////////////////// Editing Events ///////////////////////////////
 	
 	public function postEvent(EditEventRequest $request, $eventID) {
