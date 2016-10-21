@@ -33,7 +33,7 @@
         <link href="https://fonts.googleapis.com/css?family=Lato:400,900" rel="stylesheet" type="text/css">
 	    
 	    <!-- Portal Site CSS -->
-	    <link rel="stylesheet" type="text/css" href="/css/purduehackers.css?v=2">
+	    <link rel="stylesheet" type="text/css" href="/css/purduehackers.css?v=3">
 	    
     </head>
     <body>
