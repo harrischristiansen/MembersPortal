@@ -32,6 +32,7 @@ This Members Tracking Portal was originally developed for Purdue Hackers. Purdue
 			- [ ] Undo Checkin (Delete Checkin Record)
 		- [X] Message Attendees
 			- [ ] Ignore Inactive Members
+			- [ ] If target > 20 people, require superAdmin approval
 	- [X] Analytics
 		- [ ] Graphs of "# events attended"
 		- [ ] See trends in who has been going to what events
