@@ -1,9 +1,13 @@
 @extends("app")
 
+@section("page-title")
+Checkin - {{ $event->nameShort() }} - 
+@stop
+
 @section("content")
 
 <div class="section"><div class='section-container'>
-	<h3>Checkin - {{ substr($event->name,0,30) }}
+	<h3>Checkin - {{ $event->nameShort() }}
 		<a href="/event/{{ $event->id }}" class="pull-left"><button type="button" class="btn btn-primary btn-sm marginR"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> Event</button></a>
 		@if (isset($checkinPhone))
 		<a href="/checkin/{{ $event->id }}" class="pull-right"><button type="button" class="btn btn-primary btn-sm">Don't Include Phone #</button></a>

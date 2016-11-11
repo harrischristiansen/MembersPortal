@@ -1,5 +1,9 @@
 @extends("app")
 
+@section("page-title")
+Map - 
+@stop
+
 @section("customJS")
 <script>
 	function initMap() {

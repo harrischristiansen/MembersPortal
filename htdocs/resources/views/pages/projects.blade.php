@@ -1,5 +1,9 @@
 @extends("app")
 
+@section("page-title")
+Projects - 
+@stop
+
 @section("content")
 <div class="section"><div class='section-container'>
 	<h3>{{ isset($allProjects) ? "All Projects" : "Your Projects" }}

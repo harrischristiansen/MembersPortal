@@ -1,9 +1,13 @@
 @extends("app")
 
+@section("page-title")
+{{ $event->nameShort() }} - 
+@stop
+
 @section("content")
 
 <div class="section"><div class='section-container'>
-	<h3>{{ substr($event->name,0,38) ?: "Create Event" }}
+	<h3>{{ $event->nameShort() ?: "Create Event" }}
 		@if ($event->id != 0)
 		
 		@if (session()->get('authenticated_admin') == "true")

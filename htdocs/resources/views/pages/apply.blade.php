@@ -1,9 +1,13 @@
 @extends("app")
 
+@section("page-title")
+Sign Up - {{ $event->nameShort() }} - 
+@stop
+
 @section("content")
 
 <div class="section"><div class='section-container'>
-	<h3>Sign Up: {{ $event->name }}</h3>
+	<h3>Sign Up: {{ $event->nameShort() }}</h3>
 	<div class="panel panel-default">
 		<form method="post" action="/apply/{{ $event->id }}" class="panel-body validate">
 			{!! csrf_field() !!}

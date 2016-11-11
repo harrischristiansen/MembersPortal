@@ -1,5 +1,9 @@
 @extends("app")
 
+@section("page-title")
+Anvil Wifi - 
+@stop
+
 @section("content")
 
 

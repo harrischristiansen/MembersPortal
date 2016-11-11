@@ -1,5 +1,9 @@
 @extends("app")
 
+@section("page-title")
+Credentials - 
+@stop
+
 @section("content")
 <div class="section"><div class='section-container'>
 	<h3>Credentials</h3>

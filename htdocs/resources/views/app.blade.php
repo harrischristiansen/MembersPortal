@@ -5,7 +5,7 @@
 	    <meta http-equiv="X-UA-Compatible" content="IE=edge">
 	    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 	    
-        <title>{{ isset($pageName) ? $pageName." - " : "" }} {{ env('ORG_NAME') }}</title>
+        <title>@yield('page-title') {{ env('ORG_NAME') }}</title>
         
         <meta name="author" content="Harris Christiansen">
         <meta name="description" content="{{ env('ORG_NAME') }} - Members and Events Portal">

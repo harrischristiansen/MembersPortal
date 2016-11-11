@@ -1,9 +1,13 @@
 @extends("app")
 
+@section("page-title")
+Message {{ $event->nameShort() }} - 
+@stop
+
 @section("content")
 
 <div class="section"><div class='section-container'>
-	<h3>Message: {{ $event->name }}
+	<h3>Message: {{ $event->nameShort() }}
 		<a href="/event/{{ $event->id }}" class="pull-left"><button type="button" class="btn btn-primary btn-sm"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> Event</button></a>
 	</h3>
 	

@@ -1,9 +1,13 @@
 @extends("app")
 
+@section("page-title")
+{{ $project->name ? $project->name : "Create Project" }} - 
+@stop
+
 @section("content")
 
 <div class="section"><div class='section-container'>
-	<h3>{{ $project->name ? "Project: ".$project->name : "Create Project"}}</h3>
+	<h3>{{ $project->name ? "Project: ".$project->name : "Create Project" }}</h3>
 	<div class="panel panel-default">
 		<form method="post" action="/project/{{ $project->id }}" class="panel-body validate">
 			{!! csrf_field() !!}

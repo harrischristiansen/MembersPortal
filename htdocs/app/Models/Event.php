@@ -14,6 +14,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Event extends Model {
 	use SoftDeletes;
 	protected $dates = ['event_time','deleted_at'];
+	
+	public function nameShort() {
+		return substr($this->name,0,30);
+	}
 
 	public function members() {
 		return $this->belongsToMany('App\Models\Member')->withPivot('recorded_by');

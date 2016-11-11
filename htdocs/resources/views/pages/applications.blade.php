@@ -1,8 +1,12 @@
 @extends("app")
 
+@section("page-title")
+Applications - {{ $event->nameShort() }} - 
+@stop
+
 @section("content")
 <div class="section"><div class='section-container'>
-	<h3>{{ $event->name }} - Applications
+	<h3>{{ $event->nameShort() }} - Applications
 		<a href="/event/{{ $event->id }}" class="pull-left"><button type="button" class="btn btn-primary btn-sm"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> Event</button></a>
 		<button type="button" class="btn btn-primary btn-sm pull-right">{{ count($applications) }} applications</button>
 	</h3>
