@@ -18,7 +18,7 @@
 			    <tr>
 			    	<td>{{ $credential->site }}</td>
 					<td>{{ $credential->username }}</td>
-			    	<td>{{ decrypt($credential->password) }}</td>
+			    	<td class="obscure">{{ decrypt($credential->password) }}</td>
 			    	<td>
 				    	{{ $credential->description }}
 				    	<a href="/credential-delete/{{ $credential->id }}"><button class="btn btn-xs btn-danger pull-right">Delete</button></a>
