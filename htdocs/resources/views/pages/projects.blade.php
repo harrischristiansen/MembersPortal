@@ -8,7 +8,8 @@
 			@if(isset($allProjects))
 			<a href="/projects" class="pull-left"><button type="button" class="btn btn-primary btn-sm">My Projects</button></a>
 			@else
-			<a href="/projects-all" class="pull-left"><button type="button" class="btn btn-primary btn-sm">All Projects</button></a>
+			<a href="/projects-all" class="pull-left marginR"><button type="button" class="btn btn-primary btn-sm">All Projects</button></a>
+			<a href="/credentials" class="pull-left marginR"><button type="button" class="btn btn-primary btn-sm">Credentials</button></a>
 			@endif
 		@endif
 		<a href="/project-new" class="pull-right"><button type="button" class="btn btn-primary btn-sm">+ New Project</button></a>

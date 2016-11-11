@@ -18,12 +18,14 @@ use App\Http\Controllers\Controller;
 
 use App\Http\Requests;
 use App\Http\Requests\LoggedInRequest;
+use App\Http\Requests\EditEventRequest;
 use App\Http\Requests\EditMemberRequest;
 use App\Http\Requests\AdminRequest;
 use App\Http\Requests\RegisterRequest;
-use App\Http\Requests\EditEventRequest;
+use App\Http\Requests\SuperAdminRequest;
 
 use App\Models\Application;
+use App\Models\Credential;
 use App\Models\Event;
 use App\Models\Location;
 use App\Models\LocationRecord;
@@ -70,13 +72,16 @@ class PortalController extends Controller {
 					}
 					
 					$member->authenticated_at = Carbon::now();
+					$member->timestamps = false; // Don't update timestamps
+					$member->save();
 					
 					if ($member->admin) { // Admin Accounts
 						$request->session()->put('authenticated_admin', 'true');
 					}
+					if ($member->superAdmin) { // SuperAdmin Accounts
+						$request->session()->put('authenticated_superAdmin', 'true');
+					}
 					
-					$member->timestamps = false; // Don't update timestamps
-					$member->save();
 					return $this->getIndex();
 				}
 			}
@@ -94,6 +99,7 @@ class PortalController extends Controller {
 		$request->session()->put('member_name',"");
 		$request->session()->put('authenticated_member', 'false');
 		$request->session()->put('authenticated_admin', 'false');
+		$request->session()->put('authenticated_superAdmin', 'false');
 
 		return $this->getIndex();
 	}
@@ -1118,6 +1124,43 @@ class PortalController extends Controller {
 		$project->members()->detach($member->id);
 		
 		return redirect()->action('PortalController@getProject', [$projectID])->with('msg', 'Success: Removed '.$member->name.' from project '.$project->name);
+	}
+	
+	/////////////////////////////// Credentials ///////////////////////////////
+	
+	public function getCredentials(SuperAdminRequest $request) {
+		$credentials = Credential::all();
+		
+		return view('pages.credentials', compact("credentials"));
+	}
+	
+	public function postCredentials(SuperAdminRequest $request) {
+		$site = $request->input("site");
+		$username = $request->input("username");
+		$password = $request->input("password");
+		$description = $request->input("description");
+		
+		if (strlen($site) < 3 || strlen($username) < 3 || strlen($password) < 3) {
+			$request->session()->flash('msg', 'Error: Please provide site, username, and password');
+			return $this->getCredentials($request);
+		}
+		
+		$credential = new Credential;
+		$credential->site = $site;
+		$credential->username = $username;
+		$credential->password = encrypt($password);
+		$credential->description = $description;
+		$credential->member_id = $this->getAuthenticatedID($request);
+		$credential->save();
+		
+		return $this->getCredentials($request);
+	}
+	
+	public function getCredentialDelete(SuperAdminRequest $request, $credentialID) {
+		$credential = Credential::findOrFail($credentialID);
+		$credential->delete();
+		
+		return redirect()->action('PortalController@getCredentials')->with('msg', 'Success: Delete credentials for '.$credential->site.'.');
 	}
 
 	/////////////////////////////// Helper Functions ///////////////////////////////
