@@ -35,7 +35,11 @@ This Members Tracking Portal was originally developed for Purdue Hackers. Purdue
 			- [ ] Ignore Inactive Members
 			- [ ] If target > 20 people, require superAdmin approval
 	- [X] Credential Manager
+	- [ ] Permissions Manager
+		- [ ] Project Permissions
 		- [ ] Credential Permissions
+		- [ ] Event Permissions
+		- [ ] Member Permissions
 	- [X] Analytics
 		- [ ] Graphs of "# events attended"
 		- [ ] See trends in who has been going to what events
