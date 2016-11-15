@@ -11,10 +11,8 @@ namespace App\Http\Controllers;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Twilio\Rest\Client;
 use DB;
 use Mail;
-use App\Http\Controllers\Controller;
 
 use App\Http\Requests;
 use App\Http\Requests\LoggedInRequest;
@@ -33,124 +31,15 @@ use App\Models\Major;
 use App\Models\Member;
 use App\Models\Project;
 
-class PortalController extends Controller {
+class PortalController extends BaseController {
 	
 	/////////////////////////////// Home ///////////////////////////////
     
-    public function getIndex() {
+	public function getIndex() {
 		return view('pages.home');
 	}
 	
 	/////////////////////////////// Authentication ///////////////////////////////
-	
-	public function getLogin() {
-		return view('pages.login');
-	}
-
-	public function postLogin(Request $request) {
-		$email = $request->input('email');
-		$password = $request->input('password');
-		$passwordMD5 = md5($password);
-		
-		if($email == "") {
-			$request->session()->flash('msg', 'Please enter an email.');
-			return $this->getLogin();
-		} else {
-			$matchingMembers = Member::where('email',$email)->orWhere('email_public', $email)->orWhere('email_edu', $email)->get();
-			
-			if(count($matchingMembers) == 0) {
-				$request->session()->flash('msg', 'No account was found with that email.');
-				return $this->getLogin();
-			}
-			
-			foreach($matchingMembers as $member) {
-				if(Hash::check($password, $member->password) || $member->password == $passwordMD5) {
-					$this->setAuthenticated($request, $member->id, $member->name);
-					
-					if (Hash::needsRehash($member->password)) { // Check If Password Needs Rehash
-						$member->password = Hash::make($password);
-					}
-					
-					$member->authenticated_at = Carbon::now();
-					$member->timestamps = false; // Don't update timestamps
-					$member->save();
-					
-					if ($member->admin) { // Admin Accounts
-						$request->session()->put('authenticated_admin', 'true');
-					}
-					if ($member->superAdmin) { // SuperAdmin Accounts
-						$request->session()->put('authenticated_superAdmin', 'true');
-					}
-					
-					return $this->getIndex();
-				}
-			}
-			
-			// If gets here, no account matched password
-			$request->session()->flash('msg', 'Invalid password.');
-			return $this->getLogin();
-		}
-
-		return $this->getLogin();
-	}
-
-	public function getLogout(Request $request) {
-		$request->session()->put('member_id',"");
-		$request->session()->put('member_name',"");
-		$request->session()->put('authenticated_member', 'false');
-		$request->session()->put('authenticated_admin', 'false');
-		$request->session()->put('authenticated_superAdmin', 'false');
-
-		return $this->getIndex();
-	}
-	
-	public function getJoin() { // GET Register
-		return view('pages.register');
-	}
-	
-	public function postJoin(RegisterRequest $request) { // POST Register
-		$memberName = $request->input('memberName');
-		$email = $request->input('email');
-		$password = $request->input('password');
-		$password_confirm = $request->input('confirmPassword');
-		$gradYear = $request->input('gradYear');
-		
-		if($memberName=="" || $email=="" || $password=="" || $gradYear=="") {
-			$request->session()->flash('msg', 'Please enter all fields.');
-			return $this->getJoin();
-		}
-		
-		if(!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-			$request->session()->flash('msg', 'Invalid Email Address.');
-			return $this->getJoin();
-		}
-		
-		if($password != $password_confirm) {
-			$request->session()->flash('msg', 'Passwords did not match.');
-			return $this->getJoin();
-		}
-		
-		if(Member::where('email',$email)->first()) {
-			$request->session()->flash('msg', 'An account already exists with that email. Please use your '.env('DB_ORG_NAME').' account password if you have one.');
-			return $this->getLogin();
-		}
-		
-		// Create Member
-		$member = new Member;
-		$member->name = $memberName;
-		$member->email = $email;
-		$member->password = Hash::make($password);
-		if(strpos($email, ".edu") !== false) {
-			$member->email_edu = $email;
-		}
-		$member->graduation_year = $gradYear;
-		$member->save();
-		
-		// Authenticate Application
-		$this->setAuthenticated($request, $member->id, $member->name);
-		
-		return $this->getIndex();
-	}
 	
 	public function isAuthenticated($request) {
 		return $request->session()->get('authenticated_member') == "true";
@@ -353,57 +242,6 @@ class PortalController extends Controller {
 		// Return Response
 		$request->session()->flash('msg', 'Profile Saved!');
 		return $this->getMember($request, $memberID);
-	}
-	
-	/////////////////////////////// Password Reset ///////////////////////////////
-	
-	public function getRequestReset(Request $request) {
-		return view('pages.reset');
-	}
-	
-	public function postRequestReset(Request $request) {
-		$email = $request->input('email');
-		
-		$member = Member::where('email',$email)->first();
-		
-		if ($member == NULL) {
-			$request->session()->flash('msg', 'No account was found with that email!');
-			return $this->getRequestReset($request);
-		}
-		
-		$this->emailResetRequest($member);
-		
-		$request->session()->flash('msg', 'A link to reset your password has been sent to your email!');
-		return $this->getRequestReset($request);
-	}
-	
-	public function emailResetRequest($member) {
-		Mail::send('emails.resetRequest', ['member'=>$member], function ($message) use ($member) {
-			$message->from('purduehackers@gmail.com', 'Purdue Hackers');
-			$message->to($member->email);
-			$message->subject("Reset your Purdue Hackers account password");
-		});
-	}
-	
-	public function getReset(Request $request, $memberID, $reset_token) {
-		$member = Member::find($memberID);
-		
-		if(is_null($member)) {
-			$request->session()->flash('msg', 'Error: Member Not Found.');
-			return $this->getIndex();
-		}
-		
-		if($reset_token != $member->reset_token()) {
-			$request->session()->flash('msg', 'Error: Member Not Found.');
-			return $this->getIndex();
-		}
-		
-		$locations = $member->locations;
-		$events = $member->events;
-		$majors = Major::orderByRaw('(id = 1) DESC, name')->get(); // Order by name, but keep first major at top
-		$setPassword = true;
-		
-		return view('pages.member',compact("member","locations","events","majors","setPassword","reset_token"));
 	}
 	
 	
@@ -1163,48 +1001,7 @@ class PortalController extends Controller {
 		return redirect()->action('PortalController@getCredentials')->with('msg', 'Success: Delete credentials for '.$credential->site.'.');
 	}
 
-	/////////////////////////////// Helper Functions ///////////////////////////////
-	
-	public static function generateRandomInt() {
-        srand();
-        $characters = '0123456789';
-        $charactersLength = strlen($characters);
-        $randomString = '';
-        for ($i = 0; $i < 9; $i++) {
-            $randomString .= $characters[rand(0, $charactersLength - 1)];
-        }
-        return $randomString;
-    }
-	
-	public function sendEmail($member, $subject, $msg) {
-		if (true) {
-			Mail::send('emails.default', ['member'=>$member, 'msg'=>$msg], function ($message) use ($member, $subject) {
-				$message->from('purduehackers@gmail.com', 'Purdue Hackers');
-				$message->to($member->email);
-				$message->subject($subject);
-			});
-		}
-	}
-    
-    static $twilioClient;
-    public  function TwilioClient() {
-	    if (null === static::$twilioClient) {
-            static::$twilioClient = new Client(env("TWILIO_SID"), env("TWILIO_TOKEN"));
-        }
-        
-        return static::$twilioClient;
-    }
-	
-	public function sendSMS($member, $msg) {
-		$msg = str_replace(["<br />","<br>"], ["",""], $msg);
-		
-		if (strlen($member->phone) > 7) {
-			$phoneNum = preg_replace("/[^0-9]/", "", $member->phone);
-			if (strlen($phoneNum) == 10) {
-				$this->TwilioClient()->messages->create($phoneNum, ['from'=>'+17652312066', 'body'=>$msg]);
-			}
-		}
-	}
+	/////////////////////////////// Graph Data Processing Functions ///////////////////////////////
     
     public function graphDataJoinDates($members) {
 	    $joinDatesDict = [];

@@ -7,5 +7,6 @@
 */
 
 Route::group(['middleware' => ['web']], function () {
+    Route::controller('/auth', 'AuthController');
     Route::controller('/', 'PortalController');
 });

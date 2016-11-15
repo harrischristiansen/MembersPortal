@@ -47,7 +47,7 @@
 			ga('send', 'pageview');
 		</script>
 	    
-	    @include('navbar_ph')
+	    @include('navbar')
 		
 		<div id="pageWrap">
 		

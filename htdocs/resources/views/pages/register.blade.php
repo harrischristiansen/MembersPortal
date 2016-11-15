@@ -9,7 +9,7 @@ Join
 <div class="section"><div class='section-container'>
 	<h3>Join {{ env('ORG_NAME') }}</h3>
 	<div class="panel panel-default">
-		<form method="post" action="/join" class="panel-body validate">
+		<form method="post" action="{{ action('AuthController@postJoin') }}" class="panel-body validate">
 			{!! csrf_field() !!}
 			<label for="memberName">Full Name</label>
 			<input type="text" name="memberName" id="memberName" placeholder="Full Name" class="form-control" data-bvalidator="regex[\w+\s\w+],required" data-bvalidator-msg="Please enter your full name">

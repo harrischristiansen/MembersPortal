@@ -52,7 +52,7 @@ class Member extends Model {
 	}
 	
 	public function reset_url() {
-		return action('PortalController@getReset', [$this->id, $this->reset_token()]);
+		return action('AuthController@getReset', [$this->id, $this->reset_token()]);
 	}
 	
 	public function picturePath() {
