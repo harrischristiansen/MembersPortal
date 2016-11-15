@@ -60,7 +60,7 @@ class AuthController extends BaseController {
 						$request->session()->put('authenticated_superAdmin', 'true');
 					}
 					
-					return $this->getIndex();
+					return $this->getIndex($request);
 				}
 			}
 			
@@ -82,7 +82,7 @@ class AuthController extends BaseController {
 		$request->session()->put('authenticated_superAdmin', 'false');
 		
 		$request->session()->flash('msg', 'You are now logged out');
-		return $this->getIndex();
+		return $this->getIndex($request);
 	}
 	
 	
@@ -134,7 +134,7 @@ class AuthController extends BaseController {
 		// Authenticate Application
 		$this->setAuthenticated($request, $member->id, $member->name);
 		
-		return $this->getIndex();
+		return $this->getIndex($request);
 	}
 	
 	/////////////////////////////// Password Reset Request ///////////////////////////////
@@ -175,12 +175,12 @@ class AuthController extends BaseController {
 		
 		if(is_null($member)) {
 			$request->session()->flash('msg', 'Error: Member Not Found.');
-			return $this->getIndex();
+			return $this->getIndex($request);
 		}
 		
 		if($reset_token != $member->reset_token()) {
 			$request->session()->flash('msg', 'Error: Member Not Found.');
-			return $this->getIndex();
+			return $this->getIndex($request);
 		}
 		
 		$locations = $member->locations;

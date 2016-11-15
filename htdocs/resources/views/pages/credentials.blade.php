@@ -25,11 +25,11 @@ Credentials -
 			    	<td class="obscure">{{ decrypt($credential->password) }}</td>
 			    	<td>
 				    	{{ $credential->description }}
-				    	<a href="/credential-delete/{{ $credential->id }}"><button class="btn btn-xs btn-danger pull-right">Delete</button></a>
+				    	<a href="{{ action('CredentialController@getDelete', $credential->id) }}"><button class="btn btn-xs btn-danger pull-right">Delete</button></a>
 				    	</td>
 			    </tr>
 			@endforeach
-			<form method="post" action="/credentials" class="panel-body validate">
+			<form method="post" action="{{ action('CredentialController@postIndex') }}" class="panel-body validate">
 				{!! csrf_field() !!}
 			    <tr>
 			    	<td><input type="text" name="site" placeholder="Site" class="form-control" data-bvalidator="required,url"></td>

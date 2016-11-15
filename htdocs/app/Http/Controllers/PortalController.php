@@ -35,39 +35,8 @@ class PortalController extends BaseController {
 	
 	/////////////////////////////// Home ///////////////////////////////
     
-	public function getIndex() {
+	public function getIndex(Request $request) {
 		return view('pages.home');
-	}
-	
-	/////////////////////////////// Authentication ///////////////////////////////
-	
-	public function isAuthenticated($request) {
-		return $request->session()->get('authenticated_member') == "true";
-	}
-	
-	public function isAdmin($request) {
-		return $request->session()->get('authenticated_admin') == "true";
-	}
-	
-	public function getAuthenticated($request) {
-		if ($this->isAuthenticated($request)) {
-			return Member::find($this->getAuthenticatedID($request));
-		}
-		return null;
-	}
-	
-	public function getAuthenticatedID($request) {
-		if ($this->isAuthenticated($request)) {
-			return $request->session()->get('member_id');
-		}
-		return null;
-	}
-	
-	public function setAuthenticated(Request $request, $memberID, $memberName) {
-		$request->session()->put('authenticated_member', 'true');
-		$request->session()->put('member_id', $memberID);
-		$request->session()->put('member_name', $memberName);
-		$request->session()->flash('msg', "Welcome $memberName!");
 	}
 	
 	/////////////////////////////// Resource Pages ///////////////////////////////
@@ -84,21 +53,6 @@ class PortalController extends BaseController {
 		});
 		
 		return view('pages.members',compact("members"));
-	}
-	
-	public function getMembersGraphs(AdminRequest $request) {
-		$members = Member::orderBy('created_at')->get();
-		
-		// Join Dates
-		$joinDates = $this->graphDataJoinDates($members);
-		
-		// Member Graduation Year
-		$memberYears = $this->graphDataMemberYears($members);
-		
-		// Major
-		$majorsData = $this->graphDataMajor($members);
-		
-		return view('pages.members-graphs',compact("members","joinDates","memberYears","majorsData"));
 	}
 	
 	public function getMembersAutocomplete(AdminRequest $request, $eventID=0) {
@@ -435,42 +389,6 @@ class PortalController extends BaseController {
 		return view('pages.event', compact("event","members","requiresApplication","hasRegistered","applications"));
 	}
 	
-	public function getEventGraphs(AdminRequest $request, $eventID) {
-		$event = Event::findOrFail($eventID);
-		
-		$members = $event->members;
-		if(count($members) == 0) {
-			$members = $event->getAppliedMembers();
-		}
-		
-		// Join Dates
-		$joinDates = $this->graphDataJoinDates($members);
-		
-		// Member Graduation Year
-		$memberYears = $this->graphDataMemberYears($members);
-		
-		// Major
-		$majorsData = $this->graphDataMajor($members);
-		
-		return view('pages.event-graphs', compact("event","joinDates","memberYears","majorsData"));
-	}
-	
-	public function getEventBook(AdminRequest $request, $eventID) {
-		$event = Event::findOrFail($eventID);
-		
-		$members = $event->members;
-		$members_book = [];
-		
-		foreach ($members as $member) { // Pre-calculate names of users who checked student in
-			$members_book[$member->name]["email"] = $member->email;
-			if ($member->resume) {
-				$members_book[$member->name]["resume"] = $request->root().$member->resumePath();
-			}
-		}
-		
-		return stripslashes(json_encode($members_book));
-	}
-	
 	/////////////////////////////// Editing Events ///////////////////////////////
 	
 	public function postEvent(EditEventRequest $request, $eventID) {
@@ -688,7 +606,7 @@ class PortalController extends BaseController {
 		}
 		
 		$request->session()->flash('msg', 'Success, setup account emails have been sent!');
-		return $this->getIndex();
+		return $this->getIndex($request);
 	}
 	
 	public function emailAccountCreated($member, $event) {
@@ -722,7 +640,7 @@ class PortalController extends BaseController {
 		
 		if ($reset_token != $member->reset_token()) {
 			$request->session()->flash('msg','Error: Invalid Authentication Token');
-			return $this->getIndex();
+			return $this->getIndex($request);
 		}
 		
 		$this->setAuthenticated($request, $memberID, $member->name);
@@ -963,100 +881,5 @@ class PortalController extends BaseController {
 		
 		return redirect()->action('PortalController@getProject', [$projectID])->with('msg', 'Success: Removed '.$member->name.' from project '.$project->name);
 	}
-	
-	/////////////////////////////// Credentials ///////////////////////////////
-	
-	public function getCredentials(SuperAdminRequest $request) {
-		$credentials = Credential::all();
-		
-		return view('pages.credentials', compact("credentials"));
-	}
-	
-	public function postCredentials(SuperAdminRequest $request) {
-		$site = $request->input("site");
-		$username = $request->input("username");
-		$password = $request->input("password");
-		$description = $request->input("description");
-		
-		if (strlen($site) < 3 || strlen($username) < 3 || strlen($password) < 3) {
-			$request->session()->flash('msg', 'Error: Please provide site, username, and password');
-			return $this->getCredentials($request);
-		}
-		
-		$credential = new Credential;
-		$credential->site = $site;
-		$credential->username = $username;
-		$credential->password = encrypt($password);
-		$credential->description = $description;
-		$credential->member_id = $this->getAuthenticatedID($request);
-		$credential->save();
-		
-		return $this->getCredentials($request);
-	}
-	
-	public function getCredentialDelete(SuperAdminRequest $request, $credentialID) {
-		$credential = Credential::findOrFail($credentialID);
-		$credential->delete();
-		
-		return redirect()->action('PortalController@getCredentials')->with('msg', 'Success: Delete credentials for '.$credential->site.'.');
-	}
-
-	/////////////////////////////// Graph Data Processing Functions ///////////////////////////////
-    
-    public function graphDataJoinDates($members) {
-	    $joinDatesDict = [];
-	    $start = Member::orderBy('created_at')->first()->created_at;
-		$end = Carbon::now()->modify('+1 day');
-		for ($i = $start; $i < $end; $i->modify('+1 day')) {
-			$joinDatesDict[$i->toDateString()] = 0;
-		}
-		foreach ($members as $member) {
-			$dateString = $member->created_at->toDateString();
-			$joinDatesDict[$dateString]++;
-		}
-		$joinDates = [];
-		foreach ($joinDatesDict as $date=>$count) {
-			array_push($joinDates, compact("date","count"));
-		}
-		
-		return $joinDates;
-    }
-    
-    public function graphDataMemberYears($members) {
-	    $memberYearsDict = [];
-		foreach ($members as $member) {
-			$memberYear = $member->graduation_year;
-			$memberYearsDict[$memberYear] = isset($memberYearsDict[$memberYear]) ? $memberYearsDict[$memberYear]+1 : 1;
-		}
-		$memberYears = [];
-		foreach ($memberYearsDict as $key=>$count) {
-			array_push($memberYears, compact("key","count"));
-		}
-		$memberYears = array_values(array_sort($memberYears, function ($value) {
-			return $value['key'];
-		}));
-		
-		return $memberYears;
-    }
-    
-    public function graphDataMajor($members) {
-	    $majors = Major::all();
-		$majorsDict = [];
-		foreach ($majors as $major) {
-			$majorsDict[$major->name] = 0;
-		}
-		foreach ($members as $member) {
-			if(isset($member->major)) {
-				$majorsDict[$member->major->name]++;
-			}
-		}
-		$majorsData = [];
-		foreach ($majorsDict as $key=>$count) {
-			$key = preg_replace('~\b(\w)|.~', '$1', $key);
-			array_push($majorsData, compact("key","count"));
-		}
-		
-		return $majorsData;
-    }
     
 }

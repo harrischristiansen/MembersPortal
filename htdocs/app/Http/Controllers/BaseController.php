@@ -21,7 +21,7 @@ class BaseController extends Controller {
 	
 	/////////////////////////////// Home ///////////////////////////////
     
-	public function getIndex() {
+	public function getIndex(Request $request) {
 		return view('pages.home');
 	}
 	
@@ -33,6 +33,10 @@ class BaseController extends Controller {
 	
 	public function isAdmin($request) {
 		return $request->session()->get('authenticated_admin') == "true";
+	}
+	
+	public function isSuperAdmin($request) {
+		return $request->session()->get('authenticated_superAdmin') == "true";
 	}
 	
 	public function getAuthenticated($request) {

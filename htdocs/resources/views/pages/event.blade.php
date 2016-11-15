@@ -11,7 +11,7 @@
 		@if ($event->id != 0)
 		
 		@if (session()->get('authenticated_admin') == "true")
-			<a href="/event-graphs/{{ $event->id }}" class="pull-left marginR"><button type="button" class="btn btn-primary btn-sm">Graphs</button></a>
+			<a href="{{ action('ReportsController@getEvent', $event->id) }}" class="pull-left marginR"><button type="button" class="btn btn-primary btn-sm">Graphs</button></a>
 			@if (count($applications))
 			<a href="/applications/{{ $event->id }}" class="pull-left marginR"><button type="button" class="btn btn-primary btn-sm">{{ count($applications) }} {{ $requiresApplication ? "Applications" : "Registrations" }}</button></a>
 			@endif
