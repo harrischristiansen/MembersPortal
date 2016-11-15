@@ -87,7 +87,7 @@
 		</script>
 		@endif
 		<!-- Site JS -->
-		<script type="text/javascript" src="/js/membersportal.js?v=2"></script>
+		<script type="text/javascript" src="/js/membersportal.js?v=3"></script>
 		<!-- Page Specific JS -->
 		@yield('customJS')
     </body>

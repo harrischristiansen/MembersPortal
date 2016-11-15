@@ -18,7 +18,7 @@ $(document).ready(function() {
 var selectedID = -1;
 
 $(".membersautocomplete").autocomplete({
-	source: "/members-autocomplete/"+eventID,
+	source: "/autocomplete/members/"+eventID,
 	minLength: 3,
 	autoFocus: true,
 	select: function(event, ui) {
@@ -65,7 +65,7 @@ $("#memberPhone").change(function() {
 });
 
 $(".locationsautocomplete").autocomplete({
-	source: "/locations-autocomplete",
+	source: "/autocomplete/locations",
 	minLength: 2,
 	select: function( event, ui ) {
 		if(ui.item) {
@@ -75,7 +75,7 @@ $(".locationsautocomplete").autocomplete({
 });
 
 $(".citiesautocomplete").autocomplete({
-	source: "/cities-autocomplete",
+	source: "/autocomplete/cities",
 	minLength: 2
 });
 
