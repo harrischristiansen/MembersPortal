@@ -11,7 +11,7 @@
 	
 	<p>We hope you enjoyed attending {{ $event->name }} on {{ $event->dateMonthDay() }} and look forward to seeing you at a future Purdue Hackers event!</p>
 	
-	<p><b>To finish setting up your Purdue Hackers account (and set your password), click here: <a href="{{ action('PortalController@getReset', [$member->id, $member->reset_token()]) }}">{{ action('PortalController@getReset', [$member->id, $member->reset_token()]) }}</a></b></p>
+	<p><b>To finish setting up your Purdue Hackers account (and set your password), click here: <a href="{{ $member->reset_url() }}">{{ $member->reset_url() }}</a></b></p>
 	
 	<p>Also, be sure to join the Purdue Hackers Facebook group and "like" the Facebook page to stay connected with the rest of community and stay updated on all things Purdue Hackers:</p>
 	

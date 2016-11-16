@@ -171,7 +171,7 @@ class AuthController extends BaseController {
 	/////////////////////////////// Password Reset Call ///////////////////////////////
 	
 	public function getReset(Request $request, $memberID, $reset_token) {
-		// TODO: Get Member and append fields to view
+		// TODO: Get Member from MemberController and append fields to view
 		$member = Member::find($memberID);
 		
 		if(is_null($member)) {

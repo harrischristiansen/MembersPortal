@@ -125,17 +125,17 @@ class LocationController extends BaseController {
 		
 		if(is_null($locationRecord)) {
 			$request->session()->flash('msg', 'Error: Location Record not Found.');
-			return app('App\Http\Controllers\PortalController')->getMembers();
+			return app('App\Http\Controllers\MemberController')->getIndex();
 		}
 		if($request->session()->get('authenticated_member') != "true" && $locationRecord->member->id != $authenticated_id) {
 			$request->session()->flash('msg', 'Error: Location Record not Found.');
-			return app('App\Http\Controllers\PortalController')->getMembers();
+			return app('App\Http\Controllers\MemberController')->getIndex();
 		}
 		
 		$return_memberID = $locationRecord->member->id;
 		$locationRecord->delete();
 		
-		return redirect()->action('PortalController@getMember', [$return_memberID])->with('msg', 'Location Record Deleted!');
+		return redirect()->action('MemberController@getMember', [$return_memberID])->with('msg', 'Location Record Deleted!');
 	}
     
 }
