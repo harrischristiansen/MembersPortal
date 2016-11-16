@@ -12,5 +12,6 @@ Route::group(['middleware' => ['web']], function () {
     Route::controller('/reports', 'ReportsController');
     Route::controller('/credentials', 'CredentialController');
     Route::controller('/projects', 'ProjectController');
+    Route::controller('/locations', 'LocationController');
     Route::controller('/', 'PortalController');
 });

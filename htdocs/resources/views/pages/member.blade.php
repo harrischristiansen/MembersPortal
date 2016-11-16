@@ -143,13 +143,13 @@
 		</thead>
 		<tbody>
 		@forelse ($locations as $location)
-		    <tr onclick="location.href='{{ action('PortalController@getLocation', $location->location->id) }}';">
+		    <tr onclick="location.href='{{ action('LocationController@getLocation', $location->location->id) }}';">
 		    	<td>{{ $location->location->name }}</td>
 		    	<td>{{ $location->location->city }}</td>
 				<td>{{ $location->date_start }}</td>
 				<td>{{ $location->date_end }}
 					@if ($member->id == session()->get('member_id') || session()->get('authenticated_admin') == "true")
-					<a href="{{ action('PortalController@getLocationRecordDelete', $location->id) }}" class="btn btn-sm btn-danger pull-right">Remove</a>
+					<a href="{{ action('LocationController@getDelete', $location->id) }}" class="btn btn-sm btn-danger pull-right">Remove</a>
 					@endif
 				</td>
 		    </tr>
@@ -163,7 +163,7 @@
 		@endforelse
 		
 		@if ($member->id == session()->get('member_id') || session()->get('authenticated_admin') == "true")
-		<form method="post" action="{{ action('PortalController@postLocationRecordNew', $member->id) }}" class="panel-body validate">
+		<form method="post" action="{{ action('LocationController@postCreate', $member->id) }}" class="panel-body validate">
 			{!! csrf_field() !!}
 			<tr>
 				<td><input type="text" name="locationName" id="locationName" placeholder="Location Name" class="form-control locationsautocomplete" data-bvalidator="required" data-bvalidator-msg="Location Name Required."></td>

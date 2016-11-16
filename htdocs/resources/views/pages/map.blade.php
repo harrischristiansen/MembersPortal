@@ -45,7 +45,9 @@ Map -
 
 @section("content")
 <div class="section"><div class='section-container'>
-	<h3>{{ env('ORG_NAME') }} Around The Globe</h3>
+	<h3>{{ env('ORG_NAME') }} Around The Globe
+		<a href="{{ action('LocationController@getIndex') }}" class="pull-right"><button type="button" class="btn btn-primary btn-sm">List</button></a>
+	</h3>
 	<div class="panel panel-default">
 		<div id="map" style="height: 500px;">
 	</div>

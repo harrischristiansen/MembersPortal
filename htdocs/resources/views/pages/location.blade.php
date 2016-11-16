@@ -3,11 +3,16 @@
 @section("content")
 
 <div class="section"><div class='section-container'>
-	<h3>{{ $location->name }}</h3>
+	<h3>{{ $location->name }}
+		<a href="{{ action('LocationController@getIndex') }}" class="pull-left"><button type="button" class="btn btn-primary btn-sm"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> List of Locations</button></a>
+		@if (session()->get('authenticated_admin') == "true")
+		<a href="#" class="pull-right"><button type="button" class="btn btn-warning btn-sm">Merge</button></a>
+		@endif
+	</h3>
 	
 	<div class="panel panel-default">
 	@if (session()->get('authenticated_admin') == "true") {{-- Edit Location Information --}}
-		<form method="post" action="{{ action('PortalController@postLocation', $location->id) }}" class="panel-body validate">
+		<form method="post" action="{{ action('LocationController@postLocation', $location->id) }}" class="panel-body validate">
 			{!! csrf_field() !!}
 			<label for="locationName">Location Name</label>
 			<input type="text" name="locationName" id="locationName" placeholder="Location Name" value="{{ $location->name }}" class="form-control" data-bvalidator="required" data-bvalidator-msg="Please name is required.">
