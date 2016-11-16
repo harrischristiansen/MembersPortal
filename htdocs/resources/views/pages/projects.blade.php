@@ -10,13 +10,13 @@ Projects -
 		
 		@if(session()->get('authenticated_admin') == "true")
 			@if(isset($allProjects))
-			<a href="/projects" class="pull-left"><button type="button" class="btn btn-primary btn-sm">My Projects</button></a>
+			<a href="{{ action('ProjectController@getIndex') }}" class="pull-left marginR"><button type="button" class="btn btn-primary btn-sm">My Projects</button></a>
 			@else
-			<a href="/projects-all" class="pull-left marginR"><button type="button" class="btn btn-primary btn-sm">All Projects</button></a>
-			<a href="/credentials" class="pull-left marginR"><button type="button" class="btn btn-primary btn-sm">Credentials</button></a>
+			<a href="{{ action('ProjectController@getAll') }}" class="pull-left marginR"><button type="button" class="btn btn-primary btn-sm">All Projects</button></a>
 			@endif
+			<a href="{{ action('CredentialController@getIndex') }}" class="pull-left marginR"><button type="button" class="btn btn-primary btn-sm">Credentials</button></a>
 		@endif
-		<a href="/project-new" class="pull-right"><button type="button" class="btn btn-primary btn-sm">+ New Project</button></a>
+		<a href="{{ action('ProjectController@getCreate') }}" class="pull-right"><button type="button" class="btn btn-primary btn-sm">+ New Project</button></a>
 	</h3>
 	<div class="panel panel-default">
 		<table class="table table-bordered table-hover table-clickable panel-body sortableTable">
@@ -28,7 +28,7 @@ Projects -
 			</thead>
 			<tbody>
 			@foreach ($projects as $project)
-			    <tr onclick="location.href='{{ action('PortalController@getProject', $project->id) }}';">
+			    <tr onclick="location.href='{{ action('ProjectController@getProject', $project->id) }}';">
 			    	<td>{{ $project->name }}</td>
 			    	<td>{{ $project->members->implode("name",", ") }}</td>
 			    </tr>

@@ -19,7 +19,7 @@
 				@if (session()->get('authenticated_member') == "true")
 					<li><a href="{{ action('PortalController@getMember', session()->get('member_id')) }}">Profile</a></li>
 					<li><a href="{{ action('PortalController@getMembers') }}">Members</a></li>
-					<li><a href="{{ action('PortalController@getProjects') }}">Projects</a></li>
+					<li><a href="{{ action('ProjectController@getIndex') }}">Projects</a></li>
 				@endif
 				<li><a href="{{ action('PortalController@getEvents') }}">Events</a></li>
 				@if(session()->get('authenticated_member') == "true")
