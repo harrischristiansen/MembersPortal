@@ -48,7 +48,7 @@ class Member extends Model {
 	}
 	
 	public function apply_url($eventID) {
-		return action('PortalController@getApplyAuth', [$eventID, $this->id, $this->reset_token()]);
+		return action('EventController@getApply', [$eventID, $this->id, $this->reset_token()]);
 	}
 	
 	public function reset_token() {
@@ -57,6 +57,10 @@ class Member extends Model {
 	
 	public function reset_url() {
 		return action('AuthController@getReset', [$this->id, $this->reset_token()]);
+	}
+	
+	public function isAdmin() {
+		return ($this->admin == 1);
 	}
 	
 	public function picturePath() {

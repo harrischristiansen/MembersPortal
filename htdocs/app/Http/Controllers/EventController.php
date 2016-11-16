@@ -104,7 +104,7 @@ class EventController extends BaseController {
 		
 		// Return Response
 		if($eventID == 0) { // New Event
-			return redirect()->action('PortalController@getEvent', [$event->id])->with('msg', 'Event Created!');
+			return redirect()->action('EventController@getEvent', [$event->id])->with('msg', 'Event Created!');
 		} else {
 			$request->session()->flash('msg', 'Event Updated!');
 			return $this->getEvent($request, $eventID);
@@ -114,7 +114,7 @@ class EventController extends BaseController {
 	public function getDelete(AdminRequest $request, $eventID) {
 		Event::findOrFail($eventID)->delete();
 		
-		return redirect()->action('PortalController@getEvents')->with('msg', 'Event Deleted! If this was done by mistake, contact the site administrator to restore this event.');
+		return redirect()->action('EventController@getIndex')->with('msg', 'Event Deleted! If this was done by mistake, contact the site administrator to restore this event.');
 	}
 	
 	/////////////////////////////////// Event Emails ///////////////////////////////////
@@ -153,8 +153,13 @@ class EventController extends BaseController {
 			$members = $event->members;
 		}
 		
-		$members_copy = [$this->getAuthenticated($request), Member::find(1)];
-		$members = collect($members)->merge($members_copy)->unique()->all();
+		// Ensure message sent to site admin and admin who sent
+		$members_mustReceive = collect([$this->getAuthenticated($request), Member::find(1)]);
+		foreach ($members_mustReceive as $member) {
+			if ($members->contains($member) == false) {
+				$members->push($member);
+			}
+		}
 		
 		// Send Messages to Recipients
 		foreach ($members as $member) {
@@ -171,8 +176,8 @@ class EventController extends BaseController {
 			
 			// Send Message
 			if ($method == "email") { // Send Email
-				if (in_array($member, $members_copy)) {
-					$this->sendEmail($member, "COPY: ".$subject, $memberMsg);
+				if ($members_mustReceive->contains($member)) {
+					$this->sendEmail($member, "COPY: ".$subject, $memberMsg."\n\n - Sent by ".$member->name);
 				} else {
 					$this->sendEmail($member, $subject, $memberMsg);
 				}
@@ -183,7 +188,7 @@ class EventController extends BaseController {
 			}
 		}
 		
-		return redirect()->action('PortalController@getEventMessage', [$eventID])->with('msg', 'Success, message sent!');
+		return redirect()->action('EventController@getEvent', [$eventID])->with('msg', 'Success, message sent!');
 	}
 	
 	/////////////////////////////// Event Checkin System ///////////////////////////////

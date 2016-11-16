@@ -12,7 +12,7 @@ Message {{ $event->nameShort() }} -
 	</h3>
 	
 	<div class="panel panel-default">
-		<form method="post" action="/event-message/{{ $event->id }}" class="panel-body validate">
+		<form method="post" action="{{ action('EventController@postMessage', $event->id) }}" class="panel-body validate">
 			{!! csrf_field() !!}
 			<label for="method">Send Method:</label>
 			<select name="method" id="method" class="form-control" data-bvalidator="required">
