@@ -8,7 +8,6 @@ This Members Tracking Portal was originally developed for Purdue Hackers. Purdue
 
 ## Features
 
-- [ ] Break PortalController out into multiple controllers
 - [X] Members
 	- [X] Register, Login
 		- [ ] Keep url path through login

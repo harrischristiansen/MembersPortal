@@ -290,7 +290,7 @@ class EventController extends BaseController {
 			return $this->getIndex($request);
 		}
 		
-		$this->setAuthenticated($request, $memberID, $member->name);
+		$this->setAuthenticated($request, $member);
 		
 		return $this->getApply($request, $eventID);
 	}

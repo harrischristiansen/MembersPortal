@@ -54,11 +54,12 @@ class BaseController extends Controller {
 		return null;
 	}
 	
-	public function setAuthenticated(Request $request, $memberID, $memberName) {
+	public function setAuthenticated(Request $request, $member) {
 		$request->session()->put('authenticated_member', 'true');
-		$request->session()->put('member_id', $memberID);
-		$request->session()->put('member_name', $memberName);
-		$request->session()->flash('msg', "Welcome $memberName!");
+		$request->session()->put('member_id', $member->id);
+		$request->session()->put('member_name', $member->name);
+		$request->session()->put('member_username', $member->username);
+		$request->session()->flash('msg', "Welcome ".$member->name."!");
 	}
 	
 	/////////////////////////////// Email ///////////////////////////////

@@ -11,16 +11,21 @@ class EditMemberRequest extends Request {
 			return true;
 		}
 		
-		$memberID = str_replace(["member","/"],["",""],request()->path());
+		$requestID = str_replace(["member","members","/"],["","",""],request()->path());
 		$reset_token = request()->input("reset_token");
 		
 		if(session()->get('authenticated_member') == "true") { // Logged In, Only Allow User To Modify Self
 			$authenticated_id = session()->get('member_id');
-			if($authenticated_id == $memberID) {
+			$authenticated_username = session()->get('member_username');
+			if($requestID == $authenticated_id || $requestID == $authenticated_username ) {
 				return true;
 			}
 		} else { // Logged Out, Require Auth Token
-			$member = Member::find($memberID);
+			$member = Member::find($requestID);
+			if ($member == Null) {
+				$member = Member::where("username",$requestID)->firstOrFail();
+			}
+			
 			if($reset_token == $member->reset_token()) {
 				return true;
 			}
@@ -30,6 +35,7 @@ class EditMemberRequest extends Request {
 	public function rules() {
 		return [
 			'memberName' => 'required|max:255',
+			'username' => 'alpha_num|max:255',
 			'email' => 'required|email',
 			'email_public' => 'email',
 			'confirmPassword' => 'same:password',

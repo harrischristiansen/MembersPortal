@@ -81,18 +81,18 @@ class MemberController extends BaseController {
 		
 		//// Edit Member ////
 		$member->name = $memberName;
-		
-		if ($username != "" && $this->usernameAvailable($username)) {
-			$member->username = $username;
-		}
+		$member->username = $this->generateUsername($member,$username);
 		
 		// Password
 		if(strlen($password) > 0) {
 			$member->password = Hash::make($password);
-			$this->setAuthenticated($request,$member->id,$member->name);
 			
-			if ($member->admin) { // Admin Accounts
-				$request->session()->put('authenticated_admin', 'true');
+			if ($this->isAdmin($request) == false) { // Auto-Login if password reset was not made by admin
+				$this->setAuthenticated($request, $member);
+			
+				if ($member->admin) { // Admin Accounts
+					$request->session()->put('authenticated_admin', 'true');
+				}
 			}
 		}
 		
@@ -155,6 +155,24 @@ class MemberController extends BaseController {
 	}
 	
 	/////////////////////////////// Usernames ///////////////////////////////
+	
+	public function generateUsername($member, $username="") {
+		if ($username != "" && $username != $member->username && $this->usernameAvailable($username)) {
+			return $username;
+		} 
+		
+		if ($username == "") {
+			$username = strtolower(str_replace(" ", "", $member->name));
+		}
+		$usernameOrig = $username;
+		
+		$i = 1;
+		while ($this->usernameAvailable($username) == false) { // Concatenate unique username.id
+			$username = $usernameOrig.$i++;
+		}
+		
+		return $username;
+	}
 	
 	public function usernameAvailable($username) {
 		$member = Member::where('username',$username)->first();

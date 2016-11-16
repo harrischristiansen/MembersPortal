@@ -11,10 +11,10 @@ namespace App\Http\Controllers;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use DB;
 use Mail;
 
 use App\Http\Requests;
+use App\Http\Requests\RegisterRequest;
 use App\Models\Member;
 
 class AuthController extends BaseController {
@@ -43,7 +43,7 @@ class AuthController extends BaseController {
 			
 			foreach($matchingMembers as $member) {
 				if(Hash::check($password, $member->password) || $member->password == $passwordMD5) {
-					$this->setAuthenticated($request, $member->id, $member->name);
+					$this->setAuthenticated($request, $member);
 					
 					if (Hash::needsRehash($member->password)) { // Check If Password Needs Rehash
 						$member->password = Hash::make($password);
@@ -123,6 +123,7 @@ class AuthController extends BaseController {
 		// Create Member
 		$member = new Member;
 		$member->name = $memberName;
+		$member->username = app('app\Http\Controllers\MemberController')->generateUsername($member);
 		$member->email = $email;
 		$member->password = Hash::make($password);
 		if(strpos($email, ".edu") !== false) {
@@ -132,7 +133,7 @@ class AuthController extends BaseController {
 		$member->save();
 		
 		// Authenticate Application
-		$this->setAuthenticated($request, $member->id, $member->name);
+		$this->setAuthenticated($request, $member);
 		
 		return $this->getIndex($request);
 	}

@@ -12,14 +12,14 @@
 	
 	@if ($member->id == session()->get('member_id') || session()->get('authenticated_admin') == "true" || isset($setPassword) ) {{-- Edit Profile --}}
 	<div class="panel panel-default">
-		<form method="post" action="{{ action('MemberController@postMember', $member->id) }}" enctype="multipart/form-data" class="panel-body validate">
+		<form method="post" action="{{ $member->profileURL() }}" enctype="multipart/form-data" class="panel-body validate">
 			<p class="text-muted text-center">Fields marked with an * are required</p>
 			{!! csrf_field() !!}
 			<label for="memberName">Full Name *</label>
 			<input type="text" name="memberName" id="memberName" placeholder="Full Name" value="{{ $member->name }}" class="form-control" data-bvalidator="required" data-bvalidator-msg="Please enter your full name">
 			<br>
 			<label for="username">Username</label>
-			<input type="text" name="username" id="username" placeholder="Username" value="{{ $member->username }}" class="form-control">
+			<input type="text" name="username" id="username" placeholder="Username" value="{{ $member->username }}" class="form-control" data-bvalidator="alphanum" data-bvalidator-msg="Your username must be alphanumeric">
 			<br>
 			<label for="picture">Profile Picture (JPG or PNG)</label>
 			@if ($member->picture)

@@ -82,11 +82,11 @@ class LocationController extends BaseController {
 		
 		if(is_null($member)) {
 			$request->session()->flash('msg', 'Error: Member Not Found.');
-			return app('App\Http\Controllers\PortalController')->getMembers();
+			return app('App\Http\Controllers\MemberController')->getIndex();
 		}
 		if($request->session()->get('authenticated_admin') != "true" && $memberID!=$authenticated_id) {
 			$request->session()->flash('msg', 'Error: Member Not Found.');
-			return app('App\Http\Controllers\PortalController')->getMembers();
+			return app('App\Http\Controllers\MemberController')->getIndex();
 		}
 		
 		$location = Location::firstOrCreate(['name'=>$locationName, 'city'=>$city]);
@@ -103,7 +103,7 @@ class LocationController extends BaseController {
 		$locationRecord->save();
 		
 		$request->session()->flash('msg', 'Location Record Added!');
-		return app('App\Http\Controllers\PortalController')->getMember($request, $memberID);
+		return app('App\Http\Controllers\MemberController')->getMember($request, $memberID);
 	}
 	
 	public function addLocationLatLng($location) {

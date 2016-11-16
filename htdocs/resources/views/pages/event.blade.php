@@ -112,7 +112,7 @@
 			</thead>
 			<tbody>
 			@forelse ($members as $member)
-			    <tr onclick="location.href='{{ action('MemberController@getMember', $member->id) }}';">
+			    <tr onclick="location.href='{{ $member->profileURL() }}';">
 			    	<td>{{ $member->name }}</td>
 			    	<td>{{ $member->graduation_year }}</td>
 					<td>{{ count($member->events) }}</td>

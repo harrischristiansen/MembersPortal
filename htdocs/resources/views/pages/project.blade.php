@@ -34,7 +34,7 @@
 			<tbody>
 			@foreach ($members as $member)
 			    <tr>
-			    	<td onclick="location.href='{{ action('MemberController@getMember', $member->id) }}';">{{ $member->name }}</td>
+			    	<td onclick="location.href='{{ $member->profileURL() }}';">{{ $member->name }}</td>
 			    	<td><a href="{{ action('ProjectController@getMemberRemove', [$project->id, $member->id]) }}" class="btn btn-sm btn-danger pull-right">{{ $member->id==session()->get('member_id') ? "Leave" : "Remove" }}</a></td>
 			    </tr>
 			@endforeach

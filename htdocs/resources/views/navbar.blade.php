@@ -17,7 +17,7 @@
 		<div class="collapse navbar-collapse" id="navbar">
 			<ul class="nav navbar-nav navbar-right">
 				@if (session()->get('authenticated_member') == "true")
-					<li><a href="{{ action('MemberController@getMember', session()->get('member_id')) }}">Profile</a></li>
+					<li><a href="{{ action('MemberController@getMember', session()->get('member_username')) }}">Profile</a></li>
 					<li><a href="{{ action('MemberController@getIndex') }}">Members</a></li>
 					<li><a href="{{ action('ProjectController@getIndex') }}">Projects</a></li>
 				@endif

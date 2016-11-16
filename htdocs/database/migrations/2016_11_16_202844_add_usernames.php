@@ -15,10 +15,7 @@ class AddUsernames extends Migration {
         $members = Member::where('username',"")->get();
         
         foreach ($members as $member) {
-	        $member->username = strtolower(str_replace(" ", "", $member->name));
-	        if (app('app\Http\Controllers\MemberController')->usernameAvailable($member->username) == false) {
-		        $member->username = $member->username."1";
-	        }
+	        $member->username = app('app\Http\Controllers\MemberController')->generateUsername($member);
 	        $member->save();
         }
             

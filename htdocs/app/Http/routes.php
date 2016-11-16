@@ -16,7 +16,8 @@ Route::group(['middleware' => ['web']], function () {
     Route::controller('/projects', 'ProjectController');
     Route::controller('/reports', 'ReportsController');
     Route::get('/anvil-wifi', 'PortalController@getAnvilWifi');
-    Route::get('/hackathons', 'MemberController@getHackathons');
+    Route::get('/hackathons', 'PortalController@getHackathons');
     Route::get('/{username}', 'MemberController@getMember');
+    Route::post('/{username}', 'MemberController@postMember');
     Route::get('/', 'PortalController@getIndex');
 });
