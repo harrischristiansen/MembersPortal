@@ -32,9 +32,13 @@ class MemberController extends BaseController {
 	public function getMember(Request $request, $memberID) {
 		$member = Member::find($memberID);
 		
-		if(is_null($member)) {
-			$request->session()->flash('msg', 'Error: Member Not Found.');
-			return $this->getMembers();
+		if (is_null($member)) {
+			$member = Member::where('username', $memberID)->first();
+		}
+		
+		if (is_null($member)) {
+			$request->session()->flash('msg', 'Error: Page Not Found');
+			return parent::getIndex($request);
 		}
 		
 		$locations = $member->locations;
@@ -50,6 +54,7 @@ class MemberController extends BaseController {
 		$member = Member::find($memberID);
 		
 		$memberName = $request->input('memberName');
+		$username = $request->input('username');
 		$password = $request->input('password');
 		$email = $request->input('email');
 		$phone = $request->input('phone');
@@ -76,6 +81,10 @@ class MemberController extends BaseController {
 		
 		//// Edit Member ////
 		$member->name = $memberName;
+		
+		if ($username != "" && $this->usernameAvailable($username)) {
+			$member->username = $username;
+		}
 		
 		// Password
 		if(strlen($password) > 0) {
@@ -143,6 +152,20 @@ class MemberController extends BaseController {
 		// Return Response
 		$request->session()->flash('msg', 'Profile Saved!');
 		return $this->getMember($request, $memberID);
+	}
+	
+	/////////////////////////////// Usernames ///////////////////////////////
+	
+	public function usernameAvailable($username) {
+		$member = Member::where('username',$username)->first();
+		
+		// TODO: Verify URL not reserved
+		
+		if ($member) {
+			return false;
+		}
+		
+		return true;
 	}
     
 }

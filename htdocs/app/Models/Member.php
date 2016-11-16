@@ -18,6 +18,10 @@ class Member extends Model {
 		'authenticated_at',
 		'setupEmailSent',
 	];
+	
+	public function profileURL() {
+		return action('MemberController@getMember', $this->username);
+	}
 
 	public function major() {
 		return $this->hasOne('App\Models\Major','id','major_id');

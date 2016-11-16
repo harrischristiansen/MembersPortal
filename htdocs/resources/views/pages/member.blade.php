@@ -18,6 +18,9 @@
 			<label for="memberName">Full Name *</label>
 			<input type="text" name="memberName" id="memberName" placeholder="Full Name" value="{{ $member->name }}" class="form-control" data-bvalidator="required" data-bvalidator-msg="Please enter your full name">
 			<br>
+			<label for="username">Username</label>
+			<input type="text" name="username" id="username" placeholder="Username" value="{{ $member->username }}" class="form-control">
+			<br>
 			<label for="picture">Profile Picture (JPG or PNG)</label>
 			@if ($member->picture)
 			<a href="{{ $member->picturePath() }}" class="form-control">{{ $member->picture }}</a>

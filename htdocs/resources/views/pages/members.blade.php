@@ -28,7 +28,7 @@ Members -
 			</thead>
 			<tbody>
 			@foreach ($members as $member)
-			    <tr onclick="location.href='{{ action('MemberController@getMember', $member->id) }}';">
+			    <tr onclick="location.href='{{ $member->profileURL() }}';">
 				    @if(session()->get('authenticated_admin') == "true")
 				    <td class="member-icon">
 					    @if($member->picture)
