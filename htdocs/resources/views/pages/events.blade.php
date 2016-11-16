@@ -2,17 +2,11 @@
 
 @section("content")
 <div class="section"><div class='section-container'>
-	<h3>
-		@if ($checkin == true)
-		Checkin
-		@else
-		Events
-		@endif
-		
+	<h3>Events
 		<a href="{{ action('PortalController@getHackathons') }}" class="pull-left"><button type="button" class="btn btn-info btn-sm marginR">Upcoming Hackathons</button></a>
 		@if(session()->get('authenticated_admin') == "true")
 		<a href="{{ action('PortalController@getAnvilWifi') }}" class="pull-left"><button type="button" class="btn btn-info btn-sm">Anvil Wifi</button></a>
-		<a href="{{ action('PortalController@getEventNew') }}" class="pull-right"><button type="button" class="btn btn-primary btn-sm">+ Add Event</button></a>
+		<a href="{{ action('EventController@getCreate') }}" class="pull-right"><button type="button" class="btn btn-primary btn-sm">+ Add Event</button></a>
 		@endif
 	</h3>
 	<div class="panel panel-default">
@@ -27,11 +21,7 @@
 			</thead>
 			<tbody>
 			@foreach ($events as $event)
-				@if ($checkin == true)
-			    <tr onclick="location.href='{{ action('PortalController@getCheckin', $event->id) }}';">
-				@else
-			    <tr onclick="location.href='{{ action('PortalController@getEvent', $event->id) }}';">
-				@endif
+			    <tr onclick="location.href='{{ action('EventController@getEvent', $event->id) }}';">
 			    	<td>{{ $event->name }}</td>
 					<td>{{ $event->event_time->format('M j, Y') }}</td>
 			    	<td>{{ $event->location }}</td>

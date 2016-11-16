@@ -8,6 +8,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Twilio\Rest\Client;
 use DB;
@@ -59,19 +60,8 @@ class BaseController extends Controller {
 		$request->session()->put('member_name', $memberName);
 		$request->session()->flash('msg', "Welcome $memberName!");
 	}
-
-	/////////////////////////////// Helper Functions ///////////////////////////////
 	
-	public static function generateRandomInt() {
-        srand();
-        $characters = '0123456789';
-        $charactersLength = strlen($characters);
-        $randomString = '';
-        for ($i = 0; $i < 9; $i++) {
-            $randomString .= $characters[rand(0, $charactersLength - 1)];
-        }
-        return $randomString;
-    }
+	/////////////////////////////// Email ///////////////////////////////
 	
 	public function sendEmail($member, $subject, $msg) {
 		if (true) {
@@ -82,6 +72,18 @@ class BaseController extends Controller {
 			});
 		}
 	}
+	
+	public function emailAccountCreated($member, $event) {
+		Mail::send('emails.accountCreated', ['member'=>$member, 'event'=>$event], function ($message) use ($member) {
+			$message->from('purduehackers@gmail.com', 'Purdue Hackers');
+			$message->to($member->email);
+			$message->subject("Welcome ".$member->name." to Purdue Hackers!");
+		});
+		$member->setupEmailSent = Carbon::now();
+		$member->save();
+	}
+	
+	/////////////////////////////// Twilio ///////////////////////////////
     
     static $twilioClient;
     public  function TwilioClient() {
@@ -102,5 +104,18 @@ class BaseController extends Controller {
 			}
 		}
 	}
+
+	/////////////////////////////// Generate Random Int ///////////////////////////////
+	
+	public static function generateRandomInt() {
+        srand();
+        $characters = '0123456789';
+        $charactersLength = strlen($characters);
+        $randomString = '';
+        for ($i = 0; $i < 9; $i++) {
+            $randomString .= $characters[rand(0, $charactersLength - 1)];
+        }
+        return $randomString;
+    }
     
 }

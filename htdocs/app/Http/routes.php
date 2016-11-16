@@ -9,9 +9,11 @@
 Route::group(['middleware' => ['web']], function () {
     Route::controller('/auth', 'AuthController');
     Route::controller('/autocomplete', 'AutocompleteController');
-    Route::controller('/reports', 'ReportsController');
     Route::controller('/credentials', 'CredentialController');
-    Route::controller('/projects', 'ProjectController');
+    Route::controller('/events', 'EventController');
     Route::controller('/locations', 'LocationController');
+    Route::controller('/members', 'MemberController');
+    Route::controller('/projects', 'ProjectController');
+    Route::controller('/reports', 'ReportsController');
     Route::controller('/', 'PortalController');
 });

@@ -44,7 +44,7 @@
 		</thead>
 		<tbody>
 		@forelse ($members as $member)
-		    <tr onclick="location.href='{{ action('PortalController@getMember', $member->member->id) }}';">
+		    <tr onclick="location.href='{{ action('MemberController@getMember', $member->member->id) }}';">
 		    	<td>{{ $member->member->name }}</td>
 				<td>{{ $member->date_start }}</td>
 				<td>{{ $member->date_end }}</td>

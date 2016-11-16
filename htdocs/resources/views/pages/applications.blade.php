@@ -7,7 +7,7 @@ Applications - {{ $event->nameShort() }} -
 @section("content")
 <div class="section"><div class='section-container'>
 	<h3>{{ $event->nameShort() }} - Applications
-		<a href="{{ action('PortalController@getEvent', $event->id) }}" class="pull-left"><button type="button" class="btn btn-primary btn-sm"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> Event</button></a>
+		<a href="{{ action('EventController@getEvent', $event->id) }}" class="pull-left"><button type="button" class="btn btn-primary btn-sm"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> Event</button></a>
 		<button type="button" class="btn btn-primary btn-sm pull-right">{{ count($applications) }} applications</button>
 	</h3>
 	<div class="panel panel-default">
@@ -22,7 +22,7 @@ Applications - {{ $event->nameShort() }} -
 			</thead>
 			<tbody>
 			@foreach ($applications as $application)
-			    <tr onclick="location.href='{{ action('PortalController@getMember', $application->member->id) }}';">
+			    <tr onclick="location.href='{{ action('MemberController@getMember', $application->member->id) }}';">
 			    	<td>{{ $application->member->name }}</td>
 					<td>{{ $application->member->graduation_year }}</td>
 			    	<td>{{ $application->created_at->format('M j, Y') }}</td>

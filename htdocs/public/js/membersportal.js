@@ -86,7 +86,7 @@ function checkinMember() {
 	
 	selectedName = $("#memberName").val();
 	$.ajax({
-		url: '/checkin-member',
+		url: '/events/checkin',
 		type: 'post',
 		data: {
 			eventID:eventID,

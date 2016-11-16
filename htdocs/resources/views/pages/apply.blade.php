@@ -9,7 +9,7 @@ Sign Up - {{ $event->nameShort() }} -
 <div class="section"><div class='section-container'>
 	<h3>Sign Up: {{ $event->nameShort() }}</h3>
 	<div class="panel panel-default">
-		<form method="post" action="{{ action('PortalController@getApply', $event->id) }}" class="panel-body validate">
+		<form method="post" action="{{ action('EventController@postApply', $event->id) }}" class="panel-body validate">
 			{!! csrf_field() !!}
 			<label for="major">Major</label>
 			<select name="major" id="major" class="form-control" data-bvalidator="required">

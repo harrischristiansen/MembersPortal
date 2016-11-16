@@ -12,7 +12,7 @@
 	
 	@if ($member->id == session()->get('member_id') || session()->get('authenticated_admin') == "true" || isset($setPassword) ) {{-- Edit Profile --}}
 	<div class="panel panel-default">
-		<form method="post" action="{{ action('PortalController@postMember', $member->id) }}" enctype="multipart/form-data" class="panel-body validate">
+		<form method="post" action="{{ action('MemberController@postMember', $member->id) }}" enctype="multipart/form-data" class="panel-body validate">
 			<p class="text-muted text-center">Fields marked with an * are required</p>
 			{!! csrf_field() !!}
 			<label for="memberName">Full Name *</label>
@@ -194,7 +194,7 @@
 		</thead>
 		<tbody>
 		@forelse ($events as $event)
-		    <tr onclick="location.href='{{ action('PortalController@getEvent', $event->id) }}';">
+		    <tr onclick="location.href='{{ action('EventController@getEvent', $event->id) }}';">
 		    	<td>{{ $event->name }}</td>
 				<td>{{ $event->dateFriendly() }}</td>
 		    </tr>

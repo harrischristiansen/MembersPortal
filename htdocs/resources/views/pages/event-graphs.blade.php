@@ -8,7 +8,7 @@ Graphs - {{ $event->nameShort() }} -
 
 <div class="section"><div class='section-container'>
 	<h3>{{ $event->nameShort() }} Graphs
-		<a href="{{ action('PortalController@getEvent', $event->id) }}" class="pull-left"><button type="button" class="btn btn-primary btn-sm"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> Event</button></a>
+		<a href="{{ action('EventController@getEvent', $event->id) }}" class="pull-left"><button type="button" class="btn btn-primary btn-sm"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> Event</button></a>
 	</h3>
 	
 	<div class="panel panel-default">
