@@ -39,7 +39,11 @@ class PortalController extends BaseController {
 		return view('pages.home');
 	}
 	
-	/////////////////////////////// Resource Pages ///////////////////////////////
+	/////////////////////////////// Misc Pages ///////////////////////////////
+    
+    public function getHackathons() {
+		return view('pages.hackathons');
+	}
     
     public function getAnvilWifi() {
 		return view('pages.anvilWifi');
