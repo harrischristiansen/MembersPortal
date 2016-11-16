@@ -17,7 +17,7 @@ Map -
 		
 		// Create Markers
 		var markers = [];
-		$.getJSON("/map-data", function(mapData) {
+		$.getJSON("{{ action('PortalController@getMapData') }}", function(mapData) {
 			$.each(mapData, function(key, data) {
 				var latLng = new google.maps.LatLng(data.loc_lat, data.loc_lng);
 				var infowindow = new google.maps.InfoWindow({ content: "<h4>"+data.name+'</h4><p><a href="/location/'+data.id+'">'+data.members+" "+(data.members==1 ? "member" : "members")+"</a></p>" });

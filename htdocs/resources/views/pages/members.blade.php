@@ -9,7 +9,7 @@ Members -
 	<h3>Members
 		@if(session()->get('authenticated_admin') == "true")
 		<a href="{{ action('ReportsController@getMembers') }}" class="pull-left"><button type="button" class="btn btn-primary btn-sm marginR">Graphs</button></a>
-		<a href="/map" class="pull-left"><button type="button" class="btn btn-primary btn-sm">Map</button></a>
+		<a href="{{ action('PortalController@getMap') }}" class="pull-left"><button type="button" class="btn btn-primary btn-sm">Map</button></a>
 		<button type="button" class="btn btn-primary btn-sm pull-right">{{ count($members) }} members</button>
 		@endif
 	</h3>
@@ -28,7 +28,7 @@ Members -
 			</thead>
 			<tbody>
 			@foreach ($members as $member)
-			    <tr onclick="location.href='{{ URL::to('/member', $member->id) }}';">
+			    <tr onclick="location.href='{{ action('PortalController@getMember', $member->id) }}';">
 				    @if(session()->get('authenticated_admin') == "true")
 				    <td class="member-icon">
 					    @if($member->picture)

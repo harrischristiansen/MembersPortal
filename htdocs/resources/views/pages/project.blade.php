@@ -9,7 +9,7 @@
 <div class="section"><div class='section-container'>
 	<h3>{{ $project->name ? "Project: ".$project->name : "Create Project" }}</h3>
 	<div class="panel panel-default">
-		<form method="post" action="/project/{{ $project->id }}" class="panel-body validate">
+		<form method="post" action="{{ action('PortalController@postProject', $project->id) }}" class="panel-body validate">
 			{!! csrf_field() !!}
 			<label for="name">Project Name</label>
 			<input type="text" name="name" id="name" placeholder="Project Name" class="form-control" data-bvalidator="required" value="{{ $project->name }}">
@@ -34,12 +34,12 @@
 			<tbody>
 			@foreach ($members as $member)
 			    <tr>
-			    	<td onclick="location.href='{{ URL::to('/member', $member->id) }}';">{{ $member->name }}</td>
-			    	<td><a href="/project-remove-member/{{ $project->id }}/{{ $member->id }}" class="btn btn-sm btn-danger pull-right">{{ $member->id==session()->get('member_id') ? "Leave" : "Remove" }}</a></td>
+			    	<td onclick="location.href='{{ action('PortalController@getMember', $member->id) }}';">{{ $member->name }}</td>
+			    	<td><a href="{{ action('PortalController@getProjectRemoveMember', [$project->id, $member->id]) }}" class="btn btn-sm btn-danger pull-right">{{ $member->id==session()->get('member_id') ? "Leave" : "Remove" }}</a></td>
 			    </tr>
 			@endforeach
 				<tr><td>
-					<form method="post" action="/project-add-member/{{ $project->id }}">
+					<form method="post" action="{{ action('PortalController@postProjectAddMember', $project->id) }}">
 						{!! csrf_field() !!}
 						<div class="input-group">
 							<span class="input-group-addon" id="memberTitle">Add Team Member: </span>
@@ -57,7 +57,7 @@
 	@endif
 	
 	@if(count($members))
-	<a href="/project-delete/{{ $project->id }}" class="pull-right"><button type="button" class="btn btn-danger btn-sm">Delete Project</button></a>
+	<a href="{{ action('PortalController@getProjectDelete', $project->id) }}" class="pull-right"><button type="button" class="btn btn-danger btn-sm">Delete Project</button></a>
 	@endif
 </div></div>
 

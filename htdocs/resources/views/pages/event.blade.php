@@ -13,21 +13,21 @@
 		@if (session()->get('authenticated_admin') == "true")
 			<a href="{{ action('ReportsController@getEvent', $event->id) }}" class="pull-left marginR"><button type="button" class="btn btn-primary btn-sm">Graphs</button></a>
 			@if (count($applications))
-			<a href="/applications/{{ $event->id }}" class="pull-left marginR"><button type="button" class="btn btn-primary btn-sm">{{ count($applications) }} {{ $requiresApplication ? "Applications" : "Registrations" }}</button></a>
+			<a href="{{ action('PortalController@getApplications', $event->id) }}" class="pull-left marginR"><button type="button" class="btn btn-primary btn-sm">{{ count($applications) }} {{ $requiresApplication ? "Applications" : "Registrations" }}</button></a>
 			@endif
-			<a href="/checkin/{{ $event->id }}" class="pull-right"><button type="button" class="btn btn-primary btn-sm">Checkin</button></a>
-			<a href="/event-message/{{ $event->id }}" class="pull-right marginR"><button type="button" class="btn btn-primary btn-sm">Send Message</button></a>
+			<a href="{{ action('PortalController@getCheckin', $event->id) }}" class="pull-right"><button type="button" class="btn btn-primary btn-sm">Checkin</button></a>
+			<a href="{{ action('PortalController@getEventMessage', $event->id) }}" class="pull-right marginR"><button type="button" class="btn btn-primary btn-sm">Send Message</button></a>
 		@elseif ($requiresApplication)
 			@if ($hasRegistered)
 			<button type="button" class="btn btn-primary btn-sm pull-right">Registered</button>
 			@else
-			<a href="/apply/{{ $event->id }}" class="pull-right"><button type="button" class="btn btn-primary btn-sm">Sign Up</button></a>
+			<a href="{{ action('PortalController@getApply', $event->id) }}" class="pull-right"><button type="button" class="btn btn-primary btn-sm">Sign Up</button></a>
 			@endif
 		@elseif (session()->get('authenticated_member'))
 			@if ($hasRegistered)
 			<button type="button" class="btn btn-primary btn-sm pull-right">Registered</button>
 			@else
-			<a href="/register/{{ $event->id }}" class="pull-right"><button type="button" class="btn btn-primary btn-sm">Register</button></a>
+			<a href="{{ action('PortalController@getRegister', $event->id) }}" class="pull-right"><button type="button" class="btn btn-primary btn-sm">Register</button></a>
 			@endif
 		@endif
 		
@@ -36,7 +36,7 @@
 	
 	@if (session()->get('authenticated_admin') == "true") {{-- Edit Event --}}
 	<div class="panel panel-default">
-		<form method="post" action="/event/{{ $event->id }}" class="panel-body validate">
+		<form method="post" action="{{ action('PortalController@postEvent', $event->id) }}" class="panel-body validate">
 			{!! csrf_field() !!}
 			<label for="privateEvent" class="text-right">Private Event ?</label>
 			<div class="input-group">
@@ -112,7 +112,7 @@
 			</thead>
 			<tbody>
 			@forelse ($members as $member)
-			    <tr onclick="location.href='{{ URL::to('/member', $member->id) }}';">
+			    <tr onclick="location.href='{{ action('PortalController@getMember', $member->id) }}';">
 			    	<td>{{ $member->name }}</td>
 			    	<td>{{ $member->graduation_year }}</td>
 					<td>{{ count($member->events) }}</td>
@@ -134,10 +134,10 @@
 	@endif
 	
 	@if(session()->get('authenticated_admin') == "true" && $event->id != 0)
-	<a href="/event-delete/{{ $event->id }}" class="pull-right"><button type="button" class="btn btn-danger btn-sm">Delete Event</button></a>
+	<a href="{{ action('PortalController@getEventDelete', $event->id) }}" class="pull-right marginR"><button type="button" class="btn btn-danger btn-sm">Delete Event</button></a>
 	@endif
 	@if (session()->get('authenticated_member') && $hasRegistered)
-	<a href="/unregister/{{ $event->id }}" class="pull-right"><button type="button" class="btn btn-danger btn-sm">Unregister for event</button></a>
+	<a href="{{ action('PortalController@getUnregister', $event->id) }}" class="pull-right"><button type="button" class="btn btn-danger btn-sm">Unregister for {{ $event->nameShort() }}</button></a>
 	@endif
 </div></div>
 

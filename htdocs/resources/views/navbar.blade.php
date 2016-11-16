@@ -17,11 +17,11 @@
 		<div class="collapse navbar-collapse" id="navbar">
 			<ul class="nav navbar-nav navbar-right">
 				@if (session()->get('authenticated_member') == "true")
-					<li><a href="/member/{{ session()->get('member_id') }}">Profile</a></li>
-					<li><a href="/members">Members</a></li>
-					<li><a href="/projects">Projects</a></li>
+					<li><a href="{{ action('PortalController@getMember', session()->get('member_id')) }}">Profile</a></li>
+					<li><a href="{{ action('PortalController@getMembers') }}">Members</a></li>
+					<li><a href="{{ action('PortalController@getProjects') }}">Projects</a></li>
 				@endif
-				<li><a href="/events">Events</a></li>
+				<li><a href="{{ action('PortalController@getEvents') }}">Events</a></li>
 				@if(session()->get('authenticated_member') == "true")
 					<li><a href="{{ action('AuthController@getLogout') }}">Logout</a></li>
 				@else

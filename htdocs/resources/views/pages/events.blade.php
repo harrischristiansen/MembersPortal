@@ -28,9 +28,9 @@
 			<tbody>
 			@foreach ($events as $event)
 				@if ($checkin == true)
-			    <tr onclick="location.href='{{ URL::to('/checkin', $event->id) }}';">
+			    <tr onclick="location.href='{{ action('PortalController@getCheckin', $event->id) }}';">
 				@else
-			    <tr onclick="location.href='{{ URL::to('/event', $event->id) }}';">
+			    <tr onclick="location.href='{{ action('PortalController@getEvent', $event->id) }}';">
 				@endif
 			    	<td>{{ $event->name }}</td>
 					<td>{{ $event->event_time->format('M j, Y') }}</td>

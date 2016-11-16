@@ -8,16 +8,15 @@ Checkin - {{ $event->nameShort() }} -
 
 <div class="section"><div class='section-container'>
 	<h3>Checkin - {{ $event->nameShort() }}
-		<a href="/event/{{ $event->id }}" class="pull-left"><button type="button" class="btn btn-primary btn-sm marginR"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> Event</button></a>
+		<a href="{{ action('PortalController@getEvent', $event->id) }}" class="pull-left"><button type="button" class="btn btn-primary btn-sm marginR"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> Event</button></a>
 		@if (isset($checkinPhone))
-		<a href="/checkin/{{ $event->id }}" class="pull-right"><button type="button" class="btn btn-primary btn-sm">Don't Include Phone #</button></a>
+		<a href="{{ action('PortalController@getCheckin', $event->id) }}" class="pull-right"><button type="button" class="btn btn-primary btn-sm">Don't Include Phone #</button></a>
 		@else
-		<a href="/checkin-phone/{{ $event->id }}" class="pull-right"><button type="button" class="btn btn-primary btn-sm">Include Phone #</button></a>
+		<a href="{{ action('PortalController@getCheckinPhone', $event->id) }}" class="pull-right"><button type="button" class="btn btn-primary btn-sm">Include Phone #</button></a>
 		@endif
 	</h3>
 	<div class="panel panel-default">
 		<div id="checkinForm" class="panel-body validate" autocomplete="off">
-			{{ csrf_field() }}
 			<div class="input-group">
 				<span class="input-group-addon" id="memberNameTitle">Name: </span>
 				<input type="text" id="memberName" name="memberName" class="form-control membersautocomplete" placeholder="Member Name" autocomplete="off" data-bvalidator="required" data-bvalidator-msg="Please enter your full name">

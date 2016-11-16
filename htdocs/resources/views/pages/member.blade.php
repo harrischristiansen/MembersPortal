@@ -12,7 +12,7 @@
 	
 	@if ($member->id == session()->get('member_id') || session()->get('authenticated_admin') == "true" || isset($setPassword) ) {{-- Edit Profile --}}
 	<div class="panel panel-default">
-		<form method="post" action="/member/{{ $member->id }}" enctype="multipart/form-data" class="panel-body validate">
+		<form method="post" action="{{ action('PortalController@postMember', $member->id) }}" enctype="multipart/form-data" class="panel-body validate">
 			<p class="text-muted text-center">Fields marked with an * are required</p>
 			{!! csrf_field() !!}
 			<label for="memberName">Full Name *</label>
@@ -143,13 +143,13 @@
 		</thead>
 		<tbody>
 		@forelse ($locations as $location)
-		    <tr onclick="location.href='{{ URL::to('/location', $location->location->id) }}';">
+		    <tr onclick="location.href='{{ action('PortalController@getLocation', $location->location->id) }}';">
 		    	<td>{{ $location->location->name }}</td>
 		    	<td>{{ $location->location->city }}</td>
 				<td>{{ $location->date_start }}</td>
 				<td>{{ $location->date_end }}
 					@if ($member->id == session()->get('member_id') || session()->get('authenticated_admin') == "true")
-					<a href="/location-record-delete/{{ $location->id }}" class="btn btn-sm btn-danger pull-right">Remove</a>
+					<a href="{{ action('PortalController@getLocationRecordDelete', $location->id) }}" class="btn btn-sm btn-danger pull-right">Remove</a>
 					@endif
 				</td>
 		    </tr>
@@ -163,7 +163,7 @@
 		@endforelse
 		
 		@if ($member->id == session()->get('member_id') || session()->get('authenticated_admin') == "true")
-		<form method="post" action="/location-record-new/{{ $member->id }}" class="panel-body validate">
+		<form method="post" action="{{ action('PortalController@postLocationRecordNew', $member->id) }}" class="panel-body validate">
 			{!! csrf_field() !!}
 			<tr>
 				<td><input type="text" name="locationName" id="locationName" placeholder="Location Name" class="form-control locationsautocomplete" data-bvalidator="required" data-bvalidator-msg="Location Name Required."></td>
@@ -194,7 +194,7 @@
 		</thead>
 		<tbody>
 		@forelse ($events as $event)
-		    <tr onclick="location.href='{{ URL::to('/event', $event->id) }}';">
+		    <tr onclick="location.href='{{ action('PortalController@getEvent', $event->id) }}';">
 		    	<td>{{ $event->name }}</td>
 				<td>{{ $event->dateFriendly() }}</td>
 		    </tr>

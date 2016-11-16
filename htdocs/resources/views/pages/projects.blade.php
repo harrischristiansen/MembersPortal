@@ -28,7 +28,7 @@ Projects -
 			</thead>
 			<tbody>
 			@foreach ($projects as $project)
-			    <tr onclick="location.href='{{ URL::to('/project', $project->id) }}';">
+			    <tr onclick="location.href='{{ action('PortalController@getProject', $project->id) }}';">
 			    	<td>{{ $project->name }}</td>
 			    	<td>{{ $project->members->implode("name",", ") }}</td>
 			    </tr>

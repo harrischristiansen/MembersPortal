@@ -7,7 +7,7 @@
 	
 	<div class="panel panel-default">
 	@if (session()->get('authenticated_admin') == "true") {{-- Edit Location Information --}}
-		<form method="post" action="/location/{{ $location->id }}" class="panel-body validate">
+		<form method="post" action="{{ action('PortalController@postLocation', $location->id) }}" class="panel-body validate">
 			{!! csrf_field() !!}
 			<label for="locationName">Location Name</label>
 			<input type="text" name="locationName" id="locationName" placeholder="Location Name" value="{{ $location->name }}" class="form-control" data-bvalidator="required" data-bvalidator-msg="Please name is required.">
@@ -39,7 +39,7 @@
 		</thead>
 		<tbody>
 		@forelse ($members as $member)
-		    <tr onclick="location.href='{{ URL::to('/member', $member->member->id) }}';">
+		    <tr onclick="location.href='{{ action('PortalController@getMember', $member->member->id) }}';">
 		    	<td>{{ $member->member->name }}</td>
 				<td>{{ $member->date_start }}</td>
 				<td>{{ $member->date_end }}</td>

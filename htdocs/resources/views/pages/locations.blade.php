@@ -14,7 +14,7 @@
 			</thead>
 			<tbody>
 			@foreach ($locations as $location)
-			    <tr onclick="location.href='{{ URL::to('/location', $location->id) }}';">
+			    <tr onclick="location.href='{{ action('PortalController@getLocation', $location->id) }}';">
 			    	<td>{{ $location->name }}</td>
 					<td>{{ $location->city }}</td>
 			    	<td>{{ $location->members()->count() }}</td>
