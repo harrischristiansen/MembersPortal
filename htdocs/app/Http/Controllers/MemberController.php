@@ -35,11 +35,7 @@ class MemberController extends BaseController {
 	}
 	
 	public function getMember(Request $request, $memberID) {
-		$member = Member::find($memberID);
-		
-		if (is_null($member)) {
-			$member = Member::where('username', $memberID)->first();
-		}
+		$member = $this->findMember($memberID);
 		
 		if (is_null($member)) {
 			$request->session()->flash('msg', 'Error: Page Not Found');
@@ -53,10 +49,20 @@ class MemberController extends BaseController {
 		return view('pages.member',compact("member","locations","events","majors"));
 	}
 	
+	public function findMember($memberID) {
+		$member = Member::find($memberID);
+		
+		if (is_null($member)) {
+			$member = Member::where('username', $memberID)->first();
+		}
+		
+		return $member;
+	}
+	
 	/////////////////////////////// Editing Members ///////////////////////////////
 	
 	public function postMember(EditMemberRequest $request, $memberID) {
-		$member = Member::find($memberID);
+		$member = $this->findMember($memberID);
 		
 		$memberName = $request->input('memberName');
 		$username = $request->input('username');
@@ -77,7 +83,7 @@ class MemberController extends BaseController {
 		// Verify Input
 		if(is_null($member)) {
 			$request->session()->flash('msg', 'Error: Member Not Found.');
-			return $this->getMembers();
+			return $this->getIndex($request);
 		}
 		if($email != $member->email && Member::where('email',$email)->first()) {
 			$request->session()->flash('msg', 'An account already exists with that email.');
@@ -155,18 +161,24 @@ class MemberController extends BaseController {
 		$member->save();
 		
 		// Return Response
+		if ($memberID != $member->username) {
+			return redirect()->action('MemberController@getMember', [$member->username])->with('msg', 'Profile Saved! Your username is now '.$member->username);
+		}
 		$request->session()->flash('msg', 'Profile Saved!');
-		return $this->getMember($request, $memberID);
+		return $this->getMember($request, $member->username);
 	}
 	
 	/////////////////////////////// Usernames ///////////////////////////////
 	
 	public function generateUsername($member, $username="") {
-		if ($username != "" && $username != $member->username && $this->usernameAvailable($username)) {
+		if ($member->username == $username) { // Username Unchanged
+			return $username;
+		}
+		if ($username != "" && $this->usernameAvailable($username)) { // Username Available
 			return $username;
 		} 
 		
-		if ($username == "") {
+		if ($username == "") { // No Username Provided
 			$username = strtolower(str_replace(" ", "", $member->name));
 		}
 		$usernameOrig = $username;

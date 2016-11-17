@@ -4,7 +4,7 @@
 <div class="section"><div class='section-container'>
 	<h3>Upcoming Hackathons</h3>
 	<div class="panel panel-default">
-		<table class="table table-bordered table-hover table-clickable panel-body sortableTable">
+		<table class="table table-bordered table-hover panel-body sortableTable">
 			<thead>
 				<tr>
 					<th>Name</th>

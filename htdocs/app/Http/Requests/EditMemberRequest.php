@@ -11,13 +11,16 @@ class EditMemberRequest extends Request {
 			return true;
 		}
 		
-		$requestID = str_replace(["member","members","/"],["","",""],request()->path());
+		$requestID = str_replace(["member/","members/","/"],["","",""],request()->path());
 		$reset_token = request()->input("reset_token");
 		
 		if(session()->get('authenticated_member') == "true") { // Logged In, Only Allow User To Modify Self
 			$authenticated_id = session()->get('member_id');
-			$authenticated_username = session()->get('member_username');
-			if($requestID == $authenticated_id || $requestID == $authenticated_username ) {
+			if ($requestID == $authenticated_id) {
+				return true;
+			}
+			$member = Member::where('username',$requestID)->first();
+			if ($member != Null && $member->id == $authenticated_id) {
 				return true;
 			}
 		} else { // Logged Out, Require Auth Token
