@@ -23,8 +23,8 @@
 			@else
 			<a href="{{ action('EventController@getApply', $event->id) }}" class="pull-right"><button type="button" class="btn btn-primary btn-sm">Sign Up</button></a>
 			@endif
-		@elseif (session()->get('authenticated_member'))
-			@if ($hasRegistered)
+		@elseif (session()->get('authenticated_member') == "true")
+			@if (isset($hasRegistered) && $hasRegistered)
 			<button type="button" class="btn btn-primary btn-sm pull-right">Registered</button>
 			@else
 			<a href="{{ action('EventController@getRegister', $event->id) }}" class="pull-right"><button type="button" class="btn btn-primary btn-sm">Register</button></a>
@@ -136,7 +136,7 @@
 	@if(session()->get('authenticated_admin') == "true" && $event->id != 0)
 	<a href="{{ action('EventController@getDelete', $event->id) }}" class="pull-right marginR"><button type="button" class="btn btn-danger btn-sm">Delete Event</button></a>
 	@endif
-	@if (session()->get('authenticated_member') && $hasRegistered)
+	@if (session()->get('authenticated_member') == "true" && $hasRegistered)
 	<a href="{{ action('EventController@getUnregister', $event->id) }}" class="pull-right"><button type="button" class="btn btn-danger btn-sm">Unregister for {{ $event->nameShort() }}</button></a>
 	@endif
 </div></div>

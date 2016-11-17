@@ -8,6 +8,7 @@
 
 Route::group(['middleware' => ['web']], function () {
     Route::controller('/auth', 'AuthController');
+    Route::get('/join', 'AuthController@getJoin');
     Route::controller('/autocomplete', 'AutocompleteController');
     Route::controller('/credentials', 'CredentialController');
     Route::controller('/events', 'EventController');
@@ -16,6 +17,7 @@ Route::group(['middleware' => ['web']], function () {
     Route::get('/location/{id}', 'LocationController@getLocation');
     Route::controller('/members', 'MemberController');
     Route::controller('/projects', 'ProjectController');
+    Route::get('/project/{id}', 'ProjectController@getProject');
     Route::controller('/reports', 'ReportsController');
     Route::get('/anvil-wifi', 'PortalController@getAnvilWifi');
     Route::get('/hackathons', 'PortalController@getHackathons');
