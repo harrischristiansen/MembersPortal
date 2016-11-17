@@ -40,7 +40,7 @@ class Member extends Model {
 	}
 	
 	public function publicEventCount() {
-		return $this->events()->where('privateEvent',false)->get()->count();
+		return $this->events()->where('privateEvent',false)->count();
 	}
 	
 	public function applications() {

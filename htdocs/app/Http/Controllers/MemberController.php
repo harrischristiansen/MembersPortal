@@ -10,6 +10,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Cache;
 
 use App\Http\Requests;
 use App\Http\Requests\EditMemberRequest;
@@ -22,8 +23,12 @@ class MemberController extends BaseController {
 	/////////////////////////////// Viewing Members ///////////////////////////////
 	
 	public function getIndex(Request $request) {
-		$members = Member::with('events')->get()->sortBy(function($member, $key) {
-			return sprintf('%04d',1000-$member->publicEventCount())."_".$member->name;
+		$minutesToCache = 60;
+		
+		$members = Cache::remember('memberslist', $minutesToCache, function () {
+			return Member::with('events')->get()->sortBy(function($member, $key) {
+				return sprintf('%04d',1000-$member->publicEventCount())."_".$member->name;
+			});
 		});
 		
 		return view('pages.members',compact("members"));
