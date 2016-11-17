@@ -244,6 +244,7 @@ class EventController extends BaseController {
 			}
 			
 			$member->name = $memberName;
+			$member->username = app('app\Http\Controllers\MemberController')->generateUsername($member);
 			$member->email = $memberEmail;
 			
 			$member->save();

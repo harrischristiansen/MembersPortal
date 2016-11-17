@@ -77,6 +77,7 @@ class AuthController extends BaseController {
 	public function getLogout(Request $request) {
 		$request->session()->put('member_id',"");
 		$request->session()->put('member_name',"");
+		$request->session()->put('member_username',"");
 		$request->session()->put('authenticated_member', 'false');
 		$request->session()->put('authenticated_admin', 'false');
 		$request->session()->put('authenticated_superAdmin', 'false');

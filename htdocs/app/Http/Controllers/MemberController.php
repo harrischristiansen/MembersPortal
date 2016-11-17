@@ -162,6 +162,9 @@ class MemberController extends BaseController {
 		
 		// Return Response
 		if ($memberID != $member->username) {
+			if ($member->id == $this->getAuthenticatedID($request)) { // Changed own username, update session
+				$request->session()->put('member_username', $member->username);
+			}
 			return redirect()->action('MemberController@getMember', [$member->username])->with('msg', 'Profile Saved! Your username is now '.$member->username);
 		}
 		$request->session()->flash('msg', 'Profile Saved!');
@@ -171,7 +174,7 @@ class MemberController extends BaseController {
 	/////////////////////////////// Usernames ///////////////////////////////
 	
 	public function generateUsername($member, $username="") {
-		if ($member->username == $username) { // Username Unchanged
+		if (strlen($member->username) > 2 && $member->username == $username) { // Username Unchanged
 			return $username;
 		}
 		if ($username != "" && $this->usernameAvailable($username)) { // Username Available
