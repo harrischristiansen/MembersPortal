@@ -44,7 +44,7 @@
 		</thead>
 		<tbody>
 		@forelse ($members as $member)
-		    <tr onclick="location.href='{{ $member->profileURL() }}';">
+		    <tr onclick="location.href='{{ $member->member->profileURL() }}';">
 		    	<td>{{ $member->member->name }}</td>
 				<td>{{ $member->date_start }}</td>
 				<td>{{ $member->date_end }}</td>

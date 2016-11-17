@@ -11,7 +11,9 @@ Route::group(['middleware' => ['web']], function () {
     Route::controller('/autocomplete', 'AutocompleteController');
     Route::controller('/credentials', 'CredentialController');
     Route::controller('/events', 'EventController');
+    Route::get('/event/{id}', 'EventController@getEvent');
     Route::controller('/locations', 'LocationController');
+    Route::get('/location/{id}', 'LocationController@getLocation');
     Route::controller('/members', 'MemberController');
     Route::controller('/projects', 'ProjectController');
     Route::controller('/reports', 'ReportsController');
