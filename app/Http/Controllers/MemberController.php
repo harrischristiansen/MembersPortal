@@ -25,7 +25,7 @@ class MemberController extends BaseController {
 	public function getIndex(Request $request) {
 		$minutesToCache = 60;
 		
-		$members = Cache::remember('memberslist', $minutesToCache, function () {
+		$members = Cache::remember('members_list', $minutesToCache, function () {
 			return Member::with('events')->get()->sortBy(function($member, $key) {
 				return sprintf('%04d',1000-$member->publicEventCount())."_".$member->name;
 			});

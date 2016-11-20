@@ -58,17 +58,9 @@ This Members Tracking Portal was originally developed for Purdue Hackers. Purdue
 - [ ] Execute `chmod -R 757 storage` in the `./htdocs` directory  
 - [ ] Start MAMP Servers  
 
-## Deploying to Bluemix
-
-- [ ] Modify `./manifest.yml`
-- [ ] Execute `bluemix api https://api.ng.bluemix.net`
-- [ ] Execute `bluemix login -u {{EMAIL}} -o {{EMAIL}} -s dev`
-- [ ] Execute `cf push {{NAME}}`
-
 ## Accessing Portal
 
 - Locally: http://localhost:8888/  
-- Bluemix: http://{{NAME}}.mybluemix.net  
 
 ## Contributors
 

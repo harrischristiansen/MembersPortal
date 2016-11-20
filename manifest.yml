@@ -1,9 +1,0 @@
-applications:
-- path: .
-  memory: 128M
-  instances: 1
-  domain: mybluemix.net
-  name: Purdue-Hackers-Members-Portal
-  host: purdue-hackers-members-portal
-  disk_quota: 1024M
-  buildpack: php_buildpack

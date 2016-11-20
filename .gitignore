@@ -1,9 +1,12 @@
 .DS_Store
 /vendor
-/storage/
+/storage
 /node_modules
+/public/uploads/
 Homestead.yaml
 Homestead.json
 .env
-
-htdocs/vendor.zip
+.env.bluemix
+.env.local
+.env.mt
+vendor.zip
