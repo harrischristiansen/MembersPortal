@@ -2,11 +2,12 @@
 
 namespace App\Http\Requests;
 
+use Auth;
 use App\Http\Requests\Request;
 
 class AdminRequest extends Request {
 	public function authorize() {
-		if(session()->get('authenticated_admin') != "true") {
+		if(Auth::check() && Auth::user()->admin) {
 			return false;
 		}
 		return true;

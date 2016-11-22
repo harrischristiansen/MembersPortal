@@ -8,6 +8,7 @@
 
 namespace App\Http\Controllers;
 
+use Auth;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -17,7 +18,7 @@ use App\Models\Credential;
 class CredentialController extends BaseController {
 	
 	public function getIndex(Request $request) {
-		if ($this->isSuperAdmin($request)) {
+		if (Auth::user()->setupAdmin) {
 			$credentials = Credential::all();
 		
 			return view('pages.credentials', compact("credentials"));

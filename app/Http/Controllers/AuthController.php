@@ -12,6 +12,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Mail;
+use Auth;
 
 use App\Http\Requests;
 use App\Http\Requests\RegisterRequest;
@@ -28,59 +29,26 @@ class AuthController extends BaseController {
 	public function postLogin(Request $request) {
 		$email = $request->input('email');
 		$password = $request->input('password');
-		$passwordMD5 = md5($password);
+		$remember = $request->input('remember');
 		
-		if($email == "") {
-			$request->session()->flash('msg', 'Please enter an email.');
-			return $this->getLogin();
-		} else {
-			$matchingMembers = Member::where('email',$email)->orWhere('email_public', $email)->orWhere('email_edu', $email)->get();
+		if (Auth::attempt(['email' => $email, 'password' => $password], $remember)) {
+			$member = Auth::user();
+			$member->authenticated_at = Carbon::now();
+			$member->timestamps = false; // Don't update timestamps
+			$member->save();
 			
-			if(count($matchingMembers) == 0) {
-				$request->session()->flash('msg', 'No account was found with that email.');
-				return $this->getLogin();
-			}
-			
-			foreach($matchingMembers as $member) {
-				if(Hash::check($password, $member->password) || $member->password == $passwordMD5) {
-					$this->setAuthenticated($request, $member);
-					
-					if (Hash::needsRehash($member->password)) { // Check If Password Needs Rehash
-						$member->password = Hash::make($password);
-					}
-					
-					$member->authenticated_at = Carbon::now();
-					$member->timestamps = false; // Don't update timestamps
-					$member->save();
-					
-					if ($member->admin) { // Admin Accounts
-						$request->session()->put('authenticated_admin', 'true');
-					}
-					if ($member->superAdmin) { // SuperAdmin Accounts
-						$request->session()->put('authenticated_superAdmin', 'true');
-					}
-					
-					return $this->getIndex($request);
-				}
-			}
-			
-			// If gets here, no account matched password
-			$request->session()->flash('msg', 'Invalid password.');
-			return $this->getLogin();
-		}
-
+			$request->session()->flash('msg', 'Welcome '.$member->name.'!');
+            return redirect()->intended('');
+        }
+        
+		$request->session()->flash('msg', 'Invalid username or password.');
 		return $this->getLogin();
 	}
 	
 	/////////////////////////////// Account Logout ///////////////////////////////
 
 	public function getLogout(Request $request) {
-		$request->session()->put('member_id',"");
-		$request->session()->put('member_name',"");
-		$request->session()->put('member_username',"");
-		$request->session()->put('authenticated_member', 'false');
-		$request->session()->put('authenticated_admin', 'false');
-		$request->session()->put('authenticated_superAdmin', 'false');
+		Auth::logout();
 		
 		$request->session()->flash('msg', 'You are now logged out');
 		return $this->getIndex($request);
@@ -98,9 +66,10 @@ class AuthController extends BaseController {
 		$memberName = $request->input('memberName');
 		$email = $request->input('email');
 		$password = $request->input('password');
-		$password_confirm = $request->input('confirmPassword');
+		$password_confirm = $request->input('password_confirmation');
 		$gradYear = $request->input('gradYear');
 		
+		// Validate Input
 		if($memberName=="" || $email=="" || $password=="" || $gradYear=="") {
 			$request->session()->flash('msg', 'Please enter all fields.');
 			return $this->getJoin();
@@ -121,22 +90,30 @@ class AuthController extends BaseController {
 			return $this->getLogin();
 		}
 		
+		// Create Account + Authenticate
+		$member = $this->createAccount($memberName, $email, $password, $gradYear);
+		Auth::login($member);
+		
+		$request->session()->flash('msg', 'Welcome '.$member->name.'!');
+		return $this->getIndex($request);
+	}
+	
+	public function createAccount($name, $email, $password, $gradYear) {
 		// Create Member
 		$member = new Member;
-		$member->name = $memberName;
+		$member->name = $name;
 		$member->username = app('app\Http\Controllers\MemberController')->generateUsername($member);
 		$member->email = $email;
-		$member->password = Hash::make($password);
+		if (strlen($password) > 2) {
+			$member->password = Hash::make($password);
+		}
 		if(strpos($email, ".edu") !== false) {
 			$member->email_edu = $email;
 		}
 		$member->graduation_year = $gradYear;
 		$member->save();
 		
-		// Authenticate Application
-		$this->setAuthenticated($request, $member);
-		
-		return $this->getIndex($request);
+		return $member;
 	}
 	
 	/////////////////////////////// Password Reset Request ///////////////////////////////
@@ -191,6 +168,25 @@ class AuthController extends BaseController {
 		$setPassword = true;
 		
 		return view('pages.member',compact("member","locations","events","majors","setPassword","reset_token"));
+	}
+	
+	
+	
+	/////////////////////////////// Account Setup Emails ///////////////////////////////
+	
+	public function getSetupAccountEmails(AdminRequest $request) { // Batch email all accounts that have not been setup, prompting them to setup.
+		$members = Member::where('graduation_year',0)->get();
+		
+		$nowDate = Carbon::now();
+		
+		foreach ($members as $member) {
+			if ($member->setupEmailSent->diffInDays($nowDate) > 30) {
+				$this->emailAccountCreated($member, $member->events()->first());
+			}
+		}
+		
+		$request->session()->flash('msg', 'Success, setup account emails have been sent!');
+		return $this->getIndex($request);
 	}
     
 }

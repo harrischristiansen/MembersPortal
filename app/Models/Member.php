@@ -9,15 +9,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class Member extends Model {
+class Member extends Authenticatable {
 	
-	protected $dates = [
-		'created_at',
-		'updated_at',
-		'authenticated_at',
-		'setupEmailSent',
-	];
+	protected $hidden = ['password', 'remember_token',];
+	protected $dates = ['created_at','updated_at','authenticated_at','setupEmailSent',];
 	
 	public function profileURL() {
 		return action('MemberController@getMember', $this->username);

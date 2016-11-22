@@ -9,20 +9,18 @@
                         </button>
 			<a id='nav-brand' class="navbar-brand" href="/">
 			<div class="nav-logo"></div>
-			@if(true || session()->get('authenticated_admin') != "true")
 			<span class="nav-name">{{ env('ORG_NAME') }}</span>
-			@endif
 			</a>
 		</div>
 		<div class="collapse navbar-collapse" id="navbar">
 			<ul class="nav navbar-nav navbar-right">
-				@if (session()->get('authenticated_member') == "true")
-					<li><a href="{{ action('MemberController@getMember', session()->get('member_username')) }}">Profile</a></li>
+				@if (Auth::check())
+					<li><a href="{{ action('MemberController@getMember', Auth::user()->username) }}">Profile</a></li>
 					<li><a href="{{ action('MemberController@getIndex') }}">Members</a></li>
 					<li><a href="{{ action('ProjectController@getIndex') }}">Projects</a></li>
 				@endif
 				<li><a href="{{ action('EventController@getIndex') }}">Events</a></li>
-				@if(session()->get('authenticated_member') == "true")
+				@if(Auth::check())
 					<li><a href="{{ action('AuthController@getLogout') }}">Logout</a></li>
 				@else
 					<li><a href="{{ action('AuthController@getLogin') }}">Login</a></li>

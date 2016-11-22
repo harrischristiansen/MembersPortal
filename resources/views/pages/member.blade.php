@@ -10,7 +10,7 @@
 	<h3>Member - {{ $member->name }}</h3>
 	
 	
-	@if ($member->id == session()->get('member_id') || session()->get('authenticated_admin') == "true" || isset($setPassword) ) {{-- Edit Profile --}}
+	@if ($member->id == session()->get('member_id') || Auth::user()->admin || isset($setPassword) ) {{-- Edit Profile --}}
 	<div class="panel panel-default">
 		<form method="post" action="{{ $member->profileURL() }}" enctype="multipart/form-data" class="panel-body validate">
 			<p class="text-muted text-center">Fields marked with an * are required</p>

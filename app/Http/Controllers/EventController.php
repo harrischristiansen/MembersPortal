@@ -12,6 +12,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use DB;
 
+use Auth;
 use App\Http\Requests;
 use App\Http\Requests\LoggedInRequest;
 use App\Http\Requests\EditEventRequest;
@@ -27,7 +28,7 @@ class EventController extends BaseController {
 	/////////////////////////////// Viewing Events ///////////////////////////////
 	
 	public function getIndex(Request $request) {
-		if ($this->isAdmin($request)) {
+		if (Auth::user()->admin) {
 			$events = Event::orderBy("event_time","desc")->get();
 		} else {
 			$events = Event::where('privateEvent',false)->orderBy("event_time","desc")->get();

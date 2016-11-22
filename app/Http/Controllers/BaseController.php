@@ -30,37 +30,25 @@ class BaseController extends Controller {
 	/////////////////////////////// Authentication ///////////////////////////////
 	
 	public function isAuthenticated($request) {
-		return $request->session()->get('authenticated_member') == "true";
+		return Auth::check();
 	}
 	
 	public function isAdmin($request) {
-		return $request->session()->get('authenticated_admin') == "true";
+		return Auth::check() && Auth::user()->admin;
 	}
 	
 	public function isSuperAdmin($request) {
-		return $request->session()->get('authenticated_superAdmin') == "true";
+		return Auth::check() && Auth::user()->superAdmin;
 	}
 	
 	public function getAuthenticated($request) {
-		if ($this->isAuthenticated($request)) {
-			return Member::find($this->getAuthenticatedID($request));
-		}
-		return null;
+		if (!Auth::check()) { return false; }
+		return Auth::user();
 	}
 	
 	public function getAuthenticatedID($request) {
-		if ($this->isAuthenticated($request)) {
-			return $request->session()->get('member_id');
-		}
-		return null;
-	}
-	
-	public function setAuthenticated(Request $request, $member) {
-		$request->session()->put('authenticated_member', 'true');
-		$request->session()->put('member_id', $member->id);
-		$request->session()->put('member_name', $member->name);
-		$request->session()->put('member_username', $member->username);
-		$request->session()->flash('msg', "Welcome ".$member->name."!");
+		if (!Auth::check()) { return false; }
+		return Auth::user()->id;
 	}
 	
 	/////////////////////////////// Email ///////////////////////////////

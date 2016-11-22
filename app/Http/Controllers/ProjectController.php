@@ -8,8 +8,9 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use Auth;
 
+use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Requests\LoggedInRequest;
 use App\Http\Requests\AdminRequest;
@@ -22,11 +23,11 @@ class ProjectController extends BaseController {
 	/////////////////////////////// Viewing Projects ///////////////////////////////
 	
 	public function getIndex(Request $request) {
-		if (!$this->isAuthenticated($request)) {
-			return redirect()->action('PortalController@getIndex')->with('msg', 'Permission Denied');
+		if (!Auth::check()) {
+			return redirect()->action('HomeController@getIndex')->with('msg', 'Permission Denied');
 		}
 		
-		$projects = $this->getAuthenticated($request)->projects;
+		$projects = Auth::user()->projects;
 		
 		return view('pages.projects',compact("projects"));
 	}
@@ -52,9 +53,9 @@ class ProjectController extends BaseController {
 	}
 	
 	public function canAccessProject($request, $project) {
-		$member = $this->getAuthenticated($request);
+		$member = Auth::user();
 		
-		return $project->members->contains($member) || $this->isAdmin($request);
+		return $project->members->contains($member) || Auth::user()->admin;
 	}
 	
 	/////////////////////////////// Creating Projects ///////////////////////////////

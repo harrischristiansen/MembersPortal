@@ -12,7 +12,7 @@ class RegisterRequest extends Request {
 		return [
 			'memberName' => 'max:255',
 			'email' => 'required_with:memberName,email',
-			'confirmPassword' => 'required_with:memberName,same:password',
+			'password_confirmation' => 'required_with:memberName,same:password',
 			'gradYear' => 'required|integer',
 		];
 	}

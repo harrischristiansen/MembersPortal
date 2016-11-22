@@ -7,7 +7,7 @@ Members -
 @section("content")
 <div class="section"><div class='section-container'>
 	<h3>Members
-		@if(session()->get('authenticated_admin') == "true")
+		@if (Auth::user()->admin)
 		<a href="{{ action('ReportsController@getMembers') }}" class="pull-left"><button type="button" class="btn btn-primary btn-sm marginR">Graphs</button></a>
 		<a href="{{ action('LocationController@getMap') }}" class="pull-left"><button type="button" class="btn btn-primary btn-sm">Map</button></a>
 		<button type="button" class="btn btn-primary btn-sm pull-right">{{ count($members) }} members</button>
@@ -17,7 +17,7 @@ Members -
 		<table class="table table-bordered table-hover table-clickable panel-body sortableTable">
 			<thead>
 				<tr>
-					@if(session()->get('authenticated_admin') == "true")
+					@if (Auth::user()->admin)
 					<th>Picture</th>
 					@endif
 					<th>Name</th>
@@ -29,7 +29,7 @@ Members -
 			<tbody>
 			@foreach ($members as $member)
 			    <tr onclick="location.href='{{ $member->profileURL() }}';">
-				    @if(session()->get('authenticated_admin') == "true")
+				    @if (Auth::user()->admin)
 				    <td class="member-icon">
 					    @if($member->picture)
 					    <img src="{{ $member->picturePath() }}" class="member-icon">

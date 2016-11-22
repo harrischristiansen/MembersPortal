@@ -10,7 +10,7 @@
 	<h3>{{ $event->nameShort() ?: "Create Event" }}
 		@if ($event->id != 0)
 		
-		@if (session()->get('authenticated_admin') == "true")
+		@if (Auth::user()->admin)
 			<a href="{{ action('ReportsController@getEvent', $event->id) }}" class="pull-left marginR"><button type="button" class="btn btn-primary btn-sm">Graphs</button></a>
 			@if (count($applications))
 			<a href="{{ action('EventController@getApplications', $event->id) }}" class="pull-left marginR"><button type="button" class="btn btn-primary btn-sm">{{ count($applications) }} {{ $requiresApplication ? "Applications" : "Registrations" }}</button></a>
@@ -23,7 +23,7 @@
 			@else
 			<a href="{{ action('EventController@getApply', $event->id) }}" class="pull-right"><button type="button" class="btn btn-primary btn-sm">Sign Up</button></a>
 			@endif
-		@elseif (session()->get('authenticated_member') == "true")
+		@elseif (Auth::check())
 			@if (isset($hasRegistered) && $hasRegistered)
 			<button type="button" class="btn btn-primary btn-sm pull-right">Registered</button>
 			@else
@@ -34,7 +34,7 @@
 		@endif
 	</h3>
 	
-	@if (session()->get('authenticated_admin') == "true") {{-- Edit Event --}}
+	@if (Auth::user()->admin) {{-- Edit Event --}}
 	<div class="panel panel-default">
 		<form method="post" action="{{ action('EventController@postEvent', $event->id) }}" class="panel-body validate">
 			{!! csrf_field() !!}
@@ -133,10 +133,10 @@
 	
 	@endif
 	
-	@if(session()->get('authenticated_admin') == "true" && $event->id != 0)
+	@if(Auth::user()->admin && $event->id != 0)
 	<a href="{{ action('EventController@getDelete', $event->id) }}" class="pull-right marginR"><button type="button" class="btn btn-danger btn-sm">Delete Event</button></a>
 	@endif
-	@if (session()->get('authenticated_member') == "true" && $hasRegistered)
+	@if (Auth::check() && $hasRegistered)
 	<a href="{{ action('EventController@getUnregister', $event->id) }}" class="pull-right"><button type="button" class="btn btn-danger btn-sm">Unregister for {{ $event->nameShort() }}</button></a>
 	@endif
 </div></div>
