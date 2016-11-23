@@ -115,14 +115,6 @@ class MemberController extends BaseController {
 		// Password
 		if(strlen($password) > 0) {
 			$member->password = Hash::make($password);
-			
-			if ($this->isAdmin($request) == false) { // Auto-Login if password reset was not made by admin
-				Auth::login($member);
-			
-				if ($member->admin) { // Admin Accounts
-					$request->session()->put('authenticated_admin', 'true');
-				}
-			}
 		}
 		
 		// Email

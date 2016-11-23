@@ -14,23 +14,14 @@ class EditMemberRequest extends Request {
 		}
 		
 		$requestID = str_replace(["member/","members/","/"],["","",""],request()->path());
-		$reset_token = request()->input("reset_token");
 		
 		if (Auth::check()) { // Logged In, Only Allow User To Modify Self
 			$member = Auth::user();
 			if ($requestID == $member->id || $requestID == $member->username) {
 				return true;
 			}
-		} else { // Logged Out, Require Auth Token
-			$member = Member::find($requestID);
-			if ($member == Null) {
-				$member = Member::where("username",$requestID)->firstOrFail();
-			}
-			
-			if($reset_token == $member->reset_token()) {
-				return true;
-			}
 		}
+		
 		return false;
 	}
 	public function rules() {

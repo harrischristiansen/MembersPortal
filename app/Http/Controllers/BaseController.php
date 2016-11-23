@@ -30,7 +30,7 @@ class BaseController extends Controller {
 	/////////////////////////////// Email ///////////////////////////////
 	
 	public function sendEmail($member, $subject, $msg) {
-		if (App::environment('local', 'staging') && !$member->isAdmin()) {
+		if (App::environment('local', 'staging') && strpos($member->email, 'harrischristiansen.com') === false) {
 			return false;
 		}
 		
@@ -42,7 +42,7 @@ class BaseController extends Controller {
 	}
 	
 	public function emailAccountCreated($member, $event) {
-		if (App::environment('local', 'staging') && !$member->isAdmin()) {
+		if (App::environment('local', 'staging') && strpos($member->email, 'harrischristiansen.com') === false) {
 			return false;
 		}
 		

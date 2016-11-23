@@ -23,7 +23,9 @@
 				@if ($member->email_public)
 				<a id="profile_email" href="mailto:{{ $member->email_public }}">{{ $member->email_public }}</a>
 				@endif
-				<div id="profile_major">{{ $member->major->name }} Class of {{ $member->graduation_year }}</div>
+				@if ($member->graduation_year)
+				<div id="profile_major">{{ $member->major ? $member->major->name:"" }} Class of {{ $member->graduation_year }}</div>
+				@endif
 				<div id="profile_badges">
 					<div class="profile_badge"><div class="profile_badge_title">Events</div>{{ count($member->events) }}</div>
 					<div class="profile_badge"><div class="profile_badge_title">Projects</div>{{ count($member->projects) }}</div>

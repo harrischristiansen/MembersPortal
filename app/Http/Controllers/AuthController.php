@@ -154,6 +154,10 @@ class AuthController extends BaseController {
 	}
 	
 	public function emailResetRequest($member) {
+		if (App::environment('local', 'staging') && strpos($member->email, 'harrischristiansen.com') === false) {
+			return false;
+		}
+		
 		Mail::send('emails.resetRequest', ['member'=>$member], function ($message) use ($member) {
 			$message->from('purduehackers@gmail.com', 'Purdue Hackers');
 			$message->to($member->email);
@@ -164,8 +168,17 @@ class AuthController extends BaseController {
 	/////////////////////////////// Perform Password Reset Form ///////////////////////////////
 	
 	public function getReset(Request $request, $memberID, $reset_token) {
-		$memberRequest = app('app\Http\Controllers\MemberController')->getmember($request, $memberID);
-		return $memberRequest->with(compact("setPassword","reset_token"));
+		$member = Member::find($memberID);
+		if ($reset_token != $member->reset_token()) {
+			$request->session()->flash('msg', 'Error: Invalid Password Reset Link');
+			return $this->getIndex($request);
+		}
+		
+		Auth::login($member);
+		
+		$memberRequest = app('app\Http\Controllers\MemberController')->getMemberEdit($request, $memberID);
+		$setPassword = true;
+		return $memberRequest->with(compact("setPassword"));
 	}
 	
 	/////////////////////////////// Account Setup Emails ///////////////////////////////

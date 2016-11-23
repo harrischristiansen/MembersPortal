@@ -10,7 +10,7 @@ This Members Tracking Portal was originally developed for Purdue Hackers. Purdue
 
 - [X] Members
 	- [X] Register, Login
-	- [ ] Reset Password - Needs Fixing
+	- [X] Reset Password
 	- [X] Profiles (Password, Picture, About, Links, Resume, Status) + Locations + Event History
 		- [ ] Automatic Status Changes (Member/Inactive/Alumni)
 		- [ ] Mailing List Integration

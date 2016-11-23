@@ -33,7 +33,6 @@
 			@if (isset($setPassword))
 			<label for="password">Password *</label>
 			<input type="password" name="password" id="password" placeholder="Password" class="form-control" data-bvalidator="required" data-bvalidator-msg="A password is required">
-			<input type="hidden" name="reset_token" value="{{ $reset_token }}">
 			<br>
 			<label for="confirmPassword">Confirm Password *</label>
 			<input type="password" name="confirmPassword" id="confirmPassword" placeholder="Confirm Password" class="form-control" data-bvalidator="required,equalto[password]" data-bvalidator-msg="Password does not match">
@@ -92,7 +91,7 @@
 			@if (!isset($setPassword))
 				@if (Gate::allows('admin'))
 				<a href="{{ $member->reset_url() }}" class="btn btn-warning pull-left">Reset Password</a>
-				@elseif($member->id == session()->get('member_id'))
+				@elseif(Gate::allows('member-matches',$member))
 				<a href="{{ $member->reset_url() }}" class="btn btn-warning pull-left">Change Password</a>
 				@endif
 			@endif
