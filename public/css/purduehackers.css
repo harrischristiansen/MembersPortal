@@ -497,6 +497,56 @@ hr {
 	height: 250px;
 }
 
+/* ------------------------ Profile ------------------------- */
+
+#profile_image {
+	float: left;
+	margin-left: 50px;
+	height: 200px;
+	border-radius: 100px;
+	-webkit-border-radius: 100px;
+	-moz-border-radius: 100px;
+}
+
+#profile_intro_text {
+	text-align: center;
+	padding: 10px;
+}
+
+#profile_name {
+	color: #000000;
+	font-size: 32px;
+}
+
+#profile_email {
+	display: block;
+	font-size: 14px;
+	margin-top: -4px;
+	color: #444444;
+	text-decoration: none;
+}
+
+#profile_major {
+	font-size: 1.1em;
+	margin-top: 8px;
+	color: #444444;
+}
+
+#profile_badges {
+	margin-top: 20px;
+}
+
+.profile_badge {
+	display: inline-block;
+	font-size: 20px;
+	padding: 0px 10px;
+}
+
+.profile_badge_title {
+	color: #eeda69;
+	margin-bottom: 6px;
+}
+
 
 /* Clearing
 –––––––––––––––––––––––––––––––––––––––––––––––––– */

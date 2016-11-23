@@ -8,6 +8,7 @@
 
 namespace App\Http\Controllers;
 
+use Gate;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Cache;
@@ -44,9 +45,25 @@ class MemberController extends BaseController {
 		
 		$locations = $member->locations;
 		$events = $member->events;
+		
+		return view('pages.member',compact("member","locations","events"));
+	}
+	
+	public function getMemberEdit(Request $request, $memberID) {
+		$member = $this->findMember($memberID);
+		
+		if (is_null($member)) {
+			$request->session()->flash('msg', 'Error: Page Not Found');
+			return parent::getIndex($request);
+		}
 		$majors = Major::orderByRaw('(id = 1) DESC, name')->get(); // Order by name, but keep first major at top
 		
-		return view('pages.member',compact("member","locations","events","majors"));
+		if (Gate::denies('member-matches',$member)) {
+			$request->session()->flash('msg', 'Error: Permission Denied');
+			return $this->getMember($request, $member->id);
+		}
+		
+		return view('pages.member-edit',compact("member","majors"));
 	}
 	
 	public function findMember($memberID) {
