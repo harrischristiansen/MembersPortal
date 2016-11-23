@@ -47,19 +47,19 @@
 	<div class="panel panel-default text-left">
 		<div class="panel-body">
 			@if ($member->facebook)
-			<b>Facebook Profile:</b> <a href="{{ $member->facebook }}">{{ $member->facebook }}</a><br>
+			<b>Facebook Profile:</b> <a href="{{ $member->facebook }}" target="_blank">{{ $member->facebook }}</a><br>
 			@endif
 			@if ($member->github)
-			<b>Github Profile:</b> <a href="{{ $member->github }}">{{ $member->github }}</a><br>
+			<b>Github Profile:</b> <a href="{{ $member->github }}" target="_blank">{{ $member->github }}</a><br>
 			@endif
 			@if ($member->linkedin)
-			<b>LinkedIn Profile:</b> <a href="{{ $member->linkedin }}">{{ $member->linkedin }}</a><br>
+			<b>LinkedIn Profile:</b> <a href="{{ $member->linkedin }}" target="_blank">{{ $member->linkedin }}</a><br>
 			@endif
 			@if ($member->devpost)
-			<b>Devpost Profile:</b> <a href="{{ $member->devpost }}">{{ $member->devpost }}</a><br>
+			<b>Devpost Profile:</b> <a href="{{ $member->devpost }}" target="_blank">{{ $member->devpost }}</a><br>
 			@endif
 			@if ($member->website)
-			<b>Personal Website:</b> <a href="{{ $member->website }}">{{ $member->website }}</a><br>
+			<b>Personal Website:</b> <a href="{{ $member->website }}" target="_blank">{{ $member->website }}</a><br>
 			@endif
 		</div>
 	</div>
