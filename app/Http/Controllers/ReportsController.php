@@ -10,26 +10,13 @@ namespace App\Http\Controllers;
 
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
-use DB;
-use Mail;
 
 use App\Http\Requests;
-use App\Http\Requests\LoggedInRequest;
-use App\Http\Requests\EditEventRequest;
-use App\Http\Requests\EditMemberRequest;
 use App\Http\Requests\AdminRequest;
-use App\Http\Requests\RegisterRequest;
-use App\Http\Requests\SuperAdminRequest;
 
-use App\Models\Application;
-use App\Models\Credential;
 use App\Models\Event;
-use App\Models\Location;
-use App\Models\LocationRecord;
 use App\Models\Major;
 use App\Models\Member;
-use App\Models\Project;
 
 class ReportsController extends BaseController {
 	public function __construct() {

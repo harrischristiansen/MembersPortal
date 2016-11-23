@@ -58,7 +58,7 @@ class ProjectController extends BaseController {
 	public function canAccessProject($request, $project) {
 		$member = Auth::user();
 		
-		return $project->members->contains($member) || Auth::user()->admin;
+		return Gate::allows('admin') || $project->members->contains($member);
 	}
 	
 	/////////////////////////////// Creating Projects ///////////////////////////////

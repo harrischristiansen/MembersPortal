@@ -85,7 +85,7 @@ class LocationController extends BaseController {
 			$request->session()->flash('msg', 'Error: Member Not Found.');
 			return app('App\Http\Controllers\MemberController')->getIndex();
 		}
-		if (Gate::denies('admin') && $memberID!=$authenticated_id) {
+		if (Gate::denies('member-matches', $member)) {
 			$request->session()->flash('msg', 'Error: Member Not Found.');
 			return app('App\Http\Controllers\MemberController')->getIndex();
 		}

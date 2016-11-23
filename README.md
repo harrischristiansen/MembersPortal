@@ -10,28 +10,27 @@ This Members Tracking Portal was originally developed for Purdue Hackers. Purdue
 
 - [X] Members
 	- [X] Register, Login
-	- [X] Reset Password
+	- [ ] Reset Password - Needs Fixing
 	- [X] Profiles (Password, Picture, About, Links, Resume, Status) + Locations + Event History
 		- [ ] Automatic Status Changes (Member/Inactive/Alumni)
 		- [ ] Mailing List Integration
 		- [ ] Log Profile changes
 	- [X] Map of Members Locations
 		- [ ] Location duplicate resolution?
+	- [ ] Redesign Profile Page
 - [X] Events
 	- [X] List, View
 	- [X] Register, Apply, Unregister
-- [ ] Projects
+		- [ ] Manage Applications
+	- [X] Record Attendance - Checkin System
+		- [ ] Undo Checkin (Delete Checkin Record)
+	- [X] Message Attendees
+		- [ ] Ignore Inactive Members
+		- [ ] If target > 20 people, require superAdmin approval
+- [X] Projects
 	- [X] Create, View, Modify, Delete
 	- [X] Add/Remove Team Members
 - [X] Admin
-	- [X] Members - Modify
-	- [X] Events - Create, Modify, Delete
-		- [ ] Manage Applications
-		- [X] Checkin Members
-			- [ ] Undo Checkin (Delete Checkin Record)
-		- [X] Message Attendees
-			- [ ] Ignore Inactive Members
-			- [ ] If target > 20 people, require superAdmin approval
 	- [X] Credential Manager
 	- [ ] Permissions Manager
 		- [ ] Project Permissions
