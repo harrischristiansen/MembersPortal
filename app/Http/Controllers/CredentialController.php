@@ -9,6 +9,7 @@
 namespace App\Http\Controllers;
 
 use Auth;
+use Gate;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -18,13 +19,14 @@ use App\Models\Credential;
 class CredentialController extends BaseController {
 	
 	public function getIndex(Request $request) {
-		if (Auth::user()->setupAdmin) {
+		if (Gate::allows('super-admin')) {
 			$credentials = Credential::all();
 		
 			return view('pages.credentials', compact("credentials"));
 		}
 		
-		return "Permission Denied.";
+		$request->session()->flash('msg', 'Permission Denied');
+		return redirect()->guest('login');
 	}
 	
 	public function postIndex(SuperAdminRequest $request) {

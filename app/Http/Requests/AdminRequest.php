@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-use Auth;
+use Gate;
 use App\Http\Requests\Request;
 
 class AdminRequest extends Request {

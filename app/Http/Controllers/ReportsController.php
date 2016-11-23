@@ -32,6 +32,9 @@ use App\Models\Member;
 use App\Models\Project;
 
 class ReportsController extends BaseController {
+	public function __construct() {
+		$this->middleware('auth');
+	}
 	
 	public function getMembers(AdminRequest $request) {
 		$members = Member::orderBy('created_at')->get();

@@ -19,7 +19,10 @@ use App\Models\Member;
 use App\Models\Project;
 
 class ProjectController extends BaseController {
-		
+	public function __construct() {
+		$this->middleware('auth');
+	}
+	
 	/////////////////////////////// Viewing Projects ///////////////////////////////
 	
 	public function getIndex(Request $request) {

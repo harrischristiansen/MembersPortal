@@ -24,6 +24,9 @@ use App\Models\Major;
 use App\Models\Member;
 
 class EventController extends BaseController {	
+	public function __construct() {
+		$this->middleware('auth');
+	}
 	
 	/////////////////////////////// Viewing Events ///////////////////////////////
 	

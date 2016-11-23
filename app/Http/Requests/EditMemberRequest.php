@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Auth;
+use Gate;
 use App\Http\Requests\Request;
 use App\Models\Member;
 

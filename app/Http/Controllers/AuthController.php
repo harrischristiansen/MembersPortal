@@ -85,22 +85,22 @@ class AuthController extends BaseController {
 		$gradYear = $request->input('gradYear');
 		
 		// Validate Input
-		if($memberName=="" || $email=="" || $password=="" || $gradYear=="") {
+		if ($memberName=="" || $email=="" || $password=="" || $gradYear=="") {
 			$request->session()->flash('msg', 'Please enter all fields.');
 			return $this->getJoin();
 		}
 		
-		if(!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+		if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
 			$request->session()->flash('msg', 'Invalid Email Address.');
 			return $this->getJoin();
 		}
 		
-		if($password != $password_confirm) {
+		if ($password != $password_confirm) {
 			$request->session()->flash('msg', 'Passwords did not match.');
 			return $this->getJoin();
 		}
 		
-		if(Member::where('email',$email)->first()) {
+		if (Member::where('email',$email)->first()) {
 			$request->session()->flash('msg', 'An account already exists with that email. Please use your '.env('DB_ORG_NAME').' account password if you have one.');
 			return $this->getLogin();
 		}
@@ -122,7 +122,7 @@ class AuthController extends BaseController {
 		if (strlen($password) > 2) {
 			$member->password = Hash::make($password);
 		}
-		if(strpos($email, ".edu") !== false) {
+		if (strpos($email, ".edu") !== false) {
 			$member->email_edu = $email;
 		}
 		$member->graduation_year = $gradYear;
@@ -161,31 +161,12 @@ class AuthController extends BaseController {
 		});
 	}
 	
-	/////////////////////////////// Password Reset Call ///////////////////////////////
+	/////////////////////////////// Perform Password Reset Form ///////////////////////////////
 	
 	public function getReset(Request $request, $memberID, $reset_token) {
-		// TODO: Get Member from MemberController and append fields to view
-		$member = Member::find($memberID);
-		
-		if(is_null($member)) {
-			$request->session()->flash('msg', 'Error: Member Not Found.');
-			return $this->getIndex($request);
-		}
-		
-		if($reset_token != $member->reset_token()) {
-			$request->session()->flash('msg', 'Error: Member Not Found.');
-			return $this->getIndex($request);
-		}
-		
-		$locations = $member->locations;
-		$events = $member->events;
-		$majors = Major::orderByRaw('(id = 1) DESC, name')->get(); // Order by name, but keep first major at top
-		$setPassword = true;
-		
-		return view('pages.member',compact("member","locations","events","majors","setPassword","reset_token"));
+		$memberRequest = app('app\Http\Controllers\MemberController')->getmember($request, $memberID);
+		return $memberRequest->with(compact("setPassword","reset_token"));
 	}
-	
-	
 	
 	/////////////////////////////// Account Setup Emails ///////////////////////////////
 	

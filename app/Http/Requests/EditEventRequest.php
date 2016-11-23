@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use Gate;
 use App\Http\Requests\Request;
 
 class EditEventRequest extends Request {

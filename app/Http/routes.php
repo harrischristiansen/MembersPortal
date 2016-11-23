@@ -9,6 +9,7 @@
 Route::group(['middleware' => ['web']], function () {
     Route::controller('/auth', 'AuthController');
     Route::get('/join', 'AuthController@getJoin');
+    Route::get('/login', 'AuthController@getLogin');
     Route::controller('/autocomplete', 'AutocompleteController');
     Route::controller('/credentials', 'CredentialController');
     Route::controller('/events', 'EventController');
