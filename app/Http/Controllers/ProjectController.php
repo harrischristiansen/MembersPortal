@@ -9,12 +9,12 @@
 namespace App\Http\Controllers;
 
 use Auth;
-
+use Gate;
 use Illuminate\Http\Request;
+
 use App\Http\Requests;
 use App\Http\Requests\LoggedInRequest;
 use App\Http\Requests\AdminRequest;
-
 use App\Models\Member;
 use App\Models\Project;
 

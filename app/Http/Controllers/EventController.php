@@ -26,7 +26,7 @@ use App\Models\Member;
 class EventController extends BaseController {
 	public function __construct() {
 		$this->middleware('auth', ['except' => [
-            'getIndex',
+            'getIndex','getEvent'
         ]]);
 	}
 	
@@ -65,7 +65,7 @@ class EventController extends BaseController {
 		return view('pages.event', compact("event","members","requiresApplication","hasRegistered","applications"));
 	}
 	
-	public function getCreate() {
+	public function getCreate(AdminRequest $request) {
 		$event = new Event;
 		$event->id = 0;
 		$members = [];

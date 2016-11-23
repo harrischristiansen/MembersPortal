@@ -85,12 +85,19 @@
 	@else
 	<div class="panel panel-default text-left">
 		<div class="panel-body">
-			<b>Event Name:</b> {{ $event->name }}<br>
-			<b>Event Date:</b> {{ $event->dateFriendly() }}<br>
-			<b>Location:</b> {{ $event->location }}<br>
-			@if ($event->facebook)
-			<b>Facebook Event:</b> <a href="{{ $event->facebook }}">{{ $event->facebook }}</a><br>
-			@endif
+			<div id="profile_intro_text">
+				<div id="profile_name">{{ $event->name }}</div>
+				<div id="profile_email">{{ $event->location }}</div>
+				<div id="profile_major">{{ $event->dateFriendly() }}</div>
+				@if ($event->facebook)
+				<a href="{{ $event->facebook }}"><br>{{ $event->facebook }}</a><br>
+				@endif
+				@if(count($members) > 0)
+				<div id="profile_badges">
+					<div class="profile_badge"><div class="profile_badge_title">Attendees</div>{{ count($members) }}</div>
+				</div>
+				@endif
+			</div>
 		</div>
 	</div>
 	@endcan
