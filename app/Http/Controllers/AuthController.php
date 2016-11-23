@@ -8,11 +8,12 @@
 
 namespace App\Http\Controllers;
 
+use App;
+use Auth;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Mail;
-use Auth;
 
 use App\Http\Requests;
 use App\Http\Requests\RegisterRequest;
