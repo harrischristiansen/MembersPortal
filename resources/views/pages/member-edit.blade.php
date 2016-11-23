@@ -7,7 +7,9 @@
 @section("content")
 
 <div class="section"><div class='section-container'>
-	<h3>Member - {{ $member->name }}</h3>
+	<h3>Member - {{ $member->name }}
+		<a href="{{ action('MemberController@getMember', $member->username) }}" class="pull-left"><button type="button" class="btn btn-primary btn-sm"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> Profile</button></a>
+	</h3>
 	
 	<div class="panel panel-default">
 		<form method="post" action="{{ $member->profileURL() }}" enctype="multipart/form-data" class="panel-body validate">
