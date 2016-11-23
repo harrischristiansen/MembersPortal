@@ -24,15 +24,16 @@ class MemberController extends BaseController {
 	/////////////////////////////// Viewing Members ///////////////////////////////
 	
 	public function getIndex(Request $request) {
-		$minutesToCache = 60;
-		
-		$members = Cache::remember('members_list', $minutesToCache, function () {
+		$members = Cache::get('members_list', self::buildMembersListCache());
+		return view('pages.members',compact("members"));
+	}
+
+	public static function buildMembersListCache() {
+		return Cache::remember('members_list', 65, function () {
 			return Member::with('events')->get()->sortBy(function($member, $key) {
 				return sprintf('%04d',1000-$member->publicEventCount())."_".$member->name;
 			});
 		});
-		
-		return view('pages.members',compact("members"));
 	}
 	
 	public function getMember(Request $request, $memberID) {
