@@ -6,10 +6,7 @@ use App\Http\Requests\Request;
 
 class EditEventRequest extends Request {
 	public function authorize() {
-		if(session()->get('authenticated_admin') == "true") {
-			return true;
-		}
-		return false;
+		return Gate::allows('admin');
 	}
 	public function rules() {
 		return [

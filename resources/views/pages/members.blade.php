@@ -7,19 +7,19 @@ Members -
 @section("content")
 <div class="section"><div class='section-container'>
 	<h3>Members
-		@if (Auth::user()->admin)
+		@can('admin')
 		<a href="{{ action('ReportsController@getMembers') }}" class="pull-left"><button type="button" class="btn btn-primary btn-sm marginR">Graphs</button></a>
 		<a href="{{ action('LocationController@getMap') }}" class="pull-left"><button type="button" class="btn btn-primary btn-sm">Map</button></a>
 		<button type="button" class="btn btn-primary btn-sm pull-right">{{ count($members) }} members</button>
-		@endif
+		@endcan
 	</h3>
 	<div class="panel panel-default">
 		<table class="table table-bordered table-hover table-clickable panel-body sortableTable">
 			<thead>
 				<tr>
-					@if (Auth::user()->admin)
+					@can('admin')
 					<th>Picture</th>
-					@endif
+					@endcan
 					<th>Name</th>
 					<th>Year</th>
 					<th>Joined</th>
@@ -29,13 +29,13 @@ Members -
 			<tbody>
 			@foreach ($members as $member)
 			    <tr onclick="location.href='{{ $member->profileURL() }}';">
-				    @if (Auth::user()->admin)
+				    @can('admin')
 				    <td class="member-icon">
 					    @if($member->picture)
 					    <img src="{{ $member->picturePath() }}" class="member-icon">
 					    @endif
 				    </td>
-				    @endif
+				    @endcan
 			    	<td>{{ $member->name }}</td>
 					<td>{{ $member->graduation_year }}</td>
 			    	<td>{{ $member->created_at->format('M j, Y') }}</td>

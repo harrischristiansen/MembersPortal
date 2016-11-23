@@ -8,7 +8,7 @@ use App\Models\Member;
 
 class EditMemberRequest extends Request {
 	public function authorize() {
-		if (Auth::check() && Auth::user()->admin) { // Admin
+		if (Gate::allows('admin')) { // Admin
 			return true;
 		}
 		

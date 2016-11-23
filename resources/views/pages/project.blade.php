@@ -21,7 +21,7 @@
 		</form>
 	</div>
 	
-	@if(count($members))
+	@if (count($members))
 	<h3>Team Members</h3>
 	<div class="panel panel-default">
 		<table class="table table-bordered table-hover table-clickable panel-body sortableTable">
@@ -56,7 +56,7 @@
 	</div>
 	@endif
 	
-	@if(count($members))
+	@if (count($members))
 	<a href="{{ action('ProjectController@getDelete', $project->id) }}" class="pull-right"><button type="button" class="btn btn-danger btn-sm">Delete Project</button></a>
 	@endif
 </div></div>

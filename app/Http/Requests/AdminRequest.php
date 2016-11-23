@@ -7,10 +7,7 @@ use App\Http\Requests\Request;
 
 class AdminRequest extends Request {
 	public function authorize() {
-		if(Auth::check() && Auth::user()->admin) {
-			return false;
-		}
-		return true;
+		return Gate::allows('admin');
 	}
 	public function rules() {
 		return [

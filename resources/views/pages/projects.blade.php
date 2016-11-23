@@ -8,7 +8,7 @@ Projects -
 <div class="section"><div class='section-container'>
 	<h3>{{ isset($allProjects) ? "All Projects" : "Your Projects" }}
 		
-		@if (Auth::user()->admin)
+		@can('admin')
 			@if(isset($allProjects))
 			<a href="{{ action('ProjectController@getIndex') }}" class="pull-left marginR"><button type="button" class="btn btn-primary btn-sm">My Projects</button></a>
 			@else

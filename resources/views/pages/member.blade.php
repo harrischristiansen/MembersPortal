@@ -10,7 +10,7 @@
 	<h3>Member - {{ $member->name }}</h3>
 	
 	
-	@if ($member->id == session()->get('member_id') || Auth::user()->admin || isset($setPassword) ) {{-- Edit Profile --}}
+	@if ($member->id == session()->get('member_id') || Gate::allows('admin') || isset($setPassword) ) {{-- Edit Profile --}}
 	<div class="panel panel-default">
 		<form method="post" action="{{ $member->profileURL() }}" enctype="multipart/form-data" class="panel-body validate">
 			<p class="text-muted text-center">Fields marked with an * are required</p>
@@ -90,7 +90,7 @@
 			<input type="file" name="resume" id="resume" class="form-control">
 			<br>
 			@if (!isset($setPassword))
-				@if(session()->get('authenticated_admin') == "true")
+				@if (Gate::allows('admin'))
 				<a href="{{ $member->reset_url() }}" class="btn btn-warning pull-left">Reset Password</a>
 				@elseif($member->id == session()->get('member_id'))
 				<a href="{{ $member->reset_url() }}" class="btn btn-warning pull-left">Change Password</a>
@@ -151,7 +151,7 @@
 		    	<td>{{ $location->location->city }}</td>
 				<td>{{ $location->date_start }}</td>
 				<td>{{ $location->date_end }}
-					@if ($member->id == session()->get('member_id') || session()->get('authenticated_admin') == "true")
+					@if ($member->id == session()->get('member_id') || Gate::allows('admin'))
 					<a href="{{ action('LocationController@getDelete', $location->id) }}" class="btn btn-sm btn-danger pull-right">Remove</a>
 					@endif
 				</td>
@@ -165,7 +165,7 @@
 			</tr>
 		@endforelse
 		
-		@if ($member->id == session()->get('member_id') || session()->get('authenticated_admin') == "true")
+		@if ($member->id == session()->get('member_id') || Gate::allows('admin'))
 		<form method="post" action="{{ action('LocationController@postCreate', $member->id) }}" class="panel-body validate">
 			{!! csrf_field() !!}
 			<tr>
