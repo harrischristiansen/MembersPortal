@@ -57,10 +57,9 @@ class PermissionController extends BaseController {
 		$members = $permission->members;
 		
 		foreach ($members as $member) { // Pre-calculate recorded_by
-			$member_permission = $member->permissions()->find($permissionID)->pivot;
-			$recorded_member = Member::find($member_permission->recorded_by);
+			$recorded_member = Member::find($member->permissions()->find($permissionID)->pivot->recorded_by);
 			$member->recorded_by = $recorded_member;
-			$member->authorized_at = $member_permission->created_at;
+			$member->authorized_at = $member->permissions()->find($permissionID)->pivot->created_at;
 		}
 		
 		return view('pages.permission', compact("permission","members"));

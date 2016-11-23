@@ -39,7 +39,7 @@ Permission: {{ $permission->name }} -
 			@forelse ($members as $member)
 			    <tr onclick="location.href='{{ $member->profileURL() }}';">
 			    	<td>{{ $member->name }}</td>
-			    	<td>{{ $member->graduation_year }}</td>
+			    	<td>{{ $member->authorized_at }}</td>
 					<td>{{ $member->recorded_by->name }}</td>
 			    </tr>
 			@empty

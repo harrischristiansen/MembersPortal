@@ -8,7 +8,7 @@ Permissions -
 <div class="section"><div class='section-container'>
 	<h3>Permissions</h3>
 	<div class="panel panel-default">
-		<table class="table table-bordered panel-body sortableTable">
+		<table class="table table-bordered panel-body table-hover table-clickable sortableTable">
 			<thead>
 				<tr>
 					<th>Name</th>
@@ -18,7 +18,7 @@ Permissions -
 			</thead>
 			<tbody>
 			@foreach ($permissions as $permission)
-			    <tr>
+			    <tr onclick="location.href='{{ action('PermissionController@getPermission', $permission->id) }}';">
 			    	<td>{{ $permission->name }}</td>
 					<td>{{ $permission->description }}</td>
 			    	<td>{{ count($permission->members) }}</td>
