@@ -27,30 +27,6 @@ class BaseController extends Controller {
 		return view('pages.home');
 	}
 	
-	/////////////////////////////// Authentication ///////////////////////////////
-	
-	public function isAuthenticated($request) {
-		return Auth::check();
-	}
-	
-	public function isAdmin($request) {
-		return Auth::check() && Auth::user()->admin;
-	}
-	
-	public function isSuperAdmin($request) {
-		return Auth::check() && Auth::user()->superAdmin;
-	}
-	
-	public function getAuthenticated($request) {
-		if (!Auth::check()) { return false; }
-		return Auth::user();
-	}
-	
-	public function getAuthenticatedID($request) {
-		if (!Auth::check()) { return false; }
-		return Auth::user()->id;
-	}
-	
 	/////////////////////////////// Email ///////////////////////////////
 	
 	public function sendEmail($member, $subject, $msg) {

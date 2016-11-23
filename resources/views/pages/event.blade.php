@@ -10,31 +10,33 @@
 	<h3>{{ $event->nameShort() ?: "Create Event" }}
 		@if ($event->id != 0)
 		
-		@if (Auth::user()->admin)
+		@can('admin')
 			<a href="{{ action('ReportsController@getEvent', $event->id) }}" class="pull-left marginR"><button type="button" class="btn btn-primary btn-sm">Graphs</button></a>
 			@if (count($applications))
 			<a href="{{ action('EventController@getApplications', $event->id) }}" class="pull-left marginR"><button type="button" class="btn btn-primary btn-sm">{{ count($applications) }} {{ $requiresApplication ? "Applications" : "Registrations" }}</button></a>
 			@endif
 			<a href="{{ action('EventController@getCheckin', $event->id) }}" class="pull-right"><button type="button" class="btn btn-primary btn-sm">Checkin</button></a>
 			<a href="{{ action('EventController@getMessage', $event->id) }}" class="pull-right marginR"><button type="button" class="btn btn-primary btn-sm">Send Message</button></a>
-		@elseif ($requiresApplication)
-			@if ($hasRegistered)
-			<button type="button" class="btn btn-primary btn-sm pull-right">Registered</button>
-			@else
-			<a href="{{ action('EventController@getApply', $event->id) }}" class="pull-right"><button type="button" class="btn btn-primary btn-sm">Sign Up</button></a>
+		@else
+			@if ($requiresApplication)
+				@if ($hasRegistered)
+				<button type="button" class="btn btn-primary btn-sm pull-right">Registered</button>
+				@else
+				<a href="{{ action('EventController@getApply', $event->id) }}" class="pull-right"><button type="button" class="btn btn-primary btn-sm">Sign Up</button></a>
+				@endif
+			@elseif (Auth::check())
+				@if (isset($hasRegistered) && $hasRegistered)
+				<button type="button" class="btn btn-primary btn-sm pull-right">Registered</button>
+				@else
+				<a href="{{ action('EventController@getRegister', $event->id) }}" class="pull-right"><button type="button" class="btn btn-primary btn-sm">Register</button></a>
+				@endif
 			@endif
-		@elseif (Auth::check())
-			@if (isset($hasRegistered) && $hasRegistered)
-			<button type="button" class="btn btn-primary btn-sm pull-right">Registered</button>
-			@else
-			<a href="{{ action('EventController@getRegister', $event->id) }}" class="pull-right"><button type="button" class="btn btn-primary btn-sm">Register</button></a>
-			@endif
-		@endif
+		@endcan
 		
 		@endif
 	</h3>
 	
-	@if (Auth::user()->admin) {{-- Edit Event --}}
+	@can('admin') {{-- Edit Event --}}
 	<div class="panel panel-default">
 		<form method="post" action="{{ action('EventController@postEvent', $event->id) }}" class="panel-body validate">
 			{!! csrf_field() !!}
@@ -91,7 +93,7 @@
 			@endif
 		</div>
 	</div>
-	@endif
+	@endcan
 	
 	@if(count($members) > 0)
 	
@@ -105,7 +107,7 @@
 					<th>Member</th>
 					<th>Year</th>
 					<th># Attended Events</th>
-					@if (session()->get('authenticated_admin') == "true" && $requiresApplication)
+					@if (Gate::allows('admin') && $requiresApplication)
 					<th>Checked In By</th>
 					@endif
 				</tr>
@@ -133,7 +135,7 @@
 	
 	@endif
 	
-	@if(Auth::user()->admin && $event->id != 0)
+	@if (Gate::allows('admin') && $event->id != 0)
 	<a href="{{ action('EventController@getDelete', $event->id) }}" class="pull-right marginR"><button type="button" class="btn btn-danger btn-sm">Delete Event</button></a>
 	@endif
 	@if (Auth::check() && $hasRegistered)

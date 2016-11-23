@@ -16,6 +16,7 @@ use Auth;
 
 use App\Http\Requests;
 use App\Http\Requests\RegisterRequest;
+use App\Http\Requests\AdminRequest;
 use App\Models\Member;
 
 class AuthController extends BaseController {

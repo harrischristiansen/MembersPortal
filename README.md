@@ -11,13 +11,14 @@ This Members Tracking Portal was originally developed for Purdue Hackers. Purdue
 - [X] Members
 	- [X] Register, Login
 		- [ ] Keep url path through login
+		- [ ] Accept md5 passwords
 	- [X] Reset Password
 	- [X] Profiles (Password, Picture, About, Links, Resume, Status) + Locations + Event History
 		- [ ] Automatic Status Changes (Member/Inactive/Alumni)
 		- [ ] Mailing List Integration
 		- [ ] Log Profile changes
 	- [X] Map of Members Locations
-		- [ ] Location duplicate resolution?  
+		- [ ] Location duplicate resolution?
 - [X] Events
 	- [X] List, View
 	- [X] Register, Apply, Unregister

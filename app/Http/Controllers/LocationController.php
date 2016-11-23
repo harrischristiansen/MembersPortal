@@ -8,6 +8,7 @@
 
 namespace App\Http\Controllers;
 
+use Gate;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -80,18 +81,18 @@ class LocationController extends BaseController {
 		$member = Member::find($memberID);
 		$authenticated_id = $request->session()->get('member_id');
 		
-		if(is_null($member)) {
+		if (is_null($member)) {
 			$request->session()->flash('msg', 'Error: Member Not Found.');
 			return app('App\Http\Controllers\MemberController')->getIndex();
 		}
-		if($request->session()->get('authenticated_admin') != "true" && $memberID!=$authenticated_id) {
+		if (Gate::denies('admin') && $memberID!=$authenticated_id) {
 			$request->session()->flash('msg', 'Error: Member Not Found.');
 			return app('App\Http\Controllers\MemberController')->getIndex();
 		}
 		
 		$location = Location::firstOrCreate(['name'=>$locationName, 'city'=>$city]);
 		
-		if($location->loc_lat==0) {
+		if ($location->loc_lat==0) {
 			$this->addLocationLatLng($location);
 		}
 		

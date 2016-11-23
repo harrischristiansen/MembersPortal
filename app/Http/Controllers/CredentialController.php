@@ -43,7 +43,7 @@ class CredentialController extends BaseController {
 		$credential->username = $username;
 		$credential->password = encrypt($password);
 		$credential->description = $description;
-		$credential->member_id = $this->getAuthenticatedID($request);
+		$credential->member_id = Auth::user()->id;
 		$credential->save();
 		
 		return $this->getIndex($request);

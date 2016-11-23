@@ -97,7 +97,7 @@ class ProjectController extends BaseController {
 		
 		// Return Response
 		if($projectID == 0) { // New Project
-			$member = $this->getAuthenticated($request);
+			$member = Auth::user();
 			$project->members()->attach($member->id); // Attach Project to Member
 			return redirect()->action('ProjectController@getProject', [$project->id])->with('msg', 'Project Created!');
 		} else {

@@ -4,10 +4,10 @@
 <div class="section"><div class='section-container'>
 	<h3>Events
 		<a href="{{ action('HomeController@getHackathons') }}" class="pull-left"><button type="button" class="btn btn-info btn-sm marginR">Upcoming Hackathons</button></a>
-		@if (Auth::user()->admin)
+		@can('admin')
 		<a href="{{ action('HomeController@getAnvilWifi') }}" class="pull-left"><button type="button" class="btn btn-info btn-sm">Anvil Wifi</button></a>
 		<a href="{{ action('EventController@getCreate') }}" class="pull-right"><button type="button" class="btn btn-primary btn-sm">+ Add Event</button></a>
-		@endif
+		@endcan
 	</h3>
 	<div class="panel panel-default">
 		<table class="table table-bordered table-hover table-clickable panel-body sortableTable">

@@ -28,7 +28,7 @@ class EventController extends BaseController {
 	/////////////////////////////// Viewing Events ///////////////////////////////
 	
 	public function getIndex(Request $request) {
-		if (Auth::user()->admin) {
+		if (Gate::allows('admin')) {
 			$events = Event::orderBy("event_time","desc")->get();
 		} else {
 			$events = Event::where('privateEvent',false)->orderBy("event_time","desc")->get();
@@ -46,14 +46,14 @@ class EventController extends BaseController {
 			$member->recorded_by = $recorded_member;
 		}
 		
-		$requiresApplication = $this->isAuthenticated($request) && $event->requiresApplication;
-		$authenticatedMember = $this->getAuthenticated($request);
+		$requiresApplication = Auth::check() && $event->requiresApplication;
+		$authenticatedMember = Auth::user();
 		if ($authenticatedMember != null) {
 			$hasRegistered = count($authenticatedMember->applications()->where('event_id',$eventID)->get()) > 0;
 		}
 		
 		$applications = []; // Get list of applications (if admin)
-		if ($request->session()->get('authenticated_admin') == "true") {
+		if (Gate::allows('admin')) {
 			$applications = $event->applications;
 		}
 		
@@ -155,7 +155,7 @@ class EventController extends BaseController {
 		}
 		
 		// Ensure message sent to site admin and admin who sent
-		$members_mustReceive = collect([$this->getAuthenticated($request), Member::find(1)]);
+		$members_mustReceive = collect([Auth::user(), Member::find(1)]);
 		foreach ($members_mustReceive as $member) {
 			if ($members->contains($member) == false) {
 				$members->push($member);
@@ -261,7 +261,7 @@ class EventController extends BaseController {
 			return "repeat";
 		}
 		
-		$event->members()->attach($member->id,['recorded_by' => $this->getAuthenticatedID($request)]); // Save Record
+		$event->members()->attach($member->id,['recorded_by' => Auth::user()->id]); // Save Record
 		
 		if (strlen($memberPhone) > 9) {
 			$member->phone = $memberPhone;
@@ -277,7 +277,7 @@ class EventController extends BaseController {
 	
 	public function getApply(Request $request, $eventID=-1) { // GET Apply
 		$event = Event::findOrFail($eventID);
-		$authenticatedMember = $this->getAuthenticated($request);
+		$authenticatedMember = Auth::user();
 		if (!$authenticatedMember) { $authenticatedMember = new Member(); }
 		$majors = Major::orderByRaw('(id = 1) DESC, name')->get(); // Order by name, but keep first major at top
 		
@@ -297,7 +297,7 @@ class EventController extends BaseController {
 			return $this->getIndex($request);
 		}
 		
-		$this->setAuthenticated($request, $member);
+		Auth::login($member);
 		
 		return $this->getApply($request, $eventID);
 	}
@@ -310,15 +310,15 @@ class EventController extends BaseController {
 			return $this->getEvent($request, $eventID);
 		}
 		
-		$memberID = $this->getAuthenticatedID($request);
+		$member = Auth::user();
 		
-		if ($event->applications()->where('member_id',$memberID)->first()) {
+		if ($event->applications()->where('member_id',$member->id)->first()) {
 			$request->session()->flash('msg','Error: You are already registered for '.$event->name.".");
 			return $this->getEvent($request, $eventID);
 		}
 		
 		$application = new Application();
-		$application->member_id = $memberID;
+		$application->member_id = $member->id;
 		$application->event_id = $eventID;
 		$application->save();
 		
@@ -329,9 +329,9 @@ class EventController extends BaseController {
 	public function getUnregister(LoggedInRequest $request, $eventID) { // Delete Application
 		$event = Event::findOrFail($eventID);
 		
-		$memberID = $this->getAuthenticatedID($request);
+		$member = Auth::user();
 		
-		$event->applications()->where('member_id',$memberID)->first()->delete();
+		$event->applications()->where('member_id',$member->id)->first()->delete();
 		
 		$request->session()->flash('msg','You are no longer registered for '.$event->name.'.');
 		return $this->getEvent($request, $eventID);
@@ -342,7 +342,7 @@ class EventController extends BaseController {
 		$gender = $request->input('gender');
 		$major = $request->input('major');
 		
-		$member = $this->getAuthenticated($request);
+		$member = Auth::user();
 		$member->gender = $gender;
 		$member->major_id = $major;
 		$member->save();

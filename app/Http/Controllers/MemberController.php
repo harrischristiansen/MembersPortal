@@ -99,7 +99,7 @@ class MemberController extends BaseController {
 			$member->password = Hash::make($password);
 			
 			if ($this->isAdmin($request) == false) { // Auto-Login if password reset was not made by admin
-				$this->setAuthenticated($request, $member);
+				Auth::login($member);
 			
 				if ($member->admin) { // Admin Accounts
 					$request->session()->put('authenticated_admin', 'true');
@@ -162,7 +162,7 @@ class MemberController extends BaseController {
 		
 		// Return Response
 		if ($memberID != $member->username) {
-			if ($member->id == $this->getAuthenticatedID($request)) { // Changed own username, update session
+			if ($member->id == Auth::user()->id) { // Changed own username, update session
 				$request->session()->put('member_username', $member->username);
 			}
 			return redirect()->action('MemberController@getMember', [$member->username])->with('msg', 'Profile Saved! Your username is now '.$member->username);
