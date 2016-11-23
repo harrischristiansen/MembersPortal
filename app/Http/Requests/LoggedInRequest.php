@@ -6,7 +6,7 @@ use App\Http\Requests\Request;
 
 class LoggedInRequest extends Request {
 	public function authorize() {
-		return Auth::check()
+		return Auth::check();
 	}
 	public function rules() {
 		return [

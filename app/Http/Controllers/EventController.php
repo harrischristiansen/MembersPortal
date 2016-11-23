@@ -8,16 +8,16 @@
 
 namespace App\Http\Controllers;
 
-use Carbon\Carbon;
-use Illuminate\Http\Request;
-use DB;
-
 use Auth;
+use Carbon\Carbon;
+use DB;
+use Gate;
+use Illuminate\Http\Request;
+
 use App\Http\Requests;
 use App\Http\Requests\LoggedInRequest;
 use App\Http\Requests\EditEventRequest;
 use App\Http\Requests\AdminRequest;
-
 use App\Models\Application;
 use App\Models\Event;
 use App\Models\Major;

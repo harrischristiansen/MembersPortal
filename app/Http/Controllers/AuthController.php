@@ -42,6 +42,20 @@ class AuthController extends BaseController {
             return redirect()->intended('');
         }
         
+        // MD5 Backward Compatability
+        $passwordMD5 = md5($password);
+        $member = Member::where('email',$email)->where('password', $passwordMD5)->first();
+        if ($member) {
+			$member->authenticated_at = Carbon::now();
+			$member->password = Hash::make($password);
+			$member->timestamps = false; // Don't update timestamps
+			$member->save();
+			
+			Auth::login($member);
+			$request->session()->flash('msg', 'Welcome '.$member->name.'!');
+            return redirect()->intended('');
+        }
+        
 		$request->session()->flash('msg', 'Invalid username or password.');
 		return $this->getLogin();
 	}
