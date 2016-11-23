@@ -90,7 +90,7 @@
 		    </tr>
 		@empty
 			<tr>
-				<td>No Locations</td>
+				<td>No Job History</td>
 				<td></td>
 				<td></td>
 				<td></td>
