@@ -26,7 +26,7 @@ Credentials -
 			    	<td>
 				    	{{ $credential->description }}
 				    	<a href="{{ action('CredentialController@getDelete', $credential->id) }}"><button class="btn btn-xs btn-danger pull-right">Delete</button></a>
-				    	</td>
+				    </td>
 			    </tr>
 			@endforeach
 			<form method="post" action="{{ action('CredentialController@postIndex') }}" class="panel-body validate">

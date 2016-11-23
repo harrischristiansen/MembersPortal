@@ -16,6 +16,10 @@ class Member extends Authenticatable {
 	protected $hidden = ['password', 'remember_token',];
 	protected $dates = ['created_at','updated_at','authenticated_at','setupEmailSent',];
 	
+	public function permissions() {
+		return $this->hasMany('App\Models\Permission')->withPivot('recorded_by');
+	}
+	
 	public function profileURL() {
 		return action('MemberController@getMember', $this->username);
 	}

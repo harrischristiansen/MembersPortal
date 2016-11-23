@@ -20,13 +20,11 @@ class CredentialController extends BaseController {
 	
 	public function getIndex(Request $request) {
 		if (Gate::allows('super-admin')) {
-			$credentials = Credential::all();
-		
-			return view('pages.credentials', compact("credentials"));
+			return redirect()->guest('login')->with('msg', 'Permission Denied');
 		}
 		
-		$request->session()->flash('msg', 'Permission Denied');
-		return redirect()->guest('login');
+		$credentials = Credential::all();
+		return view('pages.credentials', compact("credentials"));
 	}
 	
 	public function postIndex(SuperAdminRequest $request) {
