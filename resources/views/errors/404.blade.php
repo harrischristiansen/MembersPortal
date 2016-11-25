@@ -1,7 +1,7 @@
 @extends("app")
 
 @section("page-title")
-Site Unavailable - 
+Page Not Found - 
 @stop
 
 @section("content")
@@ -9,9 +9,8 @@ Site Unavailable -
 
 <div class='section'>
 	<div class='section-container'>
-		<h1>Site Unavailable</h1>
-		<h3>We will be right back!</h3>
-		<h5>Error 503</h5>
+		<h1>Error 404</h1>
+		<h3>Page Not Found</h3>
 	</div>
 </div>
 
