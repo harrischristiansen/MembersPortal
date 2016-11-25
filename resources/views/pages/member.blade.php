@@ -8,7 +8,7 @@
 
 <div class="section"><div class='section-container'>
 	<h3>Member - {{ $member->name }}
-		@if (Gate::allows('member-matches', $member) || Gate::allows('admin') || isset($setPassword) )
+		@if (Gate::allows('member-matches', $member) || Gate::allows('permission', 'members') || isset($setPassword) )
 		<a href="{{ action('MemberController@getMemberEdit', $member->username) }}" class="pull-right"><button type="button" class="btn btn-primary btn-sm">Edit</button></a>
 		@endif
 	</h3>
@@ -85,7 +85,7 @@
 		    	<td>{{ $location->location->city }}</td>
 				<td>{{ $location->date_start }}</td>
 				<td>{{ $location->date_end }}
-					@if ($member->id == session()->get('member_id') || Gate::allows('admin'))
+					@if (Gate::allows('member-matches', $member) || Gate::allows('permission', 'members'))
 					<a href="{{ action('LocationController@getDelete', $location->id) }}" class="btn btn-sm btn-danger pull-right">Remove</a>
 					@endif
 				</td>
@@ -99,7 +99,7 @@
 			</tr>
 		@endforelse
 		
-		@if ($member->id == session()->get('member_id') || Gate::allows('admin'))
+		@if (Gate::allows('member-matches', $member) || Gate::allows('permission', 'members'))
 		<form method="post" action="{{ action('LocationController@postCreate', $member->id) }}" class="panel-body validate">
 			{!! csrf_field() !!}
 			<tr>

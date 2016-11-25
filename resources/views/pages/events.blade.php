@@ -4,7 +4,7 @@
 <div class="section"><div class='section-container'>
 	<h3>Events
 		<a href="{{ action('HomeController@getHackathons') }}" class="pull-left"><button type="button" class="btn btn-info btn-sm marginR">Upcoming Hackathons</button></a>
-		@can('admin')
+		@can ('permission','events')
 		<a href="{{ action('HomeController@getAnvilWifi') }}" class="pull-left"><button type="button" class="btn btn-info btn-sm">Anvil Wifi</button></a>
 		<a href="{{ action('EventController@getCreate') }}" class="pull-right"><button type="button" class="btn btn-primary btn-sm">+ Add Event</button></a>
 		@endcan

@@ -7,17 +7,20 @@ Members -
 @section("content")
 <div class="section"><div class='section-container'>
 	<h3>Members
-		@can('admin')
-		<a href="{{ action('ReportsController@getMembers') }}" class="pull-left"><button type="button" class="btn btn-primary btn-sm marginR">Graphs</button></a>
+		@can ('permission', 'members')
+		<a href="{{ action('ReportsController@getMembers') }}" class="pull-left marginR"><button type="button" class="btn btn-primary btn-sm">Graphs</button></a>
 		<a href="{{ action('LocationController@getMap') }}" class="pull-left"><button type="button" class="btn btn-primary btn-sm">Map</button></a>
-		<button type="button" class="btn btn-primary btn-sm pull-right">{{ count($members) }} members</button>
+		<a href="#" class="pull-right"><button type="button" class="btn btn-primary btn-sm">{{ count($members) }} members</button></a>
+		@can ('permission', 'permissions')
+		<a href="{{ action('PermissionController@getIndex') }}" class="pull-right marginR"><button type="button" class="btn btn-primary btn-sm">Edit Permissions</button></a>
+		@endcan
 		@endcan
 	</h3>
 	<div class="panel panel-default">
 		<table class="table table-bordered table-hover table-clickable panel-body sortableTable">
 			<thead>
 				<tr>
-					@can('admin')
+					@can('permission', 'members')
 					<th>Picture</th>
 					@endcan
 					<th>Name</th>
@@ -29,7 +32,7 @@ Members -
 			<tbody>
 			@foreach ($members as $member)
 			    <tr onclick="location.href='{{ $member->profileURL() }}';">
-				    @can('admin')
+				    @can('permission', 'members')
 				    <td class="member-icon">
 					    @if($member->picture)
 					    <img src="{{ $member->picturePath() }}" class="member-icon">

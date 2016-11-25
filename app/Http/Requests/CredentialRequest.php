@@ -5,9 +5,9 @@ namespace App\Http\Requests;
 use Gate;
 use App\Http\Requests\Request;
 
-class SuperAdminRequest extends Request {
+class CredentialRequest extends Request {
 	public function authorize() {
-		return Gate::allows('super-admin');
+		return Gate::allows('permission','credentials');
 	}
 	public function rules() {
 		return [

@@ -10,7 +10,7 @@
 	<h3>{{ $event->nameShort() ?: "Create Event" }}
 		@if ($event->id != 0)
 		
-		@can('admin')
+		@can ('permission', 'events')
 			<a href="{{ action('ReportsController@getEvent', $event->id) }}" class="pull-left marginR"><button type="button" class="btn btn-primary btn-sm">Graphs</button></a>
 			@if (count($applications))
 			<a href="{{ action('EventController@getApplications', $event->id) }}" class="pull-left marginR"><button type="button" class="btn btn-primary btn-sm">{{ count($applications) }} {{ $requiresApplication ? "Applications" : "Registrations" }}</button></a>
@@ -36,7 +36,7 @@
 		@endif
 	</h3>
 	
-	@can('admin') {{-- Edit Event --}}
+	@can ('permission', 'events') {{-- Edit Event --}}
 	<div class="panel panel-default">
 		<form method="post" action="{{ action('EventController@postEvent', $event->id) }}" class="panel-body validate">
 			{!! csrf_field() !!}
@@ -92,7 +92,7 @@
 				@if ($event->facebook)
 				<a href="{{ $event->facebook }}"><br>{{ $event->facebook }}</a><br>
 				@endif
-				@if(count($members) > 0)
+				@if (count($members) > 0)
 				<div id="profile_badges">
 					<div class="profile_badge"><div class="profile_badge_title">Attendees</div>{{ count($members) }}</div>
 				</div>
@@ -102,7 +102,7 @@
 	</div>
 	@endcan
 	
-	@if(count($members) > 0)
+	@if (count($members) > 0)
 	
 	<hr>
 	
@@ -125,7 +125,7 @@
 			    	<td>{{ $member->name }}</td>
 			    	<td>{{ $member->graduation_year }}</td>
 					<td>{{ count($member->events) }}</td>
-					@if (session()->get('authenticated_admin') == "true" && $requiresApplication)
+					@if (Gate::allows('permission', 'events') && $requiresApplication)
 					<td style="color: #FFFFFF; background-color: {{ count($event->applications()->where('member_id',$member->id)->get()) ? "green":"red" }};">{{ $member->recorded_by->name }}</td>
 					@endif
 			    </tr>
@@ -142,7 +142,7 @@
 	
 	@endif
 	
-	@if (Gate::allows('admin') && $event->id != 0)
+	@if (Gate::allows('permission', 'events') && $event->id != 0)
 	<a href="{{ action('EventController@getDelete', $event->id) }}" class="pull-right marginR"><button type="button" class="btn btn-danger btn-sm">Delete Event</button></a>
 	@endif
 	@if (Auth::check() && $hasRegistered)

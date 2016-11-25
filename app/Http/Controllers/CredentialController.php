@@ -13,13 +13,13 @@ use Gate;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
-use App\Http\Requests\SuperAdminRequest;
+use App\Http\Requests\CredentialRequest;
 use App\Models\Credential;
 
 class CredentialController extends BaseController {
 	
 	public function getIndex(Request $request) {
-		if (Gate::allows('super-admin')) {
+		if (Gate::denies('permission', 'credentials')) {
 			return redirect()->guest('login')->with('msg', 'Permission Denied');
 		}
 		
@@ -27,7 +27,7 @@ class CredentialController extends BaseController {
 		return view('pages.credentials', compact("credentials"));
 	}
 	
-	public function postIndex(SuperAdminRequest $request) {
+	public function postIndex(CredentialRequest $request) {
 		$site = $request->input("site");
 		$username = $request->input("username");
 		$password = $request->input("password");
@@ -46,10 +46,11 @@ class CredentialController extends BaseController {
 		$credential->member_id = Auth::user()->id;
 		$credential->save();
 		
+		$request->session()->flash('msg', 'Success: Added credentials for '.$credential->site);
 		return $this->getIndex($request);
 	}
 	
-	public function getDelete(SuperAdminRequest $request, $credentialID) {
+	public function getDelete(CredentialRequest $request, $credentialID) {
 		$credential = Credential::findOrFail($credentialID);
 		$credential->delete();
 		

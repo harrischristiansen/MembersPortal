@@ -40,7 +40,9 @@ Permission: {{ $permission->name }} -
 			    <tr onclick="location.href='{{ $member->profileURL() }}';">
 			    	<td>{{ $member->name }}</td>
 			    	<td>{{ $member->authorized_at }}</td>
-					<td>{{ $member->recorded_by->name }}</td>
+					<td>{{ $member->recorded_by->name }}
+						<a href="{{ action('PermissionController@getDeleteMember', [$permission->id, $member->id]) }}" class="pull-right"><button class="btn btn-xs btn-danger pull-right">Delete</button></a>
+					</td>
 			    </tr>
 			@empty
 				<tr>
@@ -61,7 +63,9 @@ Permission: {{ $permission->name }} -
 		</table>
 	</div>
 	
+	@can ('permission','adminpermissions')
 	<a href="{{ action('PermissionController@getDelete', $permission->id) }}" class="pull-right"><button class="btn btn-sm btn-danger pull-right">Delete Permission</button></a>
+	@endcan
 	
 </div></div>
 

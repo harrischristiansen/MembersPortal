@@ -5,9 +5,9 @@ namespace App\Http\Requests;
 use Gate;
 use App\Http\Requests\Request;
 
-class AdminRequest extends Request {
+class AdminPermissionRequest extends Request {
 	public function authorize() {
-		return Gate::allows('permission', 'admin');
+		return Gate::allows('permission','adminpermission');
 	}
 	public function rules() {
 		return [

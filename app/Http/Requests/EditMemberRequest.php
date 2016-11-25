@@ -9,7 +9,7 @@ use App\Models\Member;
 
 class EditMemberRequest extends Request {
 	public function authorize() {
-		if (Gate::allows('admin')) { // Admin
+		if (Gate::allows('permission', 'members')) { // Admin Permission
 			return true;
 		}
 		

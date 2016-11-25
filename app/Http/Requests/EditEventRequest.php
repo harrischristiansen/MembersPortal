@@ -7,7 +7,7 @@ use App\Http\Requests\Request;
 
 class EditEventRequest extends Request {
 	public function authorize() {
-		return Gate::allows('admin');
+		return Gate::allows('permission', 'events');
 	}
 	public function rules() {
 		return [

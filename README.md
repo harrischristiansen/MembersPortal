@@ -32,11 +32,7 @@ This Members Tracking Portal was originally developed for Purdue Hackers. Purdue
 	- [X] Add/Remove Team Members
 - [X] Admin
 	- [X] Credential Manager
-	- [ ] Permissions Manager
-		- [ ] Project Permissions
-		- [ ] Credential Permissions
-		- [ ] Event Permissions
-		- [ ] Member Permissions
+	- [X] Permissions Manager
 	- [X] Analytics
 		- [ ] Graphs of "# events attended"
 		- [ ] See trends in who has been going to what events

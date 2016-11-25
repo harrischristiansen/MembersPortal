@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Gate;
 use Illuminate\Contracts\Auth\Access\Gate as GateContract;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
@@ -13,21 +14,21 @@ class AuthServiceProvider extends ServiceProvider {
 	public function boot(GateContract $gate) {
 		$this->registerPolicies($gate);
 		
-		$gate->define('admin', function ($user) {
-		    return $user->admin == 1;
+		$gate->define('permission', function ($user, $name) {
+		    return $user->permissions->contains('name', $name);
 		});
 		
-		$gate->define('super-admin', function ($user) {
-		    return $user->superAdmin == 1;
+		$gate->define('admin', function ($user) {
+		    return Gate::allows('permission', 'admin');
 		});
 		
 		$gate->define('member-matches', function ($user, $object) {
-			if ($user->admin) { return 1; }
+			if (Gate::allows('admin')) { return 1; }
 		    return $user->id == $object->id;
 		});
 		
 		$gate->define('member-owns', function ($user, $object) {
-			if ($user->admin) { return 1; }
+			if (Gate::allows('admin')) { return 1; }
 		    return $user->id == $object->member_id;
 		});
 	}

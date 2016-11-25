@@ -24,6 +24,7 @@ Permissions -
 			    	<td>{{ count($permission->members) }}</td>
 			    </tr>
 			@endforeach
+			@can ('permission','adminpermissions')
 			<form method="post" action="{{ action('PermissionController@postIndex') }}" class="panel-body validate">
 				{!! csrf_field() !!}
 			    <tr>
@@ -32,6 +33,7 @@ Permissions -
 			    	<td><input type="submit" value="Add Credential" class="btn btn-sm btn-primary"></td>
 			    </tr>
 			</form>
+			@endcan
 			</tbody>
 		</table>
 	</div>

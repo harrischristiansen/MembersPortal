@@ -8,14 +8,16 @@ Projects -
 <div class="section"><div class='section-container'>
 	<h3>{{ isset($allProjects) ? "All Projects" : "Your Projects" }}
 		
-		@can('admin')
+		@can ('admin')
 			@if(isset($allProjects))
 			<a href="{{ action('ProjectController@getIndex') }}" class="pull-left marginR"><button type="button" class="btn btn-primary btn-sm">My Projects</button></a>
 			@else
 			<a href="{{ action('ProjectController@getAll') }}" class="pull-left marginR"><button type="button" class="btn btn-primary btn-sm">All Projects</button></a>
 			@endif
-			<a href="{{ action('CredentialController@getIndex') }}" class="pull-left marginR"><button type="button" class="btn btn-primary btn-sm">Credentials</button></a>
 		@endif
+		@can ('permission', 'credentials')
+		<a href="{{ action('CredentialController@getIndex') }}" class="pull-left marginR"><button type="button" class="btn btn-primary btn-sm">Credentials</button></a>
+		@endcan
 		<a href="{{ action('ProjectController@getCreate') }}" class="pull-right"><button type="button" class="btn btn-primary btn-sm">+ New Project</button></a>
 	</h3>
 	<div class="panel panel-default">

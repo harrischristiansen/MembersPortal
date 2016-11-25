@@ -17,7 +17,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Requests\LoggedInRequest;
 use App\Http\Requests\EditEventRequest;
-use App\Http\Requests\AdminRequest;
+use App\Http\Requests\EventRequest;
 use App\Models\Application;
 use App\Models\Event;
 use App\Models\Major;
@@ -33,7 +33,7 @@ class EventController extends BaseController {
 	/////////////////////////////// Viewing Events ///////////////////////////////
 	
 	public function getIndex(Request $request) {
-		if (Gate::allows('admin')) {
+		if (Gate::allows('permission', 'events')) {
 			$events = Event::orderBy("event_time","desc")->get();
 		} else {
 			$events = Event::where('privateEvent',false)->orderBy("event_time","desc")->get();
@@ -57,15 +57,15 @@ class EventController extends BaseController {
 			$hasRegistered = count($authenticatedMember->applications()->where('event_id',$eventID)->get()) > 0;
 		}
 		
-		$applications = []; // Get list of applications (if admin)
-		if (Gate::allows('admin')) {
+		$applications = []; // Get list of applications (if permitted)
+		if (Gate::allows('permission', 'events')) {
 			$applications = $event->applications;
 		}
 		
 		return view('pages.event', compact("event","members","requiresApplication","hasRegistered","applications"));
 	}
 	
-	public function getCreate(AdminRequest $request) {
+	public function getCreate(EventRequest $request) {
 		$event = new Event;
 		$event->id = 0;
 		$members = [];
@@ -117,7 +117,7 @@ class EventController extends BaseController {
 		}
 	}
 	
-	public function getDelete(AdminRequest $request, $eventID) {
+	public function getDelete(EventRequest $request, $eventID) {
 		Event::findOrFail($eventID)->delete();
 		
 		return redirect()->action('EventController@getIndex')->with('msg', 'Event Deleted! If this was done by mistake, contact the site administrator to restore this event.');
@@ -125,13 +125,13 @@ class EventController extends BaseController {
 	
 	/////////////////////////////////// Event Emails ///////////////////////////////////
 	
-	public function getMessage(AdminRequest $request, $eventID) {
+	public function getMessage(EventRequest $request, $eventID) {
 		$event = Event::findOrFail($eventID);
 		
 		return view('pages.event-message', compact("event"));
 	}
 	
-	public function postMessage(AdminRequest $request, $eventID) {
+	public function postMessage(EventRequest $request, $eventID) {
 		$event = Event::findOrFail($eventID);
 		
 		$method = $request->input("method");
@@ -199,7 +199,7 @@ class EventController extends BaseController {
 	
 	/////////////////////////////// Event Checkin System ///////////////////////////////
 	
-	public function getCheckin(AdminRequest $request, $eventID) {
+	public function getCheckin(EventRequest $request, $eventID) {
 		$event = Event::find($eventID);
 		
 		if(is_null($event)) {
@@ -210,13 +210,13 @@ class EventController extends BaseController {
 		return view('pages.checkin',compact("event","eventID"));
 	}
 	
-	public function getCheckinPhone(AdminRequest $request, $eventID) {
+	public function getCheckinPhone(EventRequest $request, $eventID) {
 		$getCheckin = $this->getCheckin($request, $eventID);
 		
 		return $getCheckin->with('checkinPhone',true);
 	}
 	
-	public function postCheckin(AdminRequest $request) {
+	public function postCheckin(EventRequest $request) {
 		$successResult = "true";
 		$memberName = $request->input("memberName");
 		$memberEmail = $request->input("memberEmail");
@@ -369,14 +369,14 @@ class EventController extends BaseController {
 		return $this->getEvent($request, $eventID);
 	}
 	
-	public function getApplications(AdminRequest $request, $eventID=-1) {
+	public function getApplications(EventRequest $request, $eventID=-1) {
 		$event = Event::findOrFail($eventID);
 		$applications = $event->applications;
 		
 		return view('pages.applications',compact("event","applications"));
 	}
 	
-	public function getApplicationsUpperclassmen(AdminRequest $request, $eventID=-1) {
+	public function getApplicationsUpperclassmen(EventRequest $request, $eventID=-1) {
 		$event = Event::findOrFail($eventID);
 		$members = $event->getAppliedMembers();
 		$upperclassmen = [];

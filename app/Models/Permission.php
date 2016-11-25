@@ -13,6 +13,6 @@ use Illuminate\Database\Eloquent\Model;
 class Permission extends Model {
 
 	public function members() {
-		return $this->belongsToMany('App\Models\Member')->withPivot('recorded_by');
+		return $this->belongsToMany('App\Models\Member')->withPivot('recorded_by')->withTimestamps();
 	}
 }

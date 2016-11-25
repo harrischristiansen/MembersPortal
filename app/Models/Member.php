@@ -17,7 +17,7 @@ class Member extends Authenticatable {
 	protected $dates = ['created_at','updated_at','authenticated_at','setupEmailSent',];
 	
 	public function permissions() {
-		return $this->belongsToMany('App\Models\Permission')->withPivot('recorded_by');
+		return $this->belongsToMany('App\Models\Permission')->withPivot('recorded_by')->withTimestamps();
 	}
 	
 	public function profileURL() {

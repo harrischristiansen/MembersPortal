@@ -5,13 +5,13 @@
 <div class="section"><div class='section-container'>
 	<h3>{{ $location->name }}
 		<a href="{{ action('LocationController@getIndex') }}" class="pull-left"><button type="button" class="btn btn-primary btn-sm"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> List of Locations</button></a>
-		@can('admin')
+		@can ('admin')
 		<a href="#" class="pull-right"><button type="button" class="btn btn-warning btn-sm">Merge</button></a>
 		@endcan
 	</h3>
 	
 	<div class="panel panel-default">
-	@can('admin') {{-- Edit Location Information --}}
+	@can ('admin') {{-- Edit Location Information --}}
 		<form method="post" action="{{ action('LocationController@postLocation', $location->id) }}" class="panel-body validate">
 			{!! csrf_field() !!}
 			<label for="locationName">Location Name</label>
@@ -23,9 +23,9 @@
 			<input type="submit" value="Update Location" class="btn btn-primary">
 		</form>
 	@else {{-- View Location Profile --}}
-		<div class="panel-body text-left">
-			<b>Location Name:</b> {{ $location->name }}<br>
-			<b>City:</b> {{ $location->city }}<br>
+		<div class="panel-body">
+			<div id="profile_name">{{ $location->name }}</div>
+			<div id="profile_major">City: {{ $location->city }}</div>
 		</div>
 	@endcan
 	</div>

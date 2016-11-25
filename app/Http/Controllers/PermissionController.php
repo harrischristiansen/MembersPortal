@@ -13,7 +13,8 @@ use Gate;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
-use App\Http\Requests\SuperAdminRequest;
+use App\Http\Requests\PermissionRequest;
+use App\Http\Requests\AdminPermissionRequest;
 use App\Models\Permission;
 use App\Models\Member;
 
@@ -22,7 +23,7 @@ class PermissionController extends BaseController {
 	/////////////////////////////// Permissions List ///////////////////////////////
 	
 	public function getIndex(Request $request) {
-		if (Gate::denies('admin')) {
+		if (Gate::denies('permission', 'permissions')) {
 			return redirect()->guest('login')->with('msg', 'Permission Denied');
 		}
 		
@@ -32,7 +33,7 @@ class PermissionController extends BaseController {
 	
 	/////////////////////////////// Create Permission ///////////////////////////////
 	
-	public function postIndex(SuperAdminRequest $request) {
+	public function postIndex(AdminPermissionRequest $request) {
 		$permission_name = $request->input("permission_name");
 		$description = $request->input("description");
 		
@@ -51,7 +52,7 @@ class PermissionController extends BaseController {
 	
 	/////////////////////////////// View Permission ///////////////////////////////
 	
-	public function getPermission(SuperAdminRequest $request, $permissionID) {
+	public function getPermission(PermissionRequest $request, $permissionID) {
 		$permission = Permission::findOrFail($permissionID);
 		
 		$members = $permission->members;
@@ -67,7 +68,7 @@ class PermissionController extends BaseController {
 	
 	/////////////////////////////// Add Member ///////////////////////////////
 	
-	public function postAdd(SuperAdminRequest $request, $permissionID) {
+	public function postAdd(PermissionRequest $request, $permissionID) {
 		$permission = Permission::findOrFail($permissionID);
 		$member_name = $request->input('member_name');
 		$member = Member::where('name',$member_name)->orWhere('email',$member_name)->firstOrFail();
@@ -78,9 +79,20 @@ class PermissionController extends BaseController {
 		return $this->getPermission($request, $permissionID);
 	}
 	
+	/////////////////////////////// Delete Member ///////////////////////////////
+	
+	public function getDeleteMember(PermissionRequest $request, $permissionID, $memberID) {
+		$member = Member::findOrFail($memberID);
+		$permission = Permission::findOrFail($permissionID);
+		$permission->members()->detach($memberID);
+		
+		$request->session()->flash('msg', 'Success: Removed '.$member->name);
+		return $this->getPermission($request, $permissionID);
+	}
+	
 	/////////////////////////////// Delete Permission ///////////////////////////////
 	
-	public function getDelete(SuperAdminRequest $request, $permissionID) {
+	public function getDelete(AdminPermissionRequest $request, $permissionID) {
 		$permission = Permission::findOrFail($permissionID);
 		$permission->delete();
 		

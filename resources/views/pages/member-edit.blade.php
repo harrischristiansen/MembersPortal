@@ -89,9 +89,9 @@
 			<input type="file" name="resume" id="resume" class="form-control">
 			<br>
 			@if (!isset($setPassword))
-				@if (Gate::allows('admin'))
+				@if (Gate::allows('permission', 'members'))
 				<a href="{{ $member->reset_url() }}" class="btn btn-warning pull-left">Reset Password</a>
-				@elseif(Gate::allows('member-matches',$member))
+				@elseif (Gate::allows('member-matches',$member))
 				<a href="{{ $member->reset_url() }}" class="btn btn-warning pull-left">Change Password</a>
 				@endif
 			@endif
