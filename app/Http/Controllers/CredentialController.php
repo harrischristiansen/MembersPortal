@@ -35,7 +35,7 @@ class CredentialController extends BaseController {
 		
 		if (strlen($site) < 3 || strlen($username) < 3 || strlen($password) < 3) {
 			$request->session()->flash('msg', 'Error: Please provide site, username, and password');
-			return $this->getCredentials($request);
+			return $this->getIndex($request);
 		}
 		
 		$credential = new Credential;
