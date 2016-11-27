@@ -2,9 +2,9 @@
 
 ## Synopsis
 
-This Members Tracking Portal is developed for the use of Clubs, Organizations, and such who are looking for a tool to keep a record of their members, their information, and what events they attend.  
+A web application for clubs and organizations to manage their members and events. Members can create accounts and manage their profile (including name, contact info, links, projects, work, and events attended). The portal also includes an event management system, including registration, checkin, attendee messaging, and analytics.  
 
-This Members Tracking Portal was originally developed for Purdue Hackers. Purdue Hackers is a community of students who collaborate, learn, and build kick-ass technical projects. This project was developed to function as a public manifest of the members of Purdue Hackers, store their information, and record their attendance at events.  
+This project was originally developed for Purdue Hackers. Purdue Hackers is a community of students who collaborate, learn, and build kick-ass technical projects. This project was developed to function as a public manifest of the members of Purdue Hackers, store their information, and record their attendance at events.  
 
 ## Features
 
@@ -45,7 +45,7 @@ This Members Tracking Portal was originally developed for Purdue Hackers. Purdue
 - [ ] Execute `cp .env.example .env` in the `./htdocs` directory  
 - [ ] Open `./htdocs/.env` - Fill in your database information and ORG/ADMIN Information
 - [ ] Download and Install [Composer](https://getcomposer.org/)  
-- [ ] Execute `composer install` in the `./htdocs` directory (`php composer.phar install` if executing using composer.phar)  
+- [ ] Execute `composer install` in the `./htdocs` directory (`php composer.phar install` if using composer.phar)  
 - [ ] Execute `php artisan migrate` in the `./htdocs` directory  
 - [ ] Execute `php artisan key:generate` in the `./htdocs` directory  
 - [ ] Execute `mkdir -p storage/framework/sessions` and `mkdir -p storage/framework/views` in the `./htdocs` directory  
