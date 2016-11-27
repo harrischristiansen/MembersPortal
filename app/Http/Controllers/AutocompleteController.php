@@ -11,7 +11,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
-use App\Http\Requests\AdminRequest;
+use App\Http\Requests\LoggedInRequest;
 
 use App\Models\Event;
 use App\Models\Location;
@@ -19,7 +19,7 @@ use App\Models\Member;
 
 class AutocompleteController extends BaseController {
 	
-	public function getMembers(AdminRequest $request, $eventID=0) {
+	public function getMembers(LoggedInRequest $request, $eventID=0) {
 		$requestTerm = $request->input('term');
 		$searchFor = "%".$requestTerm.'%';
 		

@@ -59,7 +59,7 @@ class MemberController extends BaseController {
 		}
 		$majors = Major::orderByRaw('(id = 1) DESC, name')->get(); // Order by name, but keep first major at top
 		
-		if (Gate::denies('member-matches', $member)) {
+		if (Gate::denies('member-matches', $member) && Gate::denies('permission', 'members')) {
 			$request->session()->flash('msg', 'Error: Permission Denied');
 			return $this->getMember($request, $member->id);
 		}

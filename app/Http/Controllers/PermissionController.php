@@ -27,7 +27,11 @@ class PermissionController extends BaseController {
 			return redirect()->guest('login')->with('msg', 'Permission Denied');
 		}
 		
-		$permissions = Permission::all();
+		if (Gate::allows('permission', 'adminpermissions')) {
+			$permissions = Permission::all();
+		} else {
+			$permissions = Permission::where('organizer', '1')->get();
+		}
 		return view('pages.permissions',compact("permissions"));
 	}
 	
@@ -73,6 +77,10 @@ class PermissionController extends BaseController {
 		$member_name = $request->input('member_name');
 		$member = Member::where('name',$member_name)->orWhere('email',$member_name)->firstOrFail();
 		
+		if ($permission->organizer != 1 && Gate::denies('permission', 'adminpermissions')) {
+			return redirect()->action('PermissionController@getIndex')->with('msg', 'Error: Permission Denied');
+		}
+		
 		$permission->members()->attach($member->id,['recorded_by' => Auth::user()->id]); // Save Record
 		
 		return redirect()->action('PermissionController@getPermission', $permissionID)->with('msg', 'Success: Added '.$member->name);
@@ -81,10 +89,10 @@ class PermissionController extends BaseController {
 	public function postOrganizer(PermissionRequest $request) {
 		$member_name = $request->input('member_name');
 		$member = Member::where('name',$member_name)->orWhere('email',$member_name)->firstOrFail();
-		$permissions = Permission::where('organizer','1')->get();
+		$permissions = Permission::where('organizer', '1')->where('name', '!=', 'permissions')->get();
 		
 		foreach ($permissions as $permission) {
-			$permission->members()->syncWithoutDetaching([$member->id],['recorded_by' => Auth::user()->id]); // Save Record
+			$permission->members()->syncWithoutDetaching([$member->id => ['recorded_by' => Auth::user()->id]]); // Save Record
 		}
 		
 		return redirect()->action('PermissionController@getIndex')->with('msg', 'Success: Added '.$member->name.' as an organizer!');

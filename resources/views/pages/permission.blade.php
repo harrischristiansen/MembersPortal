@@ -40,7 +40,7 @@ Permission: {{ $permission->name }} -
 			    <tr onclick="location.href='{{ $member->profileURL() }}';">
 			    	<td>{{ $member->name }}</td>
 			    	<td>{{ $member->authorized_at }}</td>
-					<td>{{ $member->recorded_by->name }}
+					<td>{{ $member->recorded_by ? $member->recorded_by->name : "Unknown" }}
 						<a href="{{ action('PermissionController@getDeleteMember', [$permission->id, $member->id]) }}" class="pull-right"><button class="btn btn-xs btn-danger pull-right">Delete</button></a>
 					</td>
 			    </tr>
