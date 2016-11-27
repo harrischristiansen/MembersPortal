@@ -75,8 +75,19 @@ class PermissionController extends BaseController {
 		
 		$permission->members()->attach($member->id,['recorded_by' => Auth::user()->id]); // Save Record
 		
-		$request->session()->flash('msg', 'Success: Added '.$member->name);
-		return $this->getPermission($request, $permissionID);
+		return redirect()->action('PermissionController@getPermission', $permissionID)->with('msg', 'Success: Added '.$member->name);
+	}
+	
+	public function postOrganizer(PermissionRequest $request) {
+		$member_name = $request->input('member_name');
+		$member = Member::where('name',$member_name)->orWhere('email',$member_name)->firstOrFail();
+		$permissions = Permission::where('organizer','1')->get();
+		
+		foreach ($permissions as $permission) {
+			$permission->members()->syncWithoutDetaching([$member->id],['recorded_by' => Auth::user()->id]); // Save Record
+		}
+		
+		return redirect()->action('PermissionController@getIndex')->with('msg', 'Success: Added '.$member->name.' as an organizer!');
 	}
 	
 	/////////////////////////////// Delete Member ///////////////////////////////
@@ -86,8 +97,7 @@ class PermissionController extends BaseController {
 		$permission = Permission::findOrFail($permissionID);
 		$permission->members()->detach($memberID);
 		
-		$request->session()->flash('msg', 'Success: Removed '.$member->name);
-		return $this->getPermission($request, $permissionID);
+		return redirect()->action('PermissionController@getPermission', $permissionID)->with('msg', 'Success: Removed '.$member->name);
 	}
 	
 	/////////////////////////////// Delete Permission ///////////////////////////////
@@ -96,7 +106,7 @@ class PermissionController extends BaseController {
 		$permission = Permission::findOrFail($permissionID);
 		$permission->delete();
 		
-		return redirect()->action('PermissionController@getIndex')->with('msg', 'Success: Deleted permission '.$permission->name.'.');
+		return redirect()->action('PermissionController@getIndex')->with('msg', 'Success: Deleted permission '.$permission->name);
 	}
     
 }

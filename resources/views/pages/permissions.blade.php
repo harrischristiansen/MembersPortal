@@ -34,6 +34,14 @@ Permissions -
 			    </tr>
 			</form>
 			@endcan
+			<form method="post" action="{{ action('PermissionController@postOrganizer') }}" class="panel-body validate">
+				{!! csrf_field() !!}
+			    <tr>
+			    	<td><input type="text" id="memberEmail" name="member_name" placeholder="Add Organizer" class="form-control membersautocomplete" data-bvalidator="required"></td>
+			    	<td></td>
+			    	<td><input type="submit" value="Add Organizer" class="btn btn-sm btn-primary"></td>
+			    </tr>
+			</form>
 			</tbody>
 		</table>
 	</div>
