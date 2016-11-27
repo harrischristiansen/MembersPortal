@@ -4,14 +4,14 @@
 
 A web application for clubs and organizations to manage their members and events. Members can create accounts and manage their profile (including name, contact info, links, projects, work, and events attended). The portal also includes an event management system, including registration, checkin, attendee messaging, and analytics.  
 
-This project was originally developed for Purdue Hackers. Purdue Hackers is a community of students who collaborate, learn, and build kick-ass technical projects. This project was developed to function as a public manifest of the members of Purdue Hackers, store their information, and record their attendance at events.  
+This project was originally developed for [Purdue Hackers](http://www.purduehackers.com). Purdue Hackers is a community of students who collaborate, learn, and build kick-ass technical projects.  
 
 ## Features
 
 - [X] Members
 	- [X] Register, Login
 	- [X] Reset Password
-	- [X] Profiles (Password, Picture, About, Links, Resume, Status) + Locations + Event History
+	- [X] Profiles (Password, Picture, About, Links, Resume, Status) + Locations + Projects + Event History
 		- [ ] Automatic Status Changes (Member/Inactive/Alumni)
 		- [ ] Mailing List Integration
 		- [ ] Log Profile changes
@@ -19,16 +19,16 @@ This project was originally developed for Purdue Hackers. Purdue Hackers is a co
 		- [ ] Location duplicate resolution?
 	- [ ] Redesign Profile Page
 - [X] Events
-	- [X] List, View
+	- [X] List, View, (Create, Modify, Delete w/ permission)
 	- [X] Register, Apply, Unregister
 		- [ ] Manage Applications
 	- [X] Record Attendance - Checkin System
 		- [ ] Undo Checkin (Delete Checkin Record)
 	- [X] Message Attendees
 		- [ ] Ignore Inactive Members
-		- [ ] If target > 20 people, require superAdmin approval
+		- [ ] If target > 20 people, require admin approval
 - [X] Projects
-	- [X] Create, View, Modify, Delete
+	- [X] List, View, Create, Modify, Delete
 	- [X] Add/Remove Team Members
 - [X] Admin
 	- [X] Credential Manager
@@ -43,7 +43,7 @@ This project was originally developed for Purdue Hackers. Purdue Hackers is a co
 - [ ] Set MAMP Directory to `./htdocs/Public`  
 - [ ] Create MySQL Database (use a GUI tool such as [Sequel Pro](http://www.sequelpro.com))  
 - [ ] Execute `cp .env.example .env` in the `./htdocs` directory  
-- [ ] Open `./htdocs/.env` - Fill in your database information and ORG/ADMIN Information
+- [ ] Open `./htdocs/.env` - Fill in your database config and ORG/ADMIN information
 - [ ] Download and Install [Composer](https://getcomposer.org/)  
 - [ ] Execute `composer install` in the `./htdocs` directory (`php composer.phar install` if using composer.phar)  
 - [ ] Execute `php artisan migrate` in the `./htdocs` directory  
@@ -58,13 +58,13 @@ This project was originally developed for Purdue Hackers. Purdue Hackers is a co
 
 ## Contributors
 
-@harrischristiansen (http://www.harrischristiansen.com) (christih@purdue.edu)  
+@harrischristiansen [HarrisChristiansen.com](http://www.harrischristiansen.com) (christih@purdue.edu)  
 
 ## License
 
 MIT License  
 
-Copyright (c) 2016 Harris Christiansen  
+Copyright (c) 2016 [Harris Christiansen](http://www.harrischristiansen.com)  
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
