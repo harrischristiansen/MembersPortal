@@ -38,7 +38,7 @@
 			    	<td><input type="text" name="location" placeholder="Location" class="form-control"></td>
 			    	<td>
 				    	<input type="text" name="apply" placeholder="Apply By" class="form-control"><br>
-				    	<input type="submit" value="Add Credential" class="btn btn-sm btn-primary">
+				    	<input type="submit" value="Add Hackathon" class="btn btn-sm btn-primary">
 			    	</td>
 			    </tr>
 			</form>
