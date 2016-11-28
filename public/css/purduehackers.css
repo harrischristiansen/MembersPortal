@@ -256,7 +256,7 @@ label {
 /*--------- FOOTER SECTION STYLING ---------*/
 
 .footer {
-	height: 150px;
+	height: 170px;
 	margin-top: 50px;
 	text-align: center;
 	background-color: #555;
@@ -315,6 +315,15 @@ label {
 
 .fa-coffee {
 	color: #eee;
+}
+
+.footer h4 a {
+	color: #ccc;
+}
+
+.footer h4 a:hover {
+	color: #eee;
+	text-decoration: none;
 }
 
 /*------------- MEDIA QUERIES ------------*/

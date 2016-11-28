@@ -23,4 +23,5 @@
 	</ul>
 	<h4>Made with <i class="fa fa-heart faa-pulse animated"></i> and
 	<i class="fa fa-coffee"></i> by the Purdue Hackers Team</h4>
+	<h4>Source <a href="https://github.com/harrischristiansen/MembersPortal" target="_blank">available on GitHub</a></h4>
 </div>
