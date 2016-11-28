@@ -78,7 +78,7 @@ body {
 
 #pageWrap { /* Pushes footer to bottom */
 	min-height: 100%;
-	margin-bottom: -200px; 
+	margin-bottom: -220px; 
 }
 
 #pageWrap:after {
