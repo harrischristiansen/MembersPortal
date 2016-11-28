@@ -19,7 +19,7 @@
 			<input type="text" name="memberName" id="memberName" placeholder="Full Name" value="{{ $member->name }}" class="form-control" data-bvalidator="required" data-bvalidator-msg="Please enter your full name">
 			<br>
 			<label for="username">Username</label>
-			<input type="text" name="username" id="username" placeholder="Username" value="{{ $member->username }}" class="form-control" data-bvalidator="alphanum" data-bvalidator-msg="Your username must be alphanumeric">
+			<input type="text" name="username" id="username" placeholder="Username" value="{{ $member->username }}" class="form-control" data-bvalidator="required,alphanum,regex[^\S+$]" data-bvalidator-msg="Your username must be alphanumeric">
 			<br>
 			<label for="picture">Profile Picture (JPG or PNG)</label>
 			@if ($member->picture)

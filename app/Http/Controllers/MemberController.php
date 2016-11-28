@@ -9,6 +9,7 @@
 namespace App\Http\Controllers;
 
 use Gate;
+use Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Cache;
@@ -54,9 +55,9 @@ class MemberController extends BaseController {
 		$member = $this->findMember($memberID);
 		
 		if (is_null($member)) {
-			$request->session()->flash('msg', 'Error: Page Not Found');
-			return parent::getIndex($request);
+			return redirect()->action('HomeController@getIndex')->with('msg', 'Error: Page Not Found');
 		}
+		
 		$majors = Major::orderByRaw('(id = 1) DESC, name')->get(); // Order by name, but keep first major at top
 		
 		if (Gate::denies('member-matches', $member) && Gate::denies('permission', 'members')) {
@@ -99,13 +100,11 @@ class MemberController extends BaseController {
 		$website = $request->input('website');
 		
 		// Verify Input
-		if(is_null($member)) {
-			$request->session()->flash('msg', 'Error: Member Not Found.');
-			return $this->getIndex($request);
+		if (is_null($member)) {
+			return redirect()->action('MemberController@getIndex')->with('msg', 'Error: Member Not Found');
 		}
-		if($email != $member->email && Member::where('email',$email)->first()) {
-			$request->session()->flash('msg', 'An account already exists with that email.');
-			return $this->getMember($request, $memberID);
+		if ($email != $member->email && Member::where('email',$email)->first()) {
+			return redirect()->action('MemberController@getMemberEdit', [$member->username])->with('msg', 'Error: An account already exists with that email');
 		}
 		
 		//// Edit Member ////
@@ -177,8 +176,8 @@ class MemberController extends BaseController {
 			}
 			return redirect()->action('MemberController@getMember', [$member->username])->with('msg', 'Profile Saved! Your username is now '.$member->username);
 		}
-		$request->session()->flash('msg', 'Profile Saved!');
-		return $this->getMember($request, $member->username);
+		
+		return redirect()->action('MemberController@getMember', [$member->username])->with('msg', 'Profile Saved!');
 	}
 	
 	/////////////////////////////// Usernames ///////////////////////////////

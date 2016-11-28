@@ -13,7 +13,7 @@
 		@can ('permission', 'events')
 			<a href="{{ action('ReportsController@getEvent', $event->id) }}" class="pull-left marginR"><button type="button" class="btn btn-primary btn-sm">Graphs</button></a>
 			@if (count($applications))
-			<a href="{{ action('EventController@getApplications', $event->id) }}" class="pull-left marginR"><button type="button" class="btn btn-primary btn-sm">{{ count($applications) }} {{ $requiresApplication ? "Applications" : "Registrations" }}</button></a>
+			<a href="{{ action('EventController@getApplications', $event->id) }}" class="pull-left marginR"><button type="button" class="btn btn-primary btn-sm">{{ count($applications) }} {{ $requiresApplication ? "Application" : "Registration" }}{{ count($applications) != 1 ? "s" : "" }}</button></a>
 			@endif
 			<a href="{{ action('EventController@getCheckin', $event->id) }}" class="pull-right"><button type="button" class="btn btn-primary btn-sm">Checkin</button></a>
 			<a href="{{ action('EventController@getMessage', $event->id) }}" class="pull-right marginR"><button type="button" class="btn btn-primary btn-sm">Send Message</button></a>
@@ -87,7 +87,7 @@
 		<div class="panel-body">
 			<div id="profile_intro_text">
 				<div id="profile_name">{{ $event->name }}</div>
-				<div id="profile_email">{{ $event->location }}</div>
+				<div id="profile_email">Location: {{ $event->location }}</div>
 				<div id="profile_major">{{ $event->dateFriendly() }}</div>
 				@if ($event->facebook)
 				<a href="{{ $event->facebook }}"><br>{{ $event->facebook }}</a><br>

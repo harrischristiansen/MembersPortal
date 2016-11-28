@@ -27,7 +27,7 @@ class EditMemberRequest extends Request {
 	public function rules() {
 		return [
 			'memberName' => 'required|max:255',
-			'username' => 'alpha_num|max:255',
+			'username' => 'required|alpha_num|max:255',
 			'email' => 'required|email',
 			'email_public' => 'email',
 			'confirmPassword' => 'same:password',
