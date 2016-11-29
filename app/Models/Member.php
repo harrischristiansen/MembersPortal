@@ -41,7 +41,9 @@ class Member extends Authenticatable {
 	}
 	
 	public function publicEventCount() {
-		return Cache::get('member_public_events_'.$this->id,$this->buildPublicEventCountCache());
+		return Cache::remember('member_public_events_'.$this->id, 65, function () {
+		    return $this->events()->where('privateEvent',false)->count();
+		});
 	}
 	
 	public function applications() {
@@ -72,11 +74,6 @@ class Member extends Authenticatable {
 	public function resumePath() {
 		$fileExt = pathinfo($this->resume, PATHINFO_EXTENSION);
 		return '/uploads/resumes/'.$this->id."_".substr(md5($this->resume), -6).'.'.$fileExt;
-	}
-	public function buildPublicEventCountCache() {
-		return Cache::remember('member_public_events_'.$this->id, 65, function () {
-		    return $this->events()->where('privateEvent',false)->count();
-		});
 	}
 	
 }

@@ -38,12 +38,8 @@ class BuildCache extends Command
      */
     public function handle()
     {
-        foreach (Member::all() as $member) {
-            $member->buildPublicEventCountCache();
-        }
-        $this->info('Member public event cache built.');
-        MemberController::buildMembersListCache();
-        $this->info('Member list cache built.');
+        MemberController::getMembersListCache();
+        $this->info('Member list cache built (also cached each members # events attended).');
 
 
     }
