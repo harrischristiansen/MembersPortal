@@ -25,9 +25,13 @@ class ReportsController extends BaseController {
 	
 	public function getMembers(AdminRequest $request) {
 		$members = Member::orderBy('created_at')->get();
+		$events = Event::where('privateEvent',false)->orderBy('event_time')->get();
 		
 		// Join Dates
 		$joinDates = $this->graphDataJoinDates($members);
+		
+		// Event Attendance
+		$eventAttendanceData = $this->graphDataEventAttendance($events);
 		
 		// Member Graduation Year
 		$memberYears = $this->graphDataMemberYears($members);
@@ -35,7 +39,7 @@ class ReportsController extends BaseController {
 		// Major
 		$majorsData = $this->graphDataMajor($members);
 		
-		return view('pages.members-graphs',compact("members","joinDates","memberYears","majorsData"));
+		return view('pages.members-graphs',compact("members","joinDates","eventAttendanceData","memberYears","majorsData"));
 	}
 		
 	public function getEvent(AdminRequest $request, $eventID) {
@@ -95,6 +99,35 @@ class ReportsController extends BaseController {
 		return $joinDates;
     }
     
+    public function graphDataEventAttendance($events) {
+	    // Set to Correct Date Range
+	    $datesDict = [];
+	    $start = Member::orderBy('created_at')->first()->created_at;
+	    $datesDict[$start->toDateString()] = 0;
+		$end = Carbon::now()->modify('+1 day');
+	    $datesDict[$end->toDateString()] = 0;
+	    
+		// Sum Event Attendance Counts
+		foreach ($events as $event) {
+			$dateString = $event->event_time->toDateString();
+			$numMembers = $event->members->count();
+			if (isset($datesDict[$dateString])) {
+				$datesDict[$dateString] += $numMembers;
+			} else {
+				$datesDict[$dateString] = $numMembers;
+			}
+		}
+		
+		// Sort and Format Data
+		$datesFormated = [];
+		ksort($datesDict);
+		foreach ($datesDict as $date=>$count) {
+			array_push($datesFormated, compact("date","count"));
+		}
+		
+		return $datesFormated;
+    }
+    
     public function graphDataMemberYears($members) {
 	    $memberYearsDict = [];
 		foreach ($members as $member) {
@@ -102,12 +135,10 @@ class ReportsController extends BaseController {
 			$memberYearsDict[$memberYear] = isset($memberYearsDict[$memberYear]) ? $memberYearsDict[$memberYear]+1 : 1;
 		}
 		$memberYears = [];
+		ksort($memberYearsDict);
 		foreach ($memberYearsDict as $key=>$count) {
 			array_push($memberYears, compact("key","count"));
 		}
-		$memberYears = array_values(array_sort($memberYears, function ($value) {
-			return $value['key'];
-		}));
 		
 		return $memberYears;
     }
@@ -125,7 +156,7 @@ class ReportsController extends BaseController {
 		}
 		$majorsData = [];
 		foreach ($majorsDict as $key=>$count) {
-			$key = preg_replace('~\b(\w)|.~', '$1', $key);
+			$key = preg_replace('~\b(\w)|.~', '$1', $key); // Create 2 Character Abbreviateion
 			array_push($majorsData, compact("key","count"));
 		}
 		

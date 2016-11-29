@@ -9,6 +9,7 @@
 	
 	<div class="panel panel-default">
 		<div id="joinDates" class="graph"></div>
+		<div id="eventAttendance" class="graph"></div>
 		<div id="memberYears" class="graph"></div>
 		<div id="majorsGraph" class="graph"></div>
 	</div>
@@ -25,7 +26,7 @@
 
 <script type="text/javascript">
 	var joinDatesData = JSON.parse('{!! json_encode($joinDates); !!}');
-	var joinDates = AmCharts.makeChart("joinDates", $.extend( {
+	var joinDates = AmCharts.makeChart("joinDates", $.extend(true, {
 			"dataProvider": joinDatesData,
 			"titles": [{
 				"text": "Join Date",
@@ -33,8 +34,17 @@
 			}],
 		}, dateChartProperties));
 	
+	var eventAttendanceData = JSON.parse('{!! json_encode($eventAttendanceData); !!}');
+	var eventAttendance = AmCharts.makeChart("eventAttendance", $.extend(true, {
+			"dataProvider": eventAttendanceData,
+			"titles": [{
+				"text": "Event Attendance",
+				"size": 11
+			}],
+		}, dateChartProperties));
+	
 	var memberYearsData = JSON.parse('{!! json_encode($memberYears); !!}');
-	var memberYears = AmCharts.makeChart("memberYears", $.extend( {
+	var memberYears = AmCharts.makeChart("memberYears", $.extend(true, {
 			"dataProvider": memberYearsData,
 			"titles": [{
 				"text": "Graduation Year",
@@ -43,7 +53,7 @@
 		}, intChartProperties));
 	
 	var majorsGraphData = JSON.parse('{!! json_encode($majorsData); !!}');
-	var majorsGraph = AmCharts.makeChart("majorsGraph", $.extend( {
+	var majorsGraph = AmCharts.makeChart("majorsGraph", $.extend(true, {
 			"dataProvider": majorsGraphData,
 			"titles": [{
 				"text": "Major",
