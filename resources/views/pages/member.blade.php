@@ -84,7 +84,7 @@
 		    	<td>{{ $location->location->name }}</td>
 		    	<td>{{ $location->location->city }}</td>
 				<td>{{ $location->date_start }}</td>
-				<td>{{ $location->date_end }}
+				<td>{{ $location->date_end != 0 ? $location->date_end : "Current" }}
 					@if (Gate::allows('member-matches', $member) || Gate::allows('permission', 'members'))
 					<a href="{{ action('LocationController@getDelete', $location->id) }}" class="btn btn-sm btn-danger pull-right">Remove</a>
 					@endif
@@ -106,7 +106,7 @@
 				<td><input type="text" name="locationName" id="locationName" placeholder="Location Name" class="form-control locationsautocomplete" data-bvalidator="required" data-bvalidator-msg="Location Name Required."></td>
 				<td><input type="text" name="city" id="city" placeholder="City" class="form-control citiesautocomplete" data-bvalidator="required" data-bvalidator-msg="City Required."></td>
 				<td><input type="text" name="date_start" id="date_start" placeholder="Start Date" class="form-control datepicker" data-bvalidator="required,date[yyyy-mm-dd]" data-bvalidator-msg="Start Date Required."></td>
-				<td><input type="text" name="date_end" id="date_end" placeholder="End Date" class="form-control datepicker" data-bvalidator="required,date[yyyy-mm-dd]" data-bvalidator-msg="End Date Required.">
+				<td><input type="text" name="date_end" id="date_end" placeholder="End Date (Optional)" class="form-control datepicker" data-bvalidator="date[yyyy-mm-dd]">
 					<br>
 					<input type="submit" value="Add Location Record" class="btn btn-primary pull-right">
 				</td>

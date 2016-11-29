@@ -26,18 +26,18 @@ class LocationController extends BaseController {
 	
 	public function getIndex(Request $request) {
 		$locations = Location::all();
-		return view('pages.locations',compact("locations"));
+		return view('pages.locations', compact("locations"));
 	}
 	
 	public function getMap() {
 		$locations = Location::all();
-		return view('pages.map',compact("locations"));
+		return view('pages.map', compact("locations"));
 	}
 	
 	public function getMapData() {
 		$locations = Location::all();
-		for($i=0;$i<count($locations);$i++) {
-			$locations[$i]['members'] = $locations[$i]->members()->count();
+		foreach ($locations as $key=>$location) {
+			$locations[$key]['members'] = $location->members()->count();
 		}
 		return $locations;
 	}
@@ -60,7 +60,7 @@ class LocationController extends BaseController {
 	public function postLocation(AdminRequest $request, $locationID) {
 		$location = Location::find($locationID);
 		
-		if(is_null($location)) {
+		if (is_null($location)) {
 			$request->session()->flash('msg', 'Error: Location Not Found.');
 			return $this->getIndex($request);
 		}
@@ -79,15 +79,15 @@ class LocationController extends BaseController {
 		$date_end = $request->input("date_end");
 		
 		$member = Member::find($memberID);
-		$authenticated_id = $request->session()->get('member_id');
 		
-		if (is_null($member)) {
-			$request->session()->flash('msg', 'Error: Member Not Found.');
-			return app('App\Http\Controllers\MemberController')->getIndex();
+		if (strlen($locationName) < 3 || strlen($city) < 3 || strlen($date_start) < 3) {
+			return redirect()->action('MemberController@getMember', $member->username)->with('msg', 'Error: Location name, city, and start date required');
 		}
-		if (Gate::denies('member-matches', $member)) {
-			$request->session()->flash('msg', 'Error: Member Not Found.');
-			return app('App\Http\Controllers\MemberController')->getIndex();
+		if (is_null($member)) {
+			return redirect()->action('MemberController@getIndex')->with('msg', 'Error: Member Not Found');
+		}
+		if (Gate::denies('member-matches', $member) && Gate::denies('permission', 'members')) {
+			return redirect()->action('MemberController@getIndex')->with('msg', 'Error: Member Not Found');
 		}
 		
 		$location = Location::firstOrCreate(['name'=>$locationName, 'city'=>$city]);
@@ -100,11 +100,12 @@ class LocationController extends BaseController {
 		$locationRecord->member_id = $memberID;
 		$locationRecord->location_id = $location->id;
 		$locationRecord->date_start = new Carbon($date_start);
-		$locationRecord->date_end = new Carbon($date_end);
+		if ($date_end != "") {
+			$locationRecord->date_end = new Carbon($date_end);
+		}
 		$locationRecord->save();
 		
-		$request->session()->flash('msg', 'Location Record Added!');
-		return app('App\Http\Controllers\MemberController')->getMember($request, $memberID);
+		return redirect()->action('MemberController@getMember', $member->username)->with('msg', 'Location Record Added!');
 	}
 	
 	public function addLocationLatLng($location) {
@@ -124,19 +125,18 @@ class LocationController extends BaseController {
 		$locationRecord = LocationRecord::find($recordID);
 		$authenticated_id = $request->session()->get('member_id');
 		
-		if(is_null($locationRecord)) {
-			$request->session()->flash('msg', 'Error: Location Record not Found.');
-			return app('App\Http\Controllers\MemberController')->getIndex();
-		}
-		if($request->session()->get('authenticated_member') != "true" && $locationRecord->member->id != $authenticated_id) {
-			$request->session()->flash('msg', 'Error: Location Record not Found.');
-			return app('App\Http\Controllers\MemberController')->getIndex();
+		if (is_null($locationRecord)) {
+			return redirect()->action('MemberController@getIndex')->with('msg', 'Error: Location Record Not Found');
 		}
 		
-		$return_memberID = $locationRecord->member->id;
+		$member = $locationRecord->member;
+		
+		if (Gate::denies('member-matches', $member) && Gate::denies('permission', 'members')) {
+			return redirect()->action('MemberController@getIndex')->with('msg', 'Error: Location Record Not Found');
+		}
+		
 		$locationRecord->delete();
-		
-		return redirect()->action('MemberController@getMember', [$return_memberID])->with('msg', 'Location Record Deleted!');
+		return redirect()->action('MemberController@getMember', $member->username)->with('msg', 'Location Record Deleted!');
 	}
     
 }
