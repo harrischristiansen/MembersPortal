@@ -8,7 +8,11 @@
         <title>@yield('page-title') {{ env('ORG_NAME') }}</title>
         
         <meta name="author" content="Harris Christiansen">
-        <meta name="description" content="{{ env('ORG_NAME') }} - Members and Events Portal">
+        <meta name="description" content="
+		@section('description')
+			{{ env('ORG_NAME') }} - Members and Events Portal
+		@show
+        ">
         <meta name="keywords" content="{{ env('ORG_KEYWORDS') }}">
 
         <!-- BValidator -->

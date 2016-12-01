@@ -8,6 +8,7 @@ This project was originally developed for [Purdue Hackers](http://www.purduehack
 
 ## Features
 
+- [ ] Meta descriptions for most pages
 - [X] Members
 	- [X] Register, Login
 	- [X] Reset Password

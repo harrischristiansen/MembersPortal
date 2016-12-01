@@ -4,12 +4,21 @@
 {{ $member->name }} - 
 @stop
 
+@section("description")
+	{{ $member->name }} - 
+	@if ($member->graduation_year)
+		{{ $member->major ? $member->major->name:"" }} Class of {{ $member->graduation_year }} - 
+	@endif
+	Attended {{ count($member->events) }} Events, and has {{ count($member->projects) }} Projects and {{ count($locations) }} Jobs.
+	{{ $member->description ? $member->description:"" }}
+@stop
+
 @section("content")
 
 <div class="section"><div class='section-container'>
 	<h3>Member - {{ $member->name }}
 		@if (Gate::allows('member-matches', $member) || Gate::allows('permission', 'members') || isset($setPassword) )
-		<a href="{{ action('MemberController@getMemberEdit', $member->username) }}" class="pull-right"><button type="button" class="btn btn-primary btn-sm">Edit</button></a>
+		<a href="{{ action('MemberController@getMemberEdit', $member->username) }}" class="pull-right"><button type="button" class="btn btn-primary btn-sm">Edit Profile</button></a>
 		@endif
 	</h3>
 	
