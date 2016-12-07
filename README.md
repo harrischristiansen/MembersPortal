@@ -35,7 +35,6 @@ This project was originally developed for [Purdue Hackers](http://www.purduehack
 	- [X] Credential Manager
 	- [X] Permissions Manager
 	- [X] Analytics
-		- [ ] Graphs of "# events attended"
 		- [ ] See trends in who has been going to what events
 
 ## Local MAMP Installation - Mac  

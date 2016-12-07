@@ -33,13 +33,16 @@ class ReportsController extends BaseController {
 		// Event Attendance
 		$eventAttendanceData = $this->graphDataEventAttendance($events);
 		
+		// # Events Attended
+		$numAttendedData = $this->graphDataNumAttended($members);
+		
 		// Member Graduation Year
 		$memberYears = $this->graphDataMemberYears($members);
 		
 		// Major
 		$majorsData = $this->graphDataMajor($members);
 		
-		return view('pages.members-graphs',compact("members","joinDates","eventAttendanceData","memberYears","majorsData"));
+		return view('pages.members-graphs',compact("members","joinDates","eventAttendanceData","numAttendedData","memberYears","majorsData"));
 	}
 		
 	public function getEvent(AdminRequest $request, $eventID) {
@@ -128,8 +131,23 @@ class ReportsController extends BaseController {
 		return $datesFormated;
     }
     
-    public function graphDataMemberYears($members) {
-	    $memberYearsDict = [];
+    public function graphDataNumAttended($members) {
+	    $numAttendedDict = [];
+		foreach ($members as $member) {
+			$numAttended = $member->publicEventCount();
+			$numAttendedDict[$numAttended] = isset($numAttendedDict[$numAttended]) ? $numAttendedDict[$numAttended]+1 : 1;
+		}
+		$numAttended = [];
+		ksort($numAttendedDict);
+		foreach ($numAttendedDict as $key=>$count) {
+			array_push($numAttended, compact("key","count"));
+		}
+		
+		return $numAttended;
+    }
+    
+	public function graphDataMemberYears($members) {
+		$memberYearsDict = [];
 		foreach ($members as $member) {
 			$memberYear = $member->graduation_year;
 			$memberYearsDict[$memberYear] = isset($memberYearsDict[$memberYear]) ? $memberYearsDict[$memberYear]+1 : 1;
@@ -141,7 +159,7 @@ class ReportsController extends BaseController {
 		}
 		
 		return $memberYears;
-    }
+	}
     
     public function graphDataMajor($members) {
 	    $majors = Major::all();
