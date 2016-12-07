@@ -31,7 +31,7 @@ class ReportsController extends BaseController {
 		$joinDates = $this->graphDataJoinDates($members);
 		
 		// Event Attendance
-		$eventAttendanceData = $this->graphDataEventAttendance($events);
+		$eventAttendanceData = $this->graphDataEventAttendance($members);
 		
 		// # Events Attended
 		$numAttendedData = $this->graphDataNumAttended($members);
@@ -49,12 +49,18 @@ class ReportsController extends BaseController {
 		$event = Event::findOrFail($eventID);
 		
 		$members = $event->members;
-		if(count($members) == 0) {
+		if (count($members) == 0) {
 			$members = $event->getAppliedMembers();
 		}
 		
 		// Join Dates
 		$joinDates = $this->graphDataJoinDates($members);
+		
+		// Event Attendance
+		$eventAttendanceData = $this->graphDataEventAttendance($members);
+		
+		// # Events Attended
+		$numAttendedData = $this->graphDataNumAttended($members);
 		
 		// Member Graduation Year
 		$memberYears = $this->graphDataMemberYears($members);
@@ -62,7 +68,7 @@ class ReportsController extends BaseController {
 		// Major
 		$majorsData = $this->graphDataMajor($members);
 		
-		return view('pages.event-graphs', compact("event","joinDates","memberYears","majorsData"));
+		return view('pages.event-graphs', compact("event","joinDates","eventAttendanceData","numAttendedData","memberYears","majorsData"));
 	}
 	
 	public function getEventBook(AdminRequest $request, $eventID) {
@@ -102,7 +108,7 @@ class ReportsController extends BaseController {
 		return $joinDates;
     }
     
-    public function graphDataEventAttendance($events) {
+    public function graphDataEventAttendance($members) {
 	    // Set to Correct Date Range
 	    $datesDict = [];
 	    $start = Member::orderBy('created_at')->first()->created_at;
@@ -110,20 +116,18 @@ class ReportsController extends BaseController {
 		$end = Carbon::now()->modify('+1 day');
 	    $datesDict[$end->toDateString()] = 0;
 	    
-		// Sum Event Attendance Counts
-		foreach ($events as $event) {
-			$dateString = $event->event_time->toDateString();
-			$numMembers = $event->members->count();
-			if (isset($datesDict[$dateString])) {
-				$datesDict[$dateString] += $numMembers;
-			} else {
-				$datesDict[$dateString] = $numMembers;
+	    // Sum Public Event Attendance
+		foreach ($members as $member) {
+			$events = $member->events()->where('privateEvent',false)->get();
+			foreach ($events as $event) {
+				$dateString = $event->event_time->toDateString();
+				$datesDict[$dateString] = isset($datesDict[$dateString]) ? $datesDict[$dateString]+1 : 1;
 			}
 		}
 		
 		// Sort and Format Data
-		$datesFormated = [];
 		ksort($datesDict);
+		$datesFormated = [];
 		foreach ($datesDict as $date=>$count) {
 			array_push($datesFormated, compact("date","count"));
 		}

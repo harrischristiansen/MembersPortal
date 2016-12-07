@@ -13,6 +13,8 @@ Graphs - {{ $event->nameShort() }} -
 	
 	<div class="panel panel-default">
 		<div id="joinDates" class="graph"></div>
+		<div id="eventAttendance" class="graph"></div>
+		<div id="numAttended" class="graph"></div>
 		<div id="memberYears" class="graph"></div>
 		<div id="majorsGraph" class="graph"></div>
 	</div>
@@ -36,6 +38,24 @@ Graphs - {{ $event->nameShort() }} -
 				"size": 11
 			}],
 		}, dateChartProperties));
+	
+	var eventAttendanceData = JSON.parse('{!! json_encode($eventAttendanceData); !!}');
+	var eventAttendance = AmCharts.makeChart("eventAttendance", $.extend(true, {
+			"dataProvider": eventAttendanceData,
+			"titles": [{
+				"text": "Event Attendance",
+				"size": 11
+			}],
+		}, dateChartProperties));
+	
+	var numAttendedData = JSON.parse('{!! json_encode($numAttendedData); !!}');
+	var numAttended = AmCharts.makeChart("numAttended", $.extend(true, {
+			"dataProvider": numAttendedData,
+			"titles": [{
+				"text": "# Events Attended",
+				"size": 11
+			}],
+		}, intChartProperties));
 	
 	var memberYearsData = JSON.parse('{!! json_encode($memberYears); !!}');
 	var memberYears = AmCharts.makeChart("memberYears", $.extend( {
