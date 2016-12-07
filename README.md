@@ -14,8 +14,8 @@ This project was originally developed for [Purdue Hackers](http://www.purduehack
 	- [X] Reset Password
 	- [X] Profiles (Password, Picture, About, Links, Resume, Status) + Locations + Projects + Event History
 		- [ ] Automatic Status Changes (Member/Inactive/Alumni)
+			- [ ] Exclude from Impacted Reports + Emails
 		- [ ] Mailing List Integration
-		- [ ] Log Profile changes
 	- [X] Map of Members Locations
 		- [ ] Location duplicate resolution?
 	- [ ] Redesign Profile Page
@@ -26,7 +26,6 @@ This project was originally developed for [Purdue Hackers](http://www.purduehack
 	- [X] Record Attendance - Checkin System
 		- [ ] Undo Checkin (Delete Checkin Record)
 	- [X] Message Attendees
-		- [ ] Ignore Inactive Members
 		- [ ] If target > 20 people, require admin approval
 - [X] Projects
 	- [X] List, View, Create, Modify, Delete
@@ -35,7 +34,8 @@ This project was originally developed for [Purdue Hackers](http://www.purduehack
 	- [X] Credential Manager
 	- [X] Permissions Manager
 	- [X] Analytics
-		- [ ] See trends in who has been going to what events
+		- [ ] Post-Event Report (various metrics)
+		- [ ] Event Metrics Table (# attended, # new attendees, # reoccurring attendees)
 
 ## Local MAMP Installation - Mac  
 
