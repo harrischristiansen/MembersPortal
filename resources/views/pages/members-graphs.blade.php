@@ -9,6 +9,7 @@
 	
 	<div class="panel panel-default">
 		<div id="joinDates" class="graph"></div>
+		<div id="loginDates" class="graph"></div>
 		<div id="eventAttendance" class="graph"></div>
 		<div id="numAttended" class="graph"></div>
 		<div id="memberYears" class="graph"></div>
@@ -31,6 +32,15 @@
 			"dataProvider": joinDatesData,
 			"titles": [{
 				"text": "Join Date",
+				"size": 11
+			}],
+		}, dateChartProperties));
+		
+	var loginDatesData = JSON.parse('{!! json_encode($loginDatesData); !!}');
+	var loginDates = AmCharts.makeChart("loginDates", $.extend(true, {
+			"dataProvider": loginDatesData,
+			"titles": [{
+				"text": "Last Login Date",
 				"size": 11
 			}],
 		}, dateChartProperties));

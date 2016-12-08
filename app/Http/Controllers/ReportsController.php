@@ -30,6 +30,9 @@ class ReportsController extends BaseController {
 		// Join Dates
 		$joinDates = $this->graphDataJoinDates($members);
 		
+		// Login Dates
+		$loginDatesData = $this->graphDataLoginDates($members);
+		
 		// Event Attendance
 		$eventAttendanceData = $this->graphDataEventAttendance($members);
 		
@@ -42,7 +45,7 @@ class ReportsController extends BaseController {
 		// Major
 		$majorsData = $this->graphDataMajor($members);
 		
-		return view('pages.members-graphs',compact("members","joinDates","eventAttendanceData","numAttendedData","memberYears","majorsData"));
+		return view('pages.members-graphs',compact("members","joinDates","loginDatesData","eventAttendanceData","numAttendedData","memberYears","majorsData"));
 	}
 		
 	public function getEvent(AdminRequest $request, $eventID) {
@@ -106,6 +109,27 @@ class ReportsController extends BaseController {
 		}
 		
 		return $joinDates;
+    }
+    
+    public function graphDataLoginDates($members) {
+	    $loginDatesDict = [];
+	    $start = Member::orderBy('created_at')->first()->created_at;
+		$end = Carbon::now()->modify('+1 day');
+		for ($i = $start; $i < $end; $i->modify('+1 day')) {
+			$loginDatesDict[$i->toDateString()] = 0;
+		}
+		foreach ($members as $member) {
+			$dateString = $member->authenticated_at->toDateString();
+			if ($member->authenticated_at->year > 0) {
+				$loginDatesDict[$dateString]++;
+			}
+		}
+		$loginDates = [];
+		foreach ($loginDatesDict as $date=>$count) {
+			array_push($loginDates, compact("date","count"));
+		}
+		
+		return $loginDates;
     }
     
     public function graphDataEventAttendance($members) {
