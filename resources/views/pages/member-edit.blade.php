@@ -15,10 +15,17 @@
 		<form method="post" action="{{ $member->profileURL() }}" enctype="multipart/form-data" class="panel-body validate">
 			<p class="text-muted text-center">Fields marked with an * are required</p>
 			{!! csrf_field() !!}
-			<label for="memberName">Full Name *</label>
-			<input type="text" name="memberName" id="memberName" placeholder="Full Name" value="{{ $member->name }}" class="form-control" data-bvalidator="required" data-bvalidator-msg="Please enter your full name">
+			<label for="memberName">Full Name *
+				<div class="text-right pull-right"><span style="font-size: 8px;">(Restrict your profile to only members)</span> Private Profile</div>
+			</label>
+			<div class="input-group">
+				<input type="text" name="memberName" id="memberName" placeholder="Full Name" value="{{ $member->name }}" class="form-control" data-bvalidator="required" data-bvalidator-msg="Please enter your full name">
+				<span class="input-group-addon" id="privateProfileGroup">
+					<input type="checkbox" name="privateProfile" id="privateProfile" value="true" {{ $member->privateProfile ? "checked" : "" }}>
+				</span>
+			</div>
 			<br>
-			<label for="username">Username</label>
+			<label for="username">Username *</label>
 			<input type="text" name="username" id="username" placeholder="Username" value="{{ $member->username }}" class="form-control" data-bvalidator="required,alphanum,regex[^\S+$]" data-bvalidator-msg="Your username must be alphanumeric">
 			<br>
 			<label for="picture">Profile Picture (JPG or PNG)</label>
@@ -27,8 +34,16 @@
 			@endif
 			<input type="file" name="picture" id="picture" class="form-control">
 			<br>
-			<label for="email">Account Email *</label>
-			<input type="text" name="email" id="email" placeholder="Email" value="{{ $member->email }}" class="form-control" data-bvalidator="required,email" data-bvalidator-msg="An email is required for your account.">
+			<label for="email">Account Email *
+				<div class="text-right pull-right"><span style="font-size: 8px;">(Stop receiving auto-generated emails)</span> Unsubscribe</div>
+			</label>
+			<div class="input-group">
+				<input type="email" name="email" id="email" placeholder="Email" value="{{ $member->email }}" class="form-control" data-bvalidator="required,email" data-bvalidator-msg="An email is required for your account.">
+				<span class="input-group-addon" id="unsubscribedGroup">
+					<input type="checkbox" name="unsubscribed" id="unsubscribed" value="true" {{ $member->unsubscribed ? "checked" : "" }}>
+				</span>
+			</div>
+			<br>
 			<br>
 			@if (isset($setPassword))
 			<label for="password">Password *</label>

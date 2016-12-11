@@ -31,7 +31,7 @@ class MemberController extends BaseController {
 
 	public static function getMembersListCache() {
 		return Cache::remember('members_list', 65, function () {
-			return Member::with('events')->get()->sortBy(function($member, $key) {
+			return Member::where('privateProfile',false)->with('events')->get()->sortBy(function($member, $key) {
 				return sprintf('%04d',1000-$member->publicEventCount())."_".$member->name;
 			});
 		});
@@ -40,7 +40,7 @@ class MemberController extends BaseController {
 	public function getMember(Request $request, $memberID) {
 		$member = $this->findMember($memberID);
 		
-		if (is_null($member)) {
+		if (is_null($member) || ($member->privateProfile && !Auth::check())) {
 			$request->session()->flash('msg', 'Error: Page Not Found');
 			return parent::getIndex($request);
 		}
@@ -85,8 +85,10 @@ class MemberController extends BaseController {
 		
 		$memberName = $request->input('memberName');
 		$username = $request->input('username');
+		$privateProfile = $request->input('privateProfile');
 		$password = $request->input('password');
 		$email = $request->input('email');
+		$unsubscribed = $request->input('unsubscribed');
 		$phone = $request->input('phone');
 		$email_public = $request->input('email_public');
 		$gradYear = $request->input('gradYear');
@@ -109,6 +111,7 @@ class MemberController extends BaseController {
 		
 		//// Edit Member ////
 		$member->name = $memberName;
+		$member->privateProfile = $privateProfile=="true";
 		$member->username = $this->generateUsername($member,$username);
 		
 		// Password
@@ -121,6 +124,7 @@ class MemberController extends BaseController {
 		if(strpos($email, ".edu") !== false) {
 			$member->email_edu = $email;
 		}
+		$member->unsubscribed = $unsubscribed=="true";
 		$member->email_public = $email_public;
 		if(strpos($email_public, ".edu") !== false) {
 			$member->email_edu = $email_public;

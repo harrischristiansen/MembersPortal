@@ -13,12 +13,14 @@ This project was originally developed for [Purdue Hackers](http://www.purduehack
 	- [X] Register, Login
 	- [X] Reset Password
 	- [X] Profiles (Password, Picture, About, Links, Resume, Status) + Locations + Projects + Event History
+		- [X] Private Profiles
 		- [ ] Automatic Status Changes (Member/Inactive/Alumni)
 			- [ ] Exclude from Impacted Reports + Emails
 		- [ ] Mailing List Integration
 	- [X] Map of Members Locations
 		- [ ] Location duplicate resolution?
 	- [ ] Redesign Profile Page
+	- [ ] Unsubscribe from email communications
 - [X] Events
 	- [X] List, View, (Create, Modify, Delete w/ permission)
 	- [X] Register, Apply, Unregister
