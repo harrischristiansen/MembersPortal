@@ -39,20 +39,19 @@ This project was originally developed for [Purdue Hackers](http://www.purduehack
 		- [ ] Post-Event Report (various metrics)
 		- [ ] Event Metrics Table (# attended, # new attendees, # reoccurring attendees)
 
-## Local MAMP Installation - Mac  
+## Local Environment Setup - Mac (MAMP)
 
-- [ ] Download and Install [MAMP](https://www.mamp.info/en/)  
-- [ ] Set MAMP Directory to `./htdocs/Public`  
-- [ ] Create MySQL Database (use a GUI tool such as [Sequel Pro](http://www.sequelpro.com))  
-- [ ] Execute `cp .env.example .env` in the `./htdocs` directory  
-- [ ] Open `./htdocs/.env` - Fill in your database config and ORG/ADMIN information
-- [ ] Download and Install [Composer](https://getcomposer.org/)  
-- [ ] Execute `composer install` in the `./htdocs` directory (`php composer.phar install` if using composer.phar)  
-- [ ] Execute `php artisan migrate` in the `./htdocs` directory  
-- [ ] Execute `php artisan key:generate` in the `./htdocs` directory  
-- [ ] Execute `mkdir -p storage/framework/sessions` and `mkdir -p storage/framework/views` in the `./htdocs` directory  
-- [ ] Execute `chmod -R 757 storage` in the `./htdocs` directory  
-- [ ] Start MAMP Servers  
+- [ ] Download and Install [MAMP](https://www.mamp.info/en/)
+- [ ] Set MAMP Directory to `./public`
+- [ ] Create MySQL Database (use a GUI tool such as [Sequel Pro](http://www.sequelpro.com))
+- [ ] Download and Install [Composer](https://getcomposer.org/)
+- [ ] Execute `composer install` in the project directory (`php composer.phar install` if using composer.phar)
+- [ ] Execute `php artisan key:generate` in the project directory
+- [ ] Open `.env` - Fill in your database config and ORG/ADMIN information
+- [ ] Execute `php artisan migrate` in the project directory
+- [ ] Execute `mkdir -p storage/framework/sessions` and `mkdir -p storage/framework/views` in the project directory
+- [ ] Execute `chmod -R 757 storage` in the project directory
+- [ ] Start MAMP Servers
 
 ## Accessing Portal
 
