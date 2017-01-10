@@ -2,9 +2,10 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Console\Command;
-use App\Models\Member;
 use App\Http\Controllers\MemberController;
+use App\Models\Member;
+use Illuminate\Console\Command;
+
 class BuildCache extends Command
 {
     /**
@@ -40,7 +41,5 @@ class BuildCache extends Command
     {
         MemberController::getMembersListCache();
         $this->info('Member list cache built (also cached each members # events attended).');
-
-
     }
 }
