@@ -65,7 +65,7 @@
 			<h3>I missed the callout!<br>Can I still join?</h3>
 			<p>
 				Absolutely! You can find all of our events in the Purdue Hackers
-				<a href="https://www.facebook.com/groups/purduehackers/">facebook group</a>. No prior knowledge or experience is needed, so come say hi!
+				<a href="https://www.facebook.com/groups/purduehackers/" target="_blank">facebook group</a>. No prior knowledge or experience is needed, so come say hi!
 			</p>
 			<h3>What if I can&#39;t code?</h3>
 			<p>
