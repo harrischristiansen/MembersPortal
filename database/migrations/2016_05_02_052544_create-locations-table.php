@@ -1,16 +1,18 @@
 <?php
-	
+
 /*
-	@ Harris Christiansen (Harris@HarrisChristiansen.com)
-	2016-05-02
-	Project: Members Tracking Portal
+    @ Harris Christiansen (Harris@HarrisChristiansen.com)
+    2016-05-02
+    Project: Members Tracking Portal
 */
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
 
-class CreateLocationsTable extends Migration {
-    public function up() {
+class CreateLocationsTable extends Migration
+{
+    public function up()
+    {
         Schema::create('locations', function (Blueprint $table) {
             $table->increments('id');
             $table->text('name');
@@ -21,16 +23,18 @@ class CreateLocationsTable extends Migration {
         });
         Schema::create('location-member', function (Blueprint $table) {
             $table->increments('id');
-			$table->integer('location_id')->unsigned()->index();
-			$table->foreign('location_id')->references('id')->on('locations');
-			$table->integer('member_id')->unsigned()->index();
-			$table->foreign('member_id')->references('id')->on('members');
-			$table->date('date_start');
-			$table->date('date_end');
+            $table->integer('location_id')->unsigned()->index();
+            $table->foreign('location_id')->references('id')->on('locations');
+            $table->integer('member_id')->unsigned()->index();
+            $table->foreign('member_id')->references('id')->on('members');
+            $table->date('date_start');
+            $table->date('date_end');
             $table->timestamps();
         });
     }
-    public function down() {
+
+    public function down()
+    {
         Schema::drop('location-member');
         Schema::drop('locations');
     }
