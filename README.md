@@ -25,10 +25,14 @@ This project was originally developed for [Purdue Hackers](http://www.purduehack
 	- [X] List, View, (Create, Modify, Delete w/ permission)
 	- [X] Register, Apply, Unregister
 		- [ ] Manage Applications
+		- [ ] Close registration on day after event
 	- [X] Record Attendance - Checkin System
 		- [ ] Undo Checkin (Delete Checkin Record)
 	- [X] Message Attendees
 		- [ ] If target > 20 people, require admin approval
+	- [ ] Improve Events List Design
+		- [ ] Merge Hackathons list into events list
+		- [ ] Add filterable event categories
 - [X] Projects
 	- [X] List, View, Create, Modify, Delete
 	- [X] Add/Remove Team Members

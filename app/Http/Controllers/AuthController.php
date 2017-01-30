@@ -189,13 +189,15 @@ class AuthController extends BaseController {
 		
 		$nowDate = Carbon::now();
 		
+		$emailsSent = 0;
 		foreach ($members as $member) {
 			if ($member->setupEmailSent->diffInDays($nowDate) > 30) {
 				$this->emailAccountCreated($member, $member->events()->first());
+				$emailsSent++;
 			}
 		}
 		
-		$request->session()->flash('msg', 'Success, setup account emails have been sent!');
+		$request->session()->flash('msg', 'Success, '.$emailsSent.' setup account emails have been sent!');
 		return $this->getIndex($request);
 	}
     
