@@ -12,7 +12,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
-use App\Http\Requests\AdminRequest;
+use App\Http\Requests\EventRequest;
 
 use App\Models\Event;
 use App\Models\Major;
@@ -23,7 +23,7 @@ class ReportsController extends BaseController {
 		$this->middleware('auth');
 	}
 	
-	public function getMembers(AdminRequest $request) {
+	public function getMembers(EventRequest $request) {
 		$members = Member::orderBy('created_at')->get();
 		$events = Event::where('privateEvent',false)->orderBy('event_time')->get();
 		
@@ -48,7 +48,7 @@ class ReportsController extends BaseController {
 		return view('pages.members-graphs',compact("members","joinDates","loginDatesData","eventAttendanceData","numAttendedData","memberYears","majorsData"));
 	}
 		
-	public function getEvent(AdminRequest $request, $eventID) {
+	public function getEvent(EventRequest $request, $eventID) {
 		$event = Event::findOrFail($eventID);
 		
 		$members = $event->members;
@@ -74,7 +74,7 @@ class ReportsController extends BaseController {
 		return view('pages.event-graphs', compact("event","joinDates","eventAttendanceData","numAttendedData","memberYears","majorsData"));
 	}
 	
-	public function getEventBook(AdminRequest $request, $eventID) {
+	public function getEventBook(EventRequest $request, $eventID) {
 		$event = Event::findOrFail($eventID);
 		
 		$members = $event->members;
