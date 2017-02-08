@@ -183,7 +183,7 @@ class EventController extends BaseController {
 			// Send Message
 			if ($method == "email") { // Send Email
 				if ($members_mustReceive->contains($member)) {
-					$this->sendEmail($member, "COPY: ".$subject, $memberMsg."\n\n - Sent by ".$member->name);
+					$this->sendEmail($member, "COPY: ".$subject, $memberMsg."\n\n - Sent by ".Auth::user()->name);
 				} else {
 					$this->sendEmail($member, $subject, $memberMsg);
 				}
