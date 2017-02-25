@@ -25,14 +25,14 @@ class LocationController extends BaseController
     {
         $locations = Location::all();
 
-        return view('pages.locations', compact('locations'));
+        return view('pages.locations.locationlist', compact('locations'));
     }
 
     public function getMap()
     {
         $locations = Location::all();
 
-        return view('pages.map', compact('locations'));
+        return view('pages.locations.map', compact('locations'));
     }
 
     public function getMapData()
@@ -57,7 +57,7 @@ class LocationController extends BaseController
 
         $members = $location->members;
 
-        return view('pages.location', compact('location', 'members'));
+        return view('pages.locations.location', compact('location', 'members'));
     }
 
     /////////////////////////////// Editing Locations ///////////////////////////////

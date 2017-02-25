@@ -33,7 +33,7 @@ class ProjectController extends BaseController
 
         $projects = Auth::user()->projects;
 
-        return view('pages.projects', compact('projects'));
+        return view('pages.projects.projectlist', compact('projects'));
     }
 
     public function getAll(AdminRequest $request)
@@ -41,7 +41,7 @@ class ProjectController extends BaseController
         $projects = Project::all();
         $allProjects = true;
 
-        return view('pages.projects', compact('projects', 'allProjects'));
+        return view('pages.projects.projectlist', compact('projects', 'allProjects'));
     }
 
     public function getProject(LoggedInRequest $request, $projectID)
@@ -56,7 +56,7 @@ class ProjectController extends BaseController
 
         $members = $project->members;
 
-        return view('pages.project', compact('project', 'members'));
+        return view('pages.projects.project', compact('project', 'members'));
     }
 
     public function canAccessProject($request, $project)
@@ -74,7 +74,7 @@ class ProjectController extends BaseController
         $project->id = 0;
         $members = [];
 
-        return view('pages.project', compact('project', 'members'));
+        return view('pages.projects.project', compact('project', 'members'));
     }
 
     /////////////////////////////// Editing Projects ///////////////////////////////

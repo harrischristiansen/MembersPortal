@@ -24,7 +24,7 @@ class AuthController extends BaseController
 
     public function getLogin()
     {
-        return view('pages.login');
+        return view('pages.auth.login');
     }
 
     public function postLogin(Request $request)
@@ -79,7 +79,7 @@ class AuthController extends BaseController
 
     public function getJoin()
     {
-        return view('pages.register');
+        return view('pages.auth.register');
     }
 
     public function postJoin(RegisterRequest $request)
@@ -147,7 +147,7 @@ class AuthController extends BaseController
 
     public function getForgot(Request $request)
     {
-        return view('pages.reset');
+        return view('pages.auth.reset');
     }
 
     public function postForgot(Request $request)

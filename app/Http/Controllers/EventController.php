@@ -39,7 +39,7 @@ class EventController extends BaseController
             $events = Event::where('privateEvent', false)->orderBy('event_time', 'desc')->get();
         }
 
-        return view('pages.events', compact('events'));
+        return view('pages.events.eventlist', compact('events'));
     }
 
     public function getEvent(Request $request, $eventID)
@@ -64,7 +64,7 @@ class EventController extends BaseController
             $applications = $event->applications;
         }
 
-        return view('pages.event', compact('event', 'members', 'requiresApplication', 'hasRegistered', 'applications'));
+        return view('pages.events.event', compact('event', 'members', 'requiresApplication', 'hasRegistered', 'applications'));
     }
 
     public function getCreate(EventRequest $request)
@@ -76,7 +76,7 @@ class EventController extends BaseController
         $hasRegistered = false;
         $applications = [];
 
-        return view('pages.event', compact('event', 'members', 'requiresApplication', 'hasRegistered', 'applications'));
+        return view('pages.events.event', compact('event', 'members', 'requiresApplication', 'hasRegistered', 'applications'));
     }
 
     /////////////////////////////// Editing Events ///////////////////////////////
@@ -137,7 +137,7 @@ class EventController extends BaseController
     {
         $event = Event::findOrFail($eventID);
 
-        return view('pages.event-message', compact('event'));
+        return view('pages.events.message', compact('event'));
     }
 
     public function postMessage(EventRequest $request, $eventID)
@@ -219,7 +219,7 @@ class EventController extends BaseController
             return $this->getEvents($request);
         }
 
-        return view('pages.checkin', compact('event', 'eventID'));
+        return view('pages.events.checkin', compact('event', 'eventID'));
     }
 
     public function getCheckinPhone(EventRequest $request, $eventID)
@@ -309,7 +309,7 @@ class EventController extends BaseController
             $hasRegistered = count($authenticatedMember->applications()->where('event_id', $eventID)->get()) > 0;
         }
 
-        return view('pages.apply', compact('event', 'authenticatedMember', 'majors', 'hasRegistered'));
+        return view('pages.events.apply', compact('event', 'authenticatedMember', 'majors', 'hasRegistered'));
     }
 
     public function getApplyAuth(Request $request, $eventID, $memberID, $reset_token)
@@ -403,7 +403,7 @@ class EventController extends BaseController
         $event = Event::findOrFail($eventID);
         $applications = $event->applications;
 
-        return view('pages.applications', compact('event', 'applications'));
+        return view('pages.events.applications', compact('event', 'applications'));
     }
 
     public function getApplicationsUpperclassmen(EventRequest $request, $eventID = -1)

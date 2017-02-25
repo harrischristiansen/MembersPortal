@@ -25,7 +25,7 @@ class MemberController extends BaseController
     {
         $members = self::getMembersListCache();
 
-        return view('pages.members', compact('members'));
+        return view('pages.members.memberlist', compact('members'));
     }
 
     public static function getMembersListCache()
@@ -50,7 +50,7 @@ class MemberController extends BaseController
         $locations = $member->locations;
         $events = $member->events;
 
-        return view('pages.member', compact('member', 'locations', 'events'));
+        return view('pages.members.member', compact('member', 'locations', 'events'));
     }
 
     public function getMemberEdit(Request $request, $memberID)
@@ -69,7 +69,7 @@ class MemberController extends BaseController
             return $this->getMember($request, $member->id);
         }
 
-        return view('pages.member-edit', compact('member', 'majors'));
+        return view('pages.members.member-edit', compact('member', 'majors'));
     }
 
     public function findMember($memberID)

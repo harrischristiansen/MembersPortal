@@ -32,7 +32,7 @@ class PermissionController extends BaseController
             $permissions = Permission::where('organizer', '1')->get();
         }
 
-        return view('pages.permissions', compact('permissions'));
+        return view('pages.permissions.permissionlist', compact('permissions'));
     }
 
     /////////////////////////////// Create Permission ///////////////////////////////
@@ -70,7 +70,7 @@ class PermissionController extends BaseController
             $member->authorized_at = $member->permissions()->find($permissionID)->pivot->created_at;
         }
 
-        return view('pages.permission', compact('permission', 'members'));
+        return view('pages.permissions.permission', compact('permission', 'members'));
     }
 
     /////////////////////////////// Add Member ///////////////////////////////
