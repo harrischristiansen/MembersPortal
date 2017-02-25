@@ -17,6 +17,7 @@ class AuthServiceProvider extends ServiceProvider
         $this->registerPolicies($gate);
 
         $gate->define('permission', function ($user, $name) {
+            //dd($user->permissions);
             return $user->permissions->contains('name', $name);
         });
 

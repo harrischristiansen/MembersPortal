@@ -1,7 +1,7 @@
 @extends("app")
 
 @section("page-title")
-Members - 
+Members -
 @stop
 
 @section("content")
@@ -11,9 +11,9 @@ Members -
 		<a href="{{ action('ReportsController@getMembers') }}" class="pull-left marginR"><button type="button" class="btn btn-primary btn-sm">Graphs</button></a>
 		<a href="{{ action('LocationController@getMap') }}" class="pull-left"><button type="button" class="btn btn-primary btn-sm">Map</button></a>
 		<a href="#" class="pull-right"><button type="button" class="btn btn-primary btn-sm">{{ count($members) }} members</button></a>
+		@endcan
 		@can ('permission', 'permissions')
 		<a href="{{ action('PermissionController@getIndex') }}" class="pull-right marginR"><button type="button" class="btn btn-primary btn-sm">Edit Permissions</button></a>
-		@endcan
 		@endcan
 	</h3>
 	<div class="panel panel-default">
