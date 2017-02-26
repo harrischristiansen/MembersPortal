@@ -44,7 +44,7 @@ class ReportsController extends BaseController
         // Major
         $majorsData = $this->graphDataMajor($members);
 
-        return view('pages.members-graphs', compact('members', 'joinDates', 'loginDatesData', 'eventAttendanceData', 'numAttendedData', 'memberYears', 'majorsData'));
+        return view('pages.reports.member-graphs', compact('members', 'joinDates', 'loginDatesData', 'eventAttendanceData', 'numAttendedData', 'memberYears', 'majorsData'));
     }
 
     public function getEvent(EventRequest $request, $eventID)
@@ -71,7 +71,7 @@ class ReportsController extends BaseController
         // Major
         $majorsData = $this->graphDataMajor($members);
 
-        return view('pages.event-graphs', compact('event', 'joinDates', 'eventAttendanceData', 'numAttendedData', 'memberYears', 'majorsData'));
+        return view('pages.reports.event-graphs', compact('event', 'joinDates', 'eventAttendanceData', 'numAttendedData', 'memberYears', 'majorsData'));
     }
 
     public function getEventBook(EventRequest $request, $eventID)

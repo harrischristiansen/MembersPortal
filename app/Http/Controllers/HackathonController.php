@@ -14,7 +14,7 @@ class HackathonController extends Controller
     {
         $hackathons = Hackathon::all();
 
-        return view('pages.hackathons', compact('hackathons'));
+        return view('pages.hackathons.hackathonlist', compact('hackathons'));
     }
 
     public function postIndex(EventRequest $request)

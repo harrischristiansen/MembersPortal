@@ -22,7 +22,7 @@ class BaseController extends Controller
 
     public function getIndex(Request $request)
     {
-        return view('pages.home');
+        return view('pages.home.home');
     }
 
     /////////////////////////////// Email ///////////////////////////////

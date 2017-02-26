@@ -10,13 +10,13 @@ class HomeController extends Controller
 
     public function getIndex(Request $request)
     {
-        return view('pages.home');
+        return view('pages.home.home');
     }
 
     /////////////////////////////// Misc Pages ///////////////////////////////
 
     public function getAnvilWifi()
     {
-        return view('pages.anvilWifi');
+        return view('pages.home.anvilWifi');
     }
 }

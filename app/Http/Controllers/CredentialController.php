@@ -24,7 +24,7 @@ class CredentialController extends BaseController
 
         $credentials = Credential::all();
 
-        return view('pages.credentials', compact('credentials'));
+        return view('pages.credentials.credentiallist', compact('credentials'));
     }
 
     public function postIndex(CredentialRequest $request)
