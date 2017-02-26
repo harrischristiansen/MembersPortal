@@ -19,4 +19,9 @@ class HomeController extends Controller
     {
         return view('pages.home.anvilWifi');
     }
+
+    public function getDev()
+    {
+        return view('pages.home.dev');
+    }
 }
