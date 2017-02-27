@@ -59,7 +59,7 @@ class AuthController extends BaseController
             return redirect()->intended('');
         }
 
-        $request->session()->flash('msg', 'Invalid username or password.');
+        $request->session()->flash('msg-red', 'Invalid username or password.');
 
         return $this->getLogin();
     }
