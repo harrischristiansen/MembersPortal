@@ -115,7 +115,7 @@
 			<li class="list-group-item">Execute `chmod -R 757 storage` in the project directory</li>
 			<li class="list-group-item">Start MAMP Servers</li>
 			<li class="list-group-item"><b> ----- Additional ----- </b></li>
-			<li class="list-group-item">Apply <a href="#" target="_blank">our initial db.sql file</a> to your database to fill it with necessary permissions and some test data.</li>
+			<li class="list-group-item">Apply <a href="/db.sql" target="_blank">our initial db.sql file</a> to your database to fill it with necessary permissions and some test data.</li>
 			<li class="list-group-item">Refer to <a href="#" target="_blank">[Devin's Page]</a> for more info, and credentials for pre-created accounts.</li>
 		</ul>
 		<hr>
