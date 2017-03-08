@@ -13,7 +13,6 @@ use App\Models\Member;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Mail;
-
 use Twilio\Rest\Client;
 
 class BaseController extends Controller
