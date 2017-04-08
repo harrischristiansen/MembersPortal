@@ -23,6 +23,7 @@ Route::group(['middleware' => ['web']], function () {
     Route::get('/project/{id}', 'ProjectController@getProject');
     Route::controller('/reports', 'ReportsController');
     Route::get('/anvil-wifi', 'HomeController@getAnvilWifi');
+    Route::get('/dev', 'HomeController@getDev');
     Route::get('/', 'HomeController@getIndex')->name('home');
     Route::get('/{username}', 'MemberController@getMember');
     Route::post('/{username}', 'MemberController@postMember');

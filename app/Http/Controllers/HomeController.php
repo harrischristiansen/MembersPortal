@@ -20,8 +20,8 @@ class HomeController extends Controller
         return view('pages.home.anvilWifi');
     }
 
-    public function getTshirt()
+    public function getDev()
     {
-        return view('pages.home.tshirt');
+        return view('pages.home.dev');
     }
 }
