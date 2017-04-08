@@ -26,7 +26,6 @@ Members -
 					<th>Name</th>
 					<th>Year</th>
 					<th>Joined</th>
-					<th>Events Attended</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -42,7 +41,6 @@ Members -
 			    	<td>{{ $member->name }}</td>
 					<td>{{ $member->graduation_year }}</td>
 			    	<td>{{ $member->created_at->format('M j, Y') }}</td>
-			    	<td>{{ $member->publicEventCount() }}</td>
 			    </tr>
 			@endforeach
 			</tbody>
