@@ -40,10 +40,10 @@ class FacebookEvents extends Command{
     public function __construct(){
         parent::__construct();
         $this->fb = new \Facebook\Facebook([
-            'app_id' => '1678216509149998',
-            'app_secret' => '5b1c412c247a83ad127b97962fcd36c6',
+            'app_id' => $_ENV['FB_APP_ID'],
+            'app_secret' => $_ENV['FB_APP_SECRET'],
             'default_graph_version' => 'v2.9',
-            'default_access_token' => '1678216509149998|n989h4-eAYuaN80n0us6NjziUP0'
+            'default_access_token' => $_ENV['FB_DEFAULT_ACCESS_TOKEN']
         ]);
     }
 
