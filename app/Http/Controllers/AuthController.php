@@ -12,6 +12,7 @@ use App;
 use App\Http\Requests\AdminRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Models\Member;
+use App\Models\Major;
 use Auth;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -79,16 +80,31 @@ class AuthController extends BaseController
 
     public function getJoin()
     {
-        return view('pages.auth.register');
+        $member = new Member();
+        $majors = Major::orderByRaw('(id = 1) DESC, name')->get();
+        return view('pages.auth.register', compact('member', 'majors'));
     }
 
     public function postJoin(RegisterRequest $request)
     {
         $memberName = $request->input('memberName');
+        $privateProfile = $request->input('privateProfile');
         $email = $request->input('email');
+        $unsubscribed = $request->input('unsubscribed');
         $password = $request->input('password');
         $password_confirm = $request->input('password_confirmation');
         $gradYear = $request->input('gradYear');
+        $phone = $request->input('phone');
+        $email_public = $request->input('email_public');
+        $description = $request->input('description');
+        $major = $request->input('major');
+        $gender = $request->input('gender');
+        $facebook = $request->input('facebook');
+        $github = $request->input('github');
+        $linkedin = $request->input('linkedin');
+        $devpost = $request->input('devpost');
+        $website = $request->input('website');
+        // Resume, Profile Picture
 
         // Validate Input
         if ($memberName == '' || $email == '' || $password == '' || $gradYear == '') {
@@ -112,31 +128,83 @@ class AuthController extends BaseController
         if (Member::where('email', $email)->first()) {
             $request->session()->flash('msg', 'An account already exists with that email. Please use your '.env('DB_ORG_NAME').' account password if you have one.');
 
-            return $this->getLogin();
+            return $this->getJoin();
         }
 
         // Create Account + Authenticate
-        $member = $this->createAccount($memberName, $email, $password, $gradYear);
+        $member = $this->createAccount($memberName, $email, $password, $gradYear, $email_public);
         Auth::login($member);
+
+        // Add Additional information to member
+        $member->privateProfile = $privateProfile == 'true';
+        $member->unsubscribed = $unsubscribed == 'true';
+        $member->phone = $phone;
+        $member->graduation_year = $gradYear;
+        $member->gender = $gender;
+        if ($major > 0) {
+            $member->major_id = $major;
+        }
+        $member->description = $description;
+        $member->facebook = $facebook;
+        $member->github = $github;
+        $member->linkedin = $linkedin;
+        $member->devpost = $devpost;
+        $member->website = $website;
+
+        // Picture
+        if ($request->hasFile('picture')) {
+            $picture = $request->file('picture');
+            if ($picture->isValid() && (strtolower($picture->getClientOriginalExtension()) == 'jpg' ||
+                    strtolower($picture->getClientOriginalExtension()) == 'png') && (strtolower($picture->getClientMimeType()) == 'image/jpeg' ||
+                    strtolower($picture->getClientMimeType()) == 'image/jpg' || strtolower($picture->getClientMimeType()) == 'image/png')) {
+                $fileName = $picture->getClientOriginalName();
+                $uploadPath = 'uploads/member_pictures/'; // base_path().'/public/uploads/member_pictures/
+                $fileName_disk = $member->id.'_'.substr(md5($fileName), -6).'.'.$picture->getClientOriginalExtension();
+                $picture->move($uploadPath, $fileName_disk);
+                $member->picture = $fileName;
+            }
+        }
+
+        // Resume
+        if ($request->hasFile('resume')) {
+            $resume = $request->file('resume');
+            if ($resume->isValid() && strtolower($resume->getClientOriginalExtension()) == 'pdf' && strtolower($resume->getClientMimeType()) == 'application/pdf') {
+                $fileName = $resume->getClientOriginalName();
+                $uploadPath = 'uploads/resumes/'; // base_path().'/public/uploads/resumes/
+                $fileName_disk = $member->id.'_'.substr(md5($fileName), -6).'.'.$resume->getClientOriginalExtension();
+                $resume->move($uploadPath, $fileName_disk);
+                $member->resume = $fileName;
+            }
+        }
+
+        $member->save();
 
         $request->session()->flash('msg', 'Welcome '.$member->name.'!');
 
         return $this->getIndex($request);
     }
 
-    public function createAccount($name, $email, $password, $gradYear)
+    public function createAccount($name, $email, $password, $gradYear, $email_public)
     {
         // Create Member
         $member = new Member();
         $member->name = $name;
         $member->username = app('app\Http\Controllers\MemberController')->generateUsername($member);
         $member->email = $email;
+        $member->email_public = $email_public;
+
         if (strlen($password) > 2) {
             $member->password = Hash::make($password);
         }
+
         if (strpos($email, '.edu') !== false) {
             $member->email_edu = $email;
         }
+
+        if (strpos($email_public, '.edu') !== false) {
+            $member->email_edu = $email_public;
+        }
+
         $member->graduation_year = $gradYear;
         $member->save();
 
