@@ -8,7 +8,9 @@
         "php": ">=5.5.9",
         "laravel/framework": "5.2.*",
         "guzzlehttp/guzzle": "^6.2",
-        "twilio/sdk": "^5.4"
+        "twilio/sdk": "^5.4",
+        "facebook/graph-sdk": "^5.5",
+        "barryvdh/laravel-ide-helper": "v2.4.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

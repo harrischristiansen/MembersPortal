@@ -1,7 +1,7 @@
 @extends("app")
 
 @section("page-title")
-{{ $member->name }} - 
+{{ $member->name }} -
 @stop
 
 @section("description")
@@ -30,7 +30,7 @@
 			<div id="profile_intro_text">
 				<div id="profile_name">{{ $member->name }}</div>
 				@if ($member->email_public)
-				<a id="profile_email" href="mailto:{{ $member->email_public }}">{{ $member->email_public }}</a>
+				<a id="profile_email" href="mailto:{{ $member->email_public }}" style="color: #337ab7;">{{ $member->email_public }}</a>
 				@endif
 				@if ($member->graduation_year)
 				<div id="profile_major">{{ $member->major ? $member->major->name:"" }} Class of {{ $member->graduation_year }}</div>
