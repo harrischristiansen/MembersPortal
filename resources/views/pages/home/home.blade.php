@@ -28,15 +28,6 @@
 				representatives from companies like Google, Facebook, Microsoft, and more!
 				Plus, every hackathon is filled to the brim with free food and free swag.
 			</p>
-			<h3>Ignite</h3>
-			<p>
-				Ignite is a one on one coding bootcamp run by the
-				Purdue Hackers team. Incoming freshmen are each paired with an
-				upperclassman mentor, and over the course of the semester they're guided
-				through the process of creating an awesome technical project.
-				Socials are held for the group and demos are shown off at the end
-				of the semester. Applications will open in the Fall!
-			</p>
 			<h3>Social Events</h3>
 			<p>
 				Every few weeks Purdue Hackers hosts events where people
