@@ -80,8 +80,9 @@ class AuthController extends BaseController
 
     public function getJoin()
     {
+        $member = new Member();
         $majors = Major::orderByRaw('(id = 1) DESC, name')->get();
-        return view('pages.auth.register', compact('majors'));
+        return view('pages.auth.register', compact('member', 'majors'));
     }
 
     public function postJoin(RegisterRequest $request)
