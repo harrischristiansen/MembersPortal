@@ -19,8 +19,8 @@
 				@endif
 				<li><a href="{{ action('MemberController@getIndex') }}">Members</a></li>
 				<li><a href="{{ action('EventController@getIndex') }}">Events</a></li>
+				<li><a href="{{ action('HomeController@getCalendar') }}">Calendar</a></li>
 				@if(Auth::check())
-					<li><a href="{{ action('ProjectController@getIndex') }}">Projects</a></li>
 					<li><a href="{{ action('AuthController@getLogout') }}">Logout</a></li>
 				@else
 					<li><a href="{{ action('AuthController@getLogin') }}">Login</a></li>
