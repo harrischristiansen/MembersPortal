@@ -24,4 +24,9 @@ class HomeController extends Controller
     {
         return view('pages.home.dev');
     }
+    
+    public function getCalendar()
+    {
+        return view('pages.home.calendar');
+    }
 }
