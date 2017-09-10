@@ -15,6 +15,7 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         Commands\Inspire::class,
         Commands\BuildCache::class,
+        Commands\FacebookEvents::class
     ];
 
     /**
@@ -24,9 +25,11 @@ class Kernel extends ConsoleKernel
      *
      * @return void
      */
-    protected function schedule(Schedule $schedule)
-    {
-        $schedule->command('inspire')->hourly();
+    protected function schedule(Schedule $schedule) {
+        $schedule->command('inspire')
+            ->hourly()
+            ->appendOutputTo(getcwd().'/storage/logs/laravel.log');
         $schedule->command('cache:build')->hourly();
+        //$schedule->command('events:pull')->hourly();
     }
 }

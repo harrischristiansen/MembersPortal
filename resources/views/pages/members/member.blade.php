@@ -19,6 +19,7 @@
 	<h3>Member - {{ $member->name }}
 		@if (Gate::allows('member-matches', $member) || Gate::allows('permission', 'members') || isset($setPassword) )
 		<a href="{{ action('MemberController@getMemberEdit', $member->username) }}" class="pull-right"><button type="button" class="btn btn-primary btn-sm">Edit Profile</button></a>
+		<a href="{{ action('ProjectController@getIndex') }}" class="pull-left"><button type="button" class="btn btn-primary btn-sm">Projects</button></a>
 		@endif
 	</h3>
 	
